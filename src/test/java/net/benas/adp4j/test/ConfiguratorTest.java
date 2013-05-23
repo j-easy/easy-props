@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -46,6 +47,13 @@ public class ConfiguratorTest {
     @Test
     public void testPropertyInjection() throws Exception {
         Assert.assertEquals("Foo", bean.getBeanName());
+    }
+
+    @Test
+    public void testPropertiesInjection() throws Exception {
+        Properties properties = new Properties();
+        properties.load(this.getClass().getClassLoader().getResourceAsStream("myProperties.properties"));
+        Assert.assertEquals(properties.getProperty("bean.name"), bean.getMyProperties().getProperty("bean.name"));
     }
 
     @After

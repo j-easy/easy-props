@@ -1,6 +1,7 @@
 package net.benas.adp4j.test;
 
 import net.benas.adp4j.annotations.I18NProperty;
+import net.benas.adp4j.annotations.Properties;
 import net.benas.adp4j.annotations.Property;
 import net.benas.adp4j.annotations.SystemProperty;
 
@@ -23,6 +24,9 @@ public class Bean {
     @I18NProperty(bundle = "i18n/messages", key = "my.message")
     private String message;
 
+    @Properties("myProperties.properties")
+    private java.util.Properties myProperties;
+
     public void setUserHome(String userHome) {
         this.userHome = userHome;
     }
@@ -39,6 +43,10 @@ public class Bean {
         this.message = message;
     }
 
+    public void setMyProperties(java.util.Properties myProperties) {
+        this.myProperties = myProperties;
+    }
+
     public String getUserHome() {
         return userHome;
     }
@@ -53,5 +61,9 @@ public class Bean {
 
     public String getMessage() {
         return message;
+    }
+
+    public java.util.Properties getMyProperties() {
+        return myProperties;
     }
 }
