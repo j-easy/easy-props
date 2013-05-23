@@ -94,7 +94,7 @@ ADP4J handles all this plumbing for you, which make your code cleaner, more read
 
 ## Built-in Annotations
 
-By default, ADP4J provides 3 annotations to load configuration properties from a variety of sources.
+By default, ADP4J provides 4 annotations to load configuration properties from a variety of sources.
 
 ### @SystemProperty
 
@@ -109,6 +109,20 @@ private String userHome;
 
 In this example, ADP4J will look for the system property `user.home` and set its value to the `userHome` field.
 If the specified property does not exist, ADP4J will log a message and silently leave the property unset.
+
+### @Properties
+
+This annotation can be declared on a field of type `java.util.Properties` and allows you to inject all properties of a properties file in that field.
+
+The annotation have a single attribute which value corresponds to the properties file name. Example:
+
+```java
+@Properties("myProperties.properties")
+private java.util.Properties myProperties;
+```
+
+In this example, ADP4J will populate the `myProperties` field with properties from the file `myProperties.properties`.
+If the specified properties file does not exist, ADP4J will log a message and silently leave the property unset.
 
 ### @Property
 
