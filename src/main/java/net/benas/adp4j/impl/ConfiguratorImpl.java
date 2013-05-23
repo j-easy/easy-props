@@ -26,10 +26,12 @@ package net.benas.adp4j.impl;
 
 import net.benas.adp4j.annotations.I18NProperty;
 import net.benas.adp4j.annotations.Property;
+import net.benas.adp4j.annotations.Properties;
 import net.benas.adp4j.annotations.SystemProperty;
 import net.benas.adp4j.api.AnnotationProcessor;
 import net.benas.adp4j.api.Configurator;
 import net.benas.adp4j.processors.I18NPropertyAnnotationProcessor;
+import net.benas.adp4j.processors.PropertiesAnnotationProcessor;
 import net.benas.adp4j.processors.PropertyAnnotationProcessor;
 import net.benas.adp4j.processors.SystemPropertyAnnotationProcessor;
 
@@ -54,6 +56,7 @@ public class ConfiguratorImpl implements Configurator {
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
         annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
+        annotationProcessors.put(Properties.class, new PropertiesAnnotationProcessor());
     }
 
     @Override
