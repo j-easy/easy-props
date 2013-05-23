@@ -15,59 +15,11 @@ The idea behind ADP4J is to implement the "Inversion Of Control" principle : Ins
 
 Let's see an example. Suppose you have a java object of type `Bean` which should be configured with:
 
- - An Integer property "threshold" from a system properties passed to the JVM
+ - An Integer property "threshold" from a system property passed to the JVM with -Dthreshold=100
 
  - A String property "bean.name" from a properties file named "myProperties.properties"
 
-To load these properties in your `Bean` object, you would write something like this :
-
-```java
-public class Bean {
-
-    private static final int DEFAULT_THRESHOLD = 100;
-
-    private static final String DEFAULT_BEAN_NAME = "FOO";
-
-    private static final String PROPERTIES_FILE = "myProperties.properties";
-
-    private int threshold;
-
-    private String beanName;
-
-    public Bean() {
-
-        //Load 'threshold' property from system properties
-        String thresholdProperty = System.getProperty("threshold");
-        try {
-            threshold = Integer.parseInt(thresholdProperty);
-        } catch (NumberFormatException e) {
-            Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to parse threshold value, using default: " + DEFAULT_THRESHOLD, ex);
-            threshold = DEFAULT_THRESHOLD;
-        }
-
-        //Load 'bean.name' property from properties file
-        Properties properties = new Properties();
-        try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-            if (inputStream != null) {
-                properties.load(inputStream);
-                beanName = properties.getProperty("bean.name");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unable to read properties file " + PROPERTIES_FILE, ex);
-            beanName = DEFAULT_BEAN_NAME;
-        }
-
-    }
-
-    //getters and setters omitted
-
-}
-```
-
-As you can see, a lot of plumbing code is written to load two properties, convert them to the right type, etc.
-
-With ADP4J, you annotate fields to declare needed configuration properties as follows:
+To load these properties in your `Bean` object using ADP4J, you annotate fields to declare needed configuration properties as follows:
 
 ```java
 public class Bean {
@@ -82,7 +34,7 @@ public class Bean {
 }
 ```
 
-and instructs the tool to configure your bean by injecting these configuration properties in the annotated fields :
+and instructs ADP4J to configure your bean by injecting these configuration properties in the annotated fields :
 
 ```java
 //Instantiate your object
@@ -98,7 +50,47 @@ configurator.configure(bean);
 That it! ADP4J will introspect the `Bean` type instance looking for fields annotated with `@Property` and `@SystemProperty`,
  convert each property value according to the field type and inject that value into the annotated field.
 
- This approach makes your code cleaner, more readable and lets you delegate all the plumbing code to ADP4J.
+Without ADP4J, you would write something like this :
+
+```java
+public class Bean {
+
+    private int threshold;
+
+    private String beanName;
+
+    public Bean() {
+
+        //Load 'threshold' property from system properties
+        String thresholdProperty = System.getProperty("threshold");
+        try {
+            threshold = Integer.parseInt(thresholdProperty);
+        } catch (NumberFormatException e) {
+            threshold = 100; //default threshold value;
+        }
+
+        //Load 'bean.name' property from properties file
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("myProperties.properties");
+            if (inputStream != null) {
+                properties.load(inputStream);
+                beanName = properties.getProperty("bean.name");
+            }
+        } catch (IOException ex) {
+            beanName = "FOO"; // default bean name value
+        }
+
+    }
+
+    //getters and setters omitted
+
+}
+```
+
+As you can see, a lot of plumbing code is written to load two properties, convert them to the right type, etc.
+
+ADP4J handles all this plumbing for you, which make your code cleaner, more readable and maintainable.
 
 ## Built-in Annotations
 
