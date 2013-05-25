@@ -81,7 +81,7 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
                     try {
                         PropertyUtils.setProperty(object, field.getName(), typedValue);
                     } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Unable to set system property " + key + " on field "
+                        logger.log(Level.SEVERE, "Unable to set property " + key + " on field "
                                 + field.getName() + " of type " + object.getClass(), e);
                     }
                 } else {
