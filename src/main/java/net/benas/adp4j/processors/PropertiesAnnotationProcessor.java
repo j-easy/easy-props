@@ -34,8 +34,6 @@ import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An annotation processor that loads all properties from a properties file.
@@ -44,56 +42,49 @@ import java.util.logging.Logger;
  */
 public class PropertiesAnnotationProcessor implements AnnotationProcessor<Properties> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-
     /**
      * A map holding source file name and Properties object serving as a cache.
      */
     private Map<String, java.util.Properties> propertiesMap = new HashMap<String, java.util.Properties>();
 
     @Override
-    public void processAnnotation(Properties propertiesAnnotation, Field field, Object object) {
+    public void processAnnotation(Properties propertiesAnnotation, Field field, Object object) throws Exception {
 
         if (!field.getType().equals(java.util.Properties.class)) {
-            logger.log(Level.WARNING, "@Properties declared on field " + field.getName() + " of type " +
-                    object.getClass() + " is incompatible with type " + field.getType() );
-            return;
+            throw new Exception("@Properties declared on field " + field.getName() + " of type " +
+                    object.getClass() + " is incompatible with type " + field.getType());
         }
 
         String source = propertiesAnnotation.value().trim();
 
-        if (source != null && !source.isEmpty()) {
-
-            //check if the source file is not already loaded
-            if (!propertiesMap.containsKey(source)) {
-                java.util.Properties properties = new java.util.Properties();
-                try {
-                    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
-                    if (inputStream != null) {
-                        properties.load(inputStream);
-                        propertiesMap.put(source, properties);
-                    } else {
-                        logger.log(Level.WARNING, warnMissingSourceFile(field, object, source));
-                    }
-                } catch (IOException ex) {
-                    logger.log(Level.WARNING, warnMissingSourceFile(field, object, source), ex);
-                }
-            }
-
-            if (propertiesMap.get(source) != null) {
-                java.util.Properties properties = propertiesMap.get(source);
-                try {
-                    PropertyUtils.setProperty(object, field.getName(), properties);
-                } catch (Exception e) {
-                    logger.log(Level.SEVERE, "Unable to set Properties on field "
-                            + field.getName() + " of type " + object.getClass(), e);
-                }
-            } else {
-                logger.log(Level.WARNING, "No properties loaded from source " + source);
-            }
-        } else {
-            logger.log(Level.WARNING, "No value specified for @Properties on field " +
+        if (source.isEmpty()) {
+            throw new Exception("No value specified for source attribute of @Properties annotation on field " +
                     field.getName() + " of type " + object.getClass().getName());
+        }
+
+
+        //check if the source file is not already loaded
+        if (!propertiesMap.containsKey(source)) {
+            java.util.Properties properties = new java.util.Properties();
+            try {
+                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
+                if (inputStream != null) {
+                    properties.load(inputStream);
+                    propertiesMap.put(source, properties);
+                } else {
+                    throw new Exception(warnMissingSourceFile(field, object, source));
+                }
+            } catch (IOException ex) {
+                throw new Exception(warnMissingSourceFile(field, object, source), ex);
+            }
+        }
+
+        java.util.Properties properties = propertiesMap.get(source);
+        try {
+            PropertyUtils.setProperty(object, field.getName(), properties);
+        } catch (Exception e) {
+            throw new Exception("Unable to set properties on field "
+                    + field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
         }
 
     }
