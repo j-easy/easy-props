@@ -34,21 +34,21 @@ public class Bean {
 }
 ```
 
-and instructs ADP4J to configure your bean by injecting these configuration properties in the annotated fields :
+and instructs ADP4J to inject these configuration properties in the annotated fields :
 
 ```java
 //Instantiate your object
 Bean bean = new Bean();
 
-//Instantiate ADP4J configurator
-Configurator configurator = new ConfiguratorBuilder().build();
+//Instantiate ADP4J properties injector
+PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
 
-//Configure your object
-configurator.configure(bean);
+//Inject properties in your object
+propertiesInjector.injectProperties(bean);
 ```
 
 That it! ADP4J will introspect the `Bean` type instance looking for fields annotated with `@Property` and `@SystemProperty`,
- convert each property value according to the field type and inject that value into the annotated field.
+ convert each property value to the field type and inject that value into the annotated field.
 
 Without ADP4J, you would write something like this :
 
@@ -90,7 +90,7 @@ public class Bean {
 
 As you can see, a lot of plumbing code is written to load two properties, convert them to the right type, etc.
 
-ADP4J handles all this plumbing for you, which make your code cleaner, more readable and maintainable.
+ADP4J handles all this plumbing for you, which makes your code cleaner, more readable and maintainable.
 
 ## Built-in Annotations
 
@@ -210,11 +210,11 @@ You can see some examples of how the built-in annotations are processed in the `
 
 ### 3. Register the annotation processor within ADP4J
 
-To register your custom annotation processor within ADP4J, you can use the `ConfiguratorBuilder` API as follows:
+To register your custom annotation processor within ADP4J, you can use the `PropertiesInjectorBuilder` API as follows:
 
  ```java
- //Instantiate ADP4J configurator and register custom annotation processor
- Configurator configurator = new ConfiguratorBuilder()
+ //Instantiate ADP4J properties injector and register custom annotation processor
+ PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder()
                              .registerAnnotationProcessor(MyAnnotation.class, new myAnnotationProcessor())
                              .build();
  ```
