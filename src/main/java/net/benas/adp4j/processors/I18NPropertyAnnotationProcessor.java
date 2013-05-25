@@ -48,11 +48,11 @@ public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18N
     @Override
     public void processAnnotation(I18NProperty property, Field field, Object object) {
 
-        String key = property.key();
-        String bundle = property.bundle();
-        String language = property.language();
-        String country = property.country();
-        String variant = property.variant();
+        String key = property.key().trim();
+        String bundle = property.bundle().trim();
+        String language = property.language().trim();
+        String country = property.country().trim();
+        String variant = property.variant().trim();
 
         Locale locale = Locale.getDefault();
         if (language != null && !language.isEmpty()) {

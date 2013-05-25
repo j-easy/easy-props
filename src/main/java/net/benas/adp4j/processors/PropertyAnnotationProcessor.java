@@ -53,7 +53,7 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
     @Override
     public void processAnnotation(Property property, Field field, Object object) {
 
-        String source = property.source();
+        String source = property.source().trim();
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
@@ -72,7 +72,7 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
         }
 
         //get key, convert it to the right type and set it to the field
-        String key = property.key();
+        String key = property.key().trim();
         if (key != null && !key.isEmpty()) {
             if (propertiesMap.get(source) != null) {
                 String value = propertiesMap.get(source).getProperty(key);

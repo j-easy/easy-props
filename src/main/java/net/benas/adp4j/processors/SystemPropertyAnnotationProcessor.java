@@ -45,7 +45,7 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
     @Override
     public void processAnnotation(SystemProperty systemProperty, Field field, Object object) {
 
-        String key = systemProperty.value();
+        String key = systemProperty.value().trim();
 
         if (key != null && !key.isEmpty()) {
             String value = System.getProperty(key);

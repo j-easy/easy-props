@@ -60,7 +60,7 @@ public class PropertiesAnnotationProcessor implements AnnotationProcessor<Proper
             return;
         }
 
-        String source = propertiesAnnotation.value();
+        String source = propertiesAnnotation.value().trim();
 
         if (source != null && !source.isEmpty()) {
 
