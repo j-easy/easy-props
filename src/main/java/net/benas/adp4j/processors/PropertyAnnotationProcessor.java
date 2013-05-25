@@ -36,8 +36,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An annotation processor that loads properties from properties files.
@@ -46,14 +44,23 @@ import java.util.logging.Logger;
  */
 public class PropertyAnnotationProcessor implements AnnotationProcessor<Property> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-
     private Map<String, Properties> propertiesMap = new HashMap<String, Properties>();
 
     @Override
-    public void processAnnotation(Property property, Field field, Object object) {
+    public void processAnnotation(Property property, Field field, Object object) throws Exception {
 
         String source = property.source().trim();
+        String key = property.key().trim();
+
+        //check source attribute value
+        if (source.isEmpty()) {
+            throw new Exception(missingAttributeValue("source", field, object));
+        }
+
+        //check key attribute value
+        if (key.isEmpty()) {
+            throw new Exception(missingAttributeValue("key", field, object));
+        }
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
@@ -64,40 +71,35 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
                     properties.load(inputStream);
                     propertiesMap.put(source, properties);
                 } else {
-                    logger.log(Level.WARNING, warnMissingSourceFile(field, object, source));
+                    throw new Exception(missingSourceFile(source, field, object));
                 }
             } catch (IOException ex) {
-                logger.log(Level.WARNING, warnMissingSourceFile(field, object, source), ex);
+                throw new Exception(missingSourceFile(source, field, object), ex);
             }
         }
 
-        //get key, convert it to the right type and set it to the field
-        String key = property.key().trim();
-        if (key != null && !key.isEmpty()) {
-            if (propertiesMap.get(source) != null) {
-                String value = propertiesMap.get(source).getProperty(key);
-                if (value != null && !value.isEmpty()) {
-                    Object typedValue = ConvertUtils.convert(value, field.getType());
-                    try {
-                        PropertyUtils.setProperty(object, field.getName(), typedValue);
-                    } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Unable to set property " + key + " on field "
-                                + field.getName() + " of type " + object.getClass(), e);
-                    }
-                } else {
-                    logger.log(Level.WARNING, "Key " + key + " not found in source " + source);
-                }
-            } else {
-                logger.log(Level.WARNING, "No properties loaded from source " + source);
+        //convert key value to the right type and set it to the field
+        String value = propertiesMap.get(source).getProperty(key);
+        if (value != null && !value.isEmpty()) {
+            Object typedValue = ConvertUtils.convert(value, field.getType());
+            try {
+                PropertyUtils.setProperty(object, field.getName(), typedValue);
+            } catch (Exception e) {
+                throw new Exception("Unable to set property " + key + " on field " + field.getName() + " of type " +
+                        object.getClass() + ". A setter may be missing for this field.", e);
             }
         } else {
-            logger.log(Level.WARNING, "No value specified for attribute 'key' of @Property on field " +
-                    field.getName() + " of type " + object.getClass().getName());
+            throw new Exception("Key " + key + " not found or empty in source " + source);
         }
 
     }
 
-    private String warnMissingSourceFile(Field field, Object object, String source) {
+    private String missingAttributeValue(String attribute, Field field, Object object) {
+        return MessageFormat.format("No value specified for attribute {0} of @Property annotation on field {1} of type {2}",
+                attribute, field.getName(), object.getClass().getName());
+    }
+
+    private String missingSourceFile(String source, Field field, Object object) {
         return MessageFormat.format("Unable to load properties from source {0} for field {1} of type {2}",
                 source, field.getName(), object.getClass().getName());
     }
