@@ -43,15 +43,14 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
     private Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
-    public void processAnnotation(SystemProperty systemProperty, Field field, Object object) {
+    public void processAnnotation(SystemProperty systemProperty, Field field, Object object) throws Exception {
 
         String key = systemProperty.value().trim();
 
         //check key value
         if (key.isEmpty()) {
-            logger.log(Level.WARNING, "No value specified for @SystemProperty on field " +
+            throw new Exception("No value specified for @SystemProperty on field " +
                     field.getName() + " of type " + object.getClass().getName());
-            return;
         }
 
         //check system property
@@ -66,9 +65,8 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                logger.log(Level.WARNING, "No default value specified for @SystemProperty " + key + " on field "
-                        + field.getName() + " of type " + object.getClass());
-                return;
+                throw new Exception("No default value specified for @SystemProperty on field " + field.getName() +
+                        " of type " + object.getClass());
             }
         }
 
@@ -77,8 +75,8 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
         try {
             PropertyUtils.setProperty(object, field.getName(), typedValue);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Unable to set system property " + key + " on field " +
-                    field.getName() + " of type " + object.getClass(), e);
+            throw new Exception("Unable to set system property " + key + " on field " +
+                    field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
         }
 
     }
