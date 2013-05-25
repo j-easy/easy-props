@@ -130,7 +130,6 @@ private java.util.Properties myProperties;
 ```
 
 In this example, ADP4J will populate the `myProperties` field with properties from the file `myProperties.properties`.
-If the specified properties file does not exist, ADP4J will log a message and silently leave the property unset.
 
 ### @Property
 
@@ -153,7 +152,6 @@ private String beanName;
 ```
 
 In this example, ADP4J will look for the property `bean.name` in the `myProperties.properties` properties file in the classpath and set its value to the `userHome` field.
-If the specified property does not exist, ADP4J will log a message and silently leave the property unset.
 
 ### @I18NProperty
 
@@ -179,9 +177,8 @@ private String message;
 ```
 
 In this example, ADP4J will look for the property `my.message` in the resource bundle `i18n/messages.properties` in the classpath and set its value to the `message` field.
-If the specified property does not exist, ADP4J will log a message and silently leave the property unset.
 
-Note that this annotation is not suited to applications in which the Locale can change during the application lifetime. This is because java annotation attributes can only have constant values.
+Note that this annotation is not suited to applications where the locale may change during the application lifetime. This is because java annotation attributes can only have constant values.
 
 ## Custom Annotations
 
@@ -201,17 +198,19 @@ The `AnnotationProcessor` interface allows you to specify how to process your an
 The following is the definition of this interface:
 
  ```java
- public interface AnnotationProcessor<T extends Annotation> {
+public interface AnnotationProcessor<T extends Annotation> {
 
-     /**
-      * Process an annotation of type T to be introspected by ADP4J.
-      * @param annotation the annotation to process.
-      * @param field the field annotated with the annotation.
-      * @param object the object being configured.
-      */
-     void processAnnotation(T annotation,Field field, Object object);
+    /**
+     * Process an annotation of type T to be introspected by ADP4J.
+     *
+     * @param annotation the annotation to process.
+     * @param field the field annotated with the annotation.
+     * @param object the object being configured.
+     * @throws Exception thrown if an exception occurs during annotation processing
+     */
+    void processAnnotation(T annotation, Field field, Object object) throws Exception;
 
- }
+}
  ```
 
 You can see some examples of how the built-in annotations are processed in the `net.benas.adp4j.processors` [package][processorsPackage].
