@@ -29,7 +29,7 @@ import net.benas.adp4j.annotations.Property;
 import net.benas.adp4j.annotations.Properties;
 import net.benas.adp4j.annotations.SystemProperty;
 import net.benas.adp4j.api.AnnotationProcessor;
-import net.benas.adp4j.api.Configurator;
+import net.benas.adp4j.api.PropertiesInjector;
 import net.benas.adp4j.processors.I18NPropertyAnnotationProcessor;
 import net.benas.adp4j.processors.PropertiesAnnotationProcessor;
 import net.benas.adp4j.processors.PropertyAnnotationProcessor;
@@ -40,18 +40,18 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * The core implementation of the {@link Configurator} interface.
+ * The core implementation of the {@link net.benas.adp4j.api.PropertiesInjector} interface.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ConfiguratorImpl implements Configurator {
+public class PropertiesInjectorImpl implements PropertiesInjector {
 
     /**
      * A map holding registered annotations with their processors.
      */
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
-    public ConfiguratorImpl() {
+    public PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<Class<? extends Annotation>, AnnotationProcessor>();
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
@@ -60,7 +60,7 @@ public class ConfiguratorImpl implements Configurator {
     }
 
     @Override
-    public void configure(Object object) {
+    public void injectProperties(Object object) {
 
         /*
          * Retrieve declared fields

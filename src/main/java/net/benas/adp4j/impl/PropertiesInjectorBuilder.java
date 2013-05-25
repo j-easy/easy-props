@@ -25,21 +25,24 @@
 package net.benas.adp4j.impl;
 
 import net.benas.adp4j.api.AnnotationProcessor;
-import net.benas.adp4j.api.Configurator;
+import net.benas.adp4j.api.PropertiesInjector;
 
 import java.lang.annotation.Annotation;
 
 /**
- * A builder to create {@link Configurator} instances.
+ * A builder to create {@link net.benas.adp4j.api.PropertiesInjector} instances.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ConfiguratorBuilder {
+public class PropertiesInjectorBuilder {
 
-    private ConfiguratorImpl configurator;
+    /**
+     * The properties injector to build.
+     */
+    private PropertiesInjectorImpl propertiesInjector;
 
-    public ConfiguratorBuilder() {
-        configurator = new ConfiguratorImpl();
+    public PropertiesInjectorBuilder() {
+        propertiesInjector = new PropertiesInjectorImpl();
     }
 
     /**
@@ -47,13 +50,17 @@ public class ConfiguratorBuilder {
      * @param annotation the annotation type to be processed
      * @param annotationProcessor the annotation processor to register
      */
-    public ConfiguratorBuilder registerAnnotationProcessor(Class<? extends Annotation> annotation, AnnotationProcessor annotationProcessor) {
-        configurator.registerAnnotationProcessor(annotation, annotationProcessor);
+    public PropertiesInjectorBuilder registerAnnotationProcessor(Class<? extends Annotation> annotation, AnnotationProcessor annotationProcessor) {
+        propertiesInjector.registerAnnotationProcessor(annotation, annotationProcessor);
         return this;
     }
 
-    public Configurator build() {
-        return configurator;
+    /**
+     * Build a {@link PropertiesInjector} instance.
+     * @return a {@link PropertiesInjector} instance
+     */
+    public PropertiesInjector build() {
+        return propertiesInjector;
     }
 
 }

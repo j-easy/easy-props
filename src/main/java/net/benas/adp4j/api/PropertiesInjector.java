@@ -25,17 +25,17 @@
 package net.benas.adp4j.api;
 
 /**
- * Interface for java settings/properties configurator.
+ * Interface for java properties injector.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public interface Configurator {
+public interface PropertiesInjector {
 
     /**
-     * Configure an object by injecting setting into annotated fields.
+     * Inject properties in annotated fields of the given object.
      *
-     * @param object the object to configure
+     * @param object the object in which to inject properties.
      */
-    public void configure(Object object);
+    public void injectProperties(Object object);
 
 }

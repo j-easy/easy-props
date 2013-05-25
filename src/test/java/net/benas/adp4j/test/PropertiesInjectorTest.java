@@ -1,7 +1,7 @@
 package net.benas.adp4j.test;
 
-import net.benas.adp4j.api.Configurator;
-import net.benas.adp4j.impl.ConfiguratorBuilder;
+import net.benas.adp4j.api.PropertiesInjector;
+import net.benas.adp4j.impl.PropertiesInjectorBuilder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,22 +11,22 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * Test class for ADP4J {@link Configurator} implementation.
+ * Test class for ADP4J {@link net.benas.adp4j.api.PropertiesInjector} implementation.
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class ConfiguratorTest {
+public class PropertiesInjectorTest {
 
-    private Configurator configurator;
+    private PropertiesInjector propertiesInjector;
 
     private Bean bean;
 
     @Before
     public void setUp() throws Exception {
         System.setProperty("threshold", "30");
-        configurator = new ConfiguratorBuilder().build();
+        propertiesInjector = new PropertiesInjectorBuilder().build();
         bean = new Bean();
-        configurator.configure(bean);
+        propertiesInjector.injectProperties(bean);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ConfiguratorTest {
 
     @After
     public void tearDown() throws Exception {
-        configurator = null;
+        propertiesInjector = null;
         bean = null;
     }
 
