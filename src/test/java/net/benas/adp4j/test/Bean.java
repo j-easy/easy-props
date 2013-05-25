@@ -15,6 +15,9 @@ public class Bean {
     @SystemProperty("user.home")
     private String userHome;
 
+    @SystemProperty(value = "blah", defaultValue = "default")
+    private String value;
+
     @SystemProperty("threshold")
     private int threshold;
 
@@ -45,6 +48,14 @@ public class Bean {
 
     public void setMyProperties(java.util.Properties myProperties) {
         this.myProperties = myProperties;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getUserHome() {

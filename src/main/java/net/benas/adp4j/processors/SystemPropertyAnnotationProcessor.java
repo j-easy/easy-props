@@ -60,7 +60,16 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
             logger.log(Level.WARNING, "System property " + key + " on field " + field.getName() +
                     " of type " + object.getClass() + " not found in system properties: "
                     + System.getProperties());
-            return;
+
+            //Use default value if specified
+            String defaultValue = systemProperty.defaultValue();
+            if (defaultValue != null && !defaultValue.isEmpty()) {
+                value = defaultValue.trim();
+            } else {
+                logger.log(Level.WARNING, "No default value specified for @SystemProperty " + key + " on field "
+                        + field.getName() + " of type " + object.getClass());
+                return;
+            }
         }
 
         //convert the value to field type and set it to the object field

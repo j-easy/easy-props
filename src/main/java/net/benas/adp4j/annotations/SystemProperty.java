@@ -44,4 +44,10 @@ public @interface SystemProperty {
      */
     public String value();
 
+    /**
+     * The default value to set in case the system property does not exist or cannot be loaded.
+     * @return the default value to set
+     */
+    public String defaultValue() default "";
+
 }

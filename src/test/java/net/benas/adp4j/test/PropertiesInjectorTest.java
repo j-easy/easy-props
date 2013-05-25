@@ -35,6 +35,11 @@ public class PropertiesInjectorTest {
     }
 
     @Test
+    public void testSystemPropertyDefaultValueInjection() throws Exception {
+        Assert.assertEquals("default", bean.getValue()); //test default value injection
+    }
+
+    @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
         Assert.assertEquals(30, bean.getThreshold()); //test type conversion
     }
