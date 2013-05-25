@@ -47,24 +47,29 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
 
         String key = systemProperty.value().trim();
 
-        if (key != null && !key.isEmpty()) {
-            String value = System.getProperty(key);
-            if (value != null && !value.isEmpty()) {
-                Object typedValue = ConvertUtils.convert(value, field.getType());
-                try {
-                    PropertyUtils.setProperty(object, field.getName(), typedValue);
-                } catch (Exception e) {
-                    logger.log(Level.SEVERE, "Unable to set system property " + key + " on field " +
-                            field.getName() + " of type " + object.getClass(), e);
-                }
-            } else {
-                logger.log(Level.WARNING, "System property " + key + " on field " + field.getName() +
-                        " of type " + object.getClass() + " not found in system properties: "
-                        + System.getProperties());
-            }
-        } else {
+        //check key value
+        if (key.isEmpty()) {
             logger.log(Level.WARNING, "No value specified for @SystemProperty on field " +
                     field.getName() + " of type " + object.getClass().getName());
+            return;
+        }
+
+        //check system property
+        String value = System.getProperty(key);
+        if (value == null) {
+            logger.log(Level.WARNING, "System property " + key + " on field " + field.getName() +
+                    " of type " + object.getClass() + " not found in system properties: "
+                    + System.getProperties());
+            return;
+        }
+
+        //convert the value to field type and set it to the object field
+        Object typedValue = ConvertUtils.convert(value, field.getType());
+        try {
+            PropertyUtils.setProperty(object, field.getName(), typedValue);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Unable to set system property " + key + " on field " +
+                    field.getName() + " of type " + object.getClass(), e);
         }
 
     }
