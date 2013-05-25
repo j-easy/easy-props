@@ -26,12 +26,10 @@ package net.benas.adp4j.processors;
 
 import net.benas.adp4j.annotations.Properties;
 import net.benas.adp4j.api.AnnotationProcessor;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +38,7 @@ import java.util.Map;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class PropertiesAnnotationProcessor implements AnnotationProcessor<Properties> {
+public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<Properties> {
 
     /**
      * A map holding source file name and Properties object serving as a cache.
@@ -58,8 +56,7 @@ public class PropertiesAnnotationProcessor implements AnnotationProcessor<Proper
         String source = propertiesAnnotation.value().trim();
 
         if (source.isEmpty()) {
-            throw new Exception("No value specified for source attribute of @Properties annotation on field " +
-                    field.getName() + " of type " + object.getClass().getName());
+            throw new Exception(missingAttributeValue("source", "@Properties", field, object));
         }
 
 
@@ -72,26 +69,15 @@ public class PropertiesAnnotationProcessor implements AnnotationProcessor<Proper
                     properties.load(inputStream);
                     propertiesMap.put(source, properties);
                 } else {
-                    throw new Exception(warnMissingSourceFile(field, object, source));
+                    throw new Exception(missingSourceFile(source, field, object));
                 }
             } catch (IOException ex) {
-                throw new Exception(warnMissingSourceFile(field, object, source), ex);
+                throw new Exception(missingSourceFile(source, field, object), ex);
             }
         }
 
-        java.util.Properties properties = propertiesMap.get(source);
-        try {
-            PropertyUtils.setProperty(object, field.getName(), properties);
-        } catch (Exception e) {
-            throw new Exception("Unable to set properties on field "
-                    + field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
-        }
+        injectProperty(object, field, source, propertiesMap.get(source));
 
-    }
-
-    private String warnMissingSourceFile(Field field, Object object, String source) {
-        return MessageFormat.format("Unable to load properties from source {0} for field {1} of type {2}",
-                source, field.getName(), object.getClass().getName());
     }
 
 }

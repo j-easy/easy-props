@@ -26,13 +26,10 @@ package net.benas.adp4j.processors;
 
 import net.benas.adp4j.annotations.Property;
 import net.benas.adp4j.api.AnnotationProcessor;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -42,7 +39,7 @@ import java.util.Properties;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class PropertyAnnotationProcessor implements AnnotationProcessor<Property> {
+public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<Property> {
 
     /**
      * A map holding source file name and Properties object serving as a cache.
@@ -57,12 +54,12 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
 
         //check source attribute value
         if (source.isEmpty()) {
-            throw new Exception(missingAttributeValue("source", field, object));
+            throw new Exception(missingAttributeValue("source", "@Property", field, object));
         }
 
         //check key attribute value
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("key", field, object));
+            throw new Exception(missingAttributeValue("key", "@Property", field, object));
         }
 
         //check if the source file is not already loaded
@@ -84,26 +81,11 @@ public class PropertyAnnotationProcessor implements AnnotationProcessor<Property
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
         if (value != null && !value.isEmpty()) {
-            Object typedValue = ConvertUtils.convert(value, field.getType());
-            try {
-                PropertyUtils.setProperty(object, field.getName(), typedValue);
-            } catch (Exception e) {
-                throw new Exception("Unable to set property " + key + " on field " + field.getName() + " of type " +
-                        object.getClass() + ". A setter may be missing for this field.", e);
-            }
+            injectProperty(object, field, key, value);
         } else {
             throw new Exception("Key " + key + " not found or empty in source " + source);
         }
 
     }
 
-    private String missingAttributeValue(String attribute, Field field, Object object) {
-        return MessageFormat.format("No value specified for attribute {0} of @Property annotation on field {1} of type {2}",
-                attribute, field.getName(), object.getClass().getName());
-    }
-
-    private String missingSourceFile(String source, Field field, Object object) {
-        return MessageFormat.format("Unable to load properties from source {0} for field {1} of type {2}",
-                source, field.getName(), object.getClass().getName());
-    }
 }

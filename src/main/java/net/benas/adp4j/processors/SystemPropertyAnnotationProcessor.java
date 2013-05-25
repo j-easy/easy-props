@@ -26,8 +26,6 @@ package net.benas.adp4j.processors;
 
 import net.benas.adp4j.annotations.SystemProperty;
 import net.benas.adp4j.api.AnnotationProcessor;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
 import java.util.logging.Level;
@@ -38,7 +36,7 @@ import java.util.logging.Logger;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<SystemProperty> {
+public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<SystemProperty> {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -49,8 +47,7 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
 
         //check key value
         if (key.isEmpty()) {
-            throw new Exception("No value specified for @SystemProperty on field " +
-                    field.getName() + " of type " + object.getClass().getName());
+            throw new Exception(missingAttributeValue("value", "@SystemProperty", field, object));
         }
 
         //check system property
@@ -65,19 +62,11 @@ public class SystemPropertyAnnotationProcessor implements AnnotationProcessor<Sy
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                throw new Exception("No default value specified for @SystemProperty on field " + field.getName() +
-                        " of type " + object.getClass());
+                throw new Exception(missingAttributeValue("defaultValue", "@SystemProperty", field, object));
             }
         }
 
-        //convert the value to field type and set it to the object field
-        Object typedValue = ConvertUtils.convert(value, field.getType());
-        try {
-            PropertyUtils.setProperty(object, field.getName(), typedValue);
-        } catch (Exception e) {
-            throw new Exception("Unable to set system property " + key + " on field " +
-                    field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
-        }
+        injectProperty(object, field, key, value);
 
     }
 }

@@ -26,11 +26,8 @@ package net.benas.adp4j.processors;
 
 import net.benas.adp4j.annotations.I18NProperty;
 import net.benas.adp4j.api.AnnotationProcessor;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
-import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -38,7 +35,7 @@ import java.util.*;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18NProperty> {
+public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<I18NProperty> {
 
     /**
      * A map holding bundle file name and resource bundle object serving as a cache.
@@ -56,12 +53,12 @@ public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18N
 
         //check bundle attribute value
         if (bundle.isEmpty()) {
-            throw new Exception(missingAttributeValue("bundle", field, object));
+            throw new Exception(missingAttributeValue("bundle", "I18NProperty", field, object));
         }
 
         //check key attribute value
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("key", field, object));
+            throw new Exception(missingAttributeValue("key", "I18NProperty", field, object));
         }
 
         Locale locale = Locale.getDefault();
@@ -89,23 +86,11 @@ public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18N
         //get key value, convert it to the right type and set it to the field
         String value = resourceBundlesMap.get(bundle).getString(key);
         if (value != null && !value.isEmpty()) {
-            Object typedValue = ConvertUtils.convert(value, field.getType());
-            try {
-                PropertyUtils.setProperty(object, field.getName(), typedValue);
-            } catch (Exception e) {
-                throw new Exception("Unable to set i18n property " + key + " on field " +
-                        field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
-            }
+            injectProperty(object, field, key, value);
         } else {
             throw new Exception("Key " + key + " not found or empty in resource bundle " + bundle);
         }
 
-    }
-
-
-    private String missingAttributeValue(String attribute, Field field, Object object) {
-        return MessageFormat.format("No value specified for attribute {0} of @I18NProperty annotation on field {1} of type {2}",
-                attribute, field.getName(), object.getClass().getName());
     }
 
 }
