@@ -44,6 +44,9 @@ import java.util.Properties;
  */
 public class PropertyAnnotationProcessor implements AnnotationProcessor<Property> {
 
+    /**
+     * A map holding source file name and Properties object serving as a cache.
+     */
     private Map<String, Properties> propertiesMap = new HashMap<String, Properties>();
 
     @Override
