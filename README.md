@@ -24,7 +24,7 @@ To load these properties in your `Bean` object using ADP4J, you annotate fields 
 ```java
 public class Bean {
 
-    @SystemProperty("threshold")
+    @SystemProperty(value = "threshold", defaultValue = "50")
     private int threshold;
 
     @Property(source = "myProperties.properties", key = "bean.name")
@@ -66,7 +66,8 @@ public class Bean {
         try {
             threshold = Integer.parseInt(thresholdProperty);
         } catch (NumberFormatException e) {
-            threshold = 100; //default threshold value;
+            // log exception
+            threshold = 50; //default threshold value;
         }
 
         //Load 'bean.name' property from properties file
@@ -78,6 +79,7 @@ public class Bean {
                 beanName = properties.getProperty("bean.name");
             }
         } catch (IOException ex) {
+            // log exception
             beanName = "FOO"; // default bean name value
         }
 
@@ -100,7 +102,14 @@ By default, ADP4J provides 4 annotations to load configuration properties from a
 
 This annotation allows you to inject a property from the system properties passed to your java program at JVM startup using the -D prefix.
 
-The @SystemProperty annotation can be declared on a field and have a single attribute which value corresponds to the system property you would like to inject into that field. Example:
+The @SystemProperty annotation can be declared on a field and have the following attributes :
+
+| Attribute    | Type    | Required | Description                                                         |
+|:-------------|:-------:|:--------:|---------------------------------------------------------------------|
+| value        | String  | yes      | The system property to inject in the annotated field.               |
+| defaultValue | String  | no       | The default value to set in case the system property does not exist |
+
+Example:
 
 ```java
 @SystemProperty("user.home")
@@ -108,7 +117,6 @@ private String userHome;
 ```
 
 In this example, ADP4J will look for the system property `user.home` and set its value to the `userHome` field.
-If the specified property does not exist, ADP4J will log a message and silently leave the property unset.
 
 ### @Properties
 
