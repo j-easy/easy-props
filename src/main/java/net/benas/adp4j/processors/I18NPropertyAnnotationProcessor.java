@@ -30,9 +30,8 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
+import java.text.MessageFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An annotation processor that loads properties from I18N resource bundles.
@@ -41,18 +40,29 @@ import java.util.logging.Logger;
  */
 public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18NProperty> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-
+    /**
+     * A map holding bundle file name and resource bundle object serving as a cache.
+     */
     private Map<String, ResourceBundle> resourceBundlesMap = new HashMap<String, ResourceBundle>();
 
     @Override
-    public void processAnnotation(I18NProperty property, Field field, Object object) {
+    public void processAnnotation(I18NProperty property, Field field, Object object) throws Exception {
 
         String key = property.key().trim();
         String bundle = property.bundle().trim();
         String language = property.language().trim();
         String country = property.country().trim();
         String variant = property.variant().trim();
+
+        //check bundle attribute value
+        if (bundle.isEmpty()) {
+            throw new Exception(missingAttributeValue("bundle", field, object));
+        }
+
+        //check key attribute value
+        if (key.isEmpty()) {
+            throw new Exception(missingAttributeValue("key", field, object));
+        }
 
         Locale locale = Locale.getDefault();
         if (language != null && !language.isEmpty()) {
@@ -66,40 +76,36 @@ public class I18NPropertyAnnotationProcessor implements AnnotationProcessor<I18N
             locale = new Locale(language, country, variant);
         }
 
-        try {
-
-            //check if the resource bundle is not already loaded
-            if (!resourceBundlesMap.containsKey(bundle)) {
+        //check if the resource bundle is not already loaded
+        if (!resourceBundlesMap.containsKey(bundle)) {
+            try{
                 ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
                 resourceBundlesMap.put(bundle, resourceBundle);
+            } catch (MissingResourceException e) {
+                throw new Exception("Resource bundle " + bundle + " not found", e);
             }
-
-            //get key, convert it to the right type and set it to the field
-            if (key != null && !key.isEmpty()) {
-                if (resourceBundlesMap.get(bundle) != null) {
-                    String value = resourceBundlesMap.get(bundle).getString(key);
-                    if (value != null && !value.isEmpty()) {
-                        Object typedValue = ConvertUtils.convert(value, field.getType());
-                        try {
-                            PropertyUtils.setProperty(object, field.getName(), typedValue);
-                        } catch (Exception e) {
-                            logger.log(Level.SEVERE, "Unable to set i18n property " + key + " on field " +
-                                    field.getName() + " of type " + object.getClass(), e);
-                        }
-                    } else {
-                        logger.log(Level.WARNING, "Key " + key + " not found in resource bundle " + bundle);
-                    }
-                } else {
-                    logger.log(Level.WARNING, "No properties loaded from resource bundle " + bundle);
-                }
-            } else {
-                logger.log(Level.WARNING, "No value specified for attribute 'key' of @I18NProperty on field " +
-                        field.getName() + " of type " + object.getClass().getName());
-            }
-        } catch (MissingResourceException e) {
-            logger.log(Level.SEVERE, "Resource bundle " + bundle + " not found", e);
         }
 
+        //get key value, convert it to the right type and set it to the field
+        String value = resourceBundlesMap.get(bundle).getString(key);
+        if (value != null && !value.isEmpty()) {
+            Object typedValue = ConvertUtils.convert(value, field.getType());
+            try {
+                PropertyUtils.setProperty(object, field.getName(), typedValue);
+            } catch (Exception e) {
+                throw new Exception("Unable to set i18n property " + key + " on field " +
+                        field.getName() + " of type " + object.getClass() + ". A setter may be missing for this field.", e);
+            }
+        } else {
+            throw new Exception("Key " + key + " not found or empty in resource bundle " + bundle);
+        }
+
+    }
+
+
+    private String missingAttributeValue(String attribute, Field field, Object object) {
+        return MessageFormat.format("No value specified for attribute {0} of @I18NProperty annotation on field {1} of type {2}",
+                attribute, field.getName(), object.getClass().getName());
     }
 
 }
