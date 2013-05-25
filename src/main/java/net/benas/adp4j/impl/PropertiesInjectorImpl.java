@@ -60,7 +60,7 @@ public class PropertiesInjectorImpl implements PropertiesInjector {
     }
 
     @Override
-    public void injectProperties(Object object) {
+    public void injectProperties(Object object) throws Exception {
 
         /*
          * Retrieve declared fields
