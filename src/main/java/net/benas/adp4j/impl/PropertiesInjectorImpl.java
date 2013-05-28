@@ -24,16 +24,11 @@
 
 package net.benas.adp4j.impl;
 
-import net.benas.adp4j.annotations.I18NProperty;
-import net.benas.adp4j.annotations.Property;
+import net.benas.adp4j.annotations.*;
 import net.benas.adp4j.annotations.Properties;
-import net.benas.adp4j.annotations.SystemProperty;
 import net.benas.adp4j.api.AnnotationProcessor;
 import net.benas.adp4j.api.PropertiesInjector;
-import net.benas.adp4j.processors.I18NPropertyAnnotationProcessor;
-import net.benas.adp4j.processors.PropertiesAnnotationProcessor;
-import net.benas.adp4j.processors.PropertyAnnotationProcessor;
-import net.benas.adp4j.processors.SystemPropertyAnnotationProcessor;
+import net.benas.adp4j.processors.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -57,6 +52,7 @@ public class PropertiesInjectorImpl implements PropertiesInjector {
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
         annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
         annotationProcessors.put(Properties.class, new PropertiesAnnotationProcessor());
+        annotationProcessors.put(DBProperty.class, new DBPropertyAnnotationProcessor());
     }
 
     @Override
