@@ -53,6 +53,7 @@ public class PropertiesInjectorImpl implements PropertiesInjector {
         annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
         annotationProcessors.put(Properties.class, new PropertiesAnnotationProcessor());
         annotationProcessors.put(DBProperty.class, new DBPropertyAnnotationProcessor());
+        annotationProcessors.put(JNDIProperty.class, new JNDIPropertyAnnotationProcessor());
     }
 
     @Override
