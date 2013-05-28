@@ -30,6 +30,9 @@ public class Bean {
     @DBProperty(configuration = "database.properties", key = "bean.name")
     private String name;
 
+    @JNDIProperty("foo.property")
+    private String jndiProperty;
+
     public void setUserHome(String userHome) {
         this.userHome = userHome;
     }
@@ -84,6 +87,14 @@ public class Bean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getJndiProperty() {
+        return jndiProperty;
+    }
+
+    public void setJndiProperty(String jndiProperty) {
+        this.jndiProperty = jndiProperty;
     }
 
 }
