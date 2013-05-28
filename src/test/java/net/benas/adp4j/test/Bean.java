@@ -1,9 +1,6 @@
 package net.benas.adp4j.test;
 
-import net.benas.adp4j.annotations.I18NProperty;
-import net.benas.adp4j.annotations.Properties;
-import net.benas.adp4j.annotations.Property;
-import net.benas.adp4j.annotations.SystemProperty;
+import net.benas.adp4j.annotations.*;
 
 /**
  * A dummy object to be used in test.
@@ -29,6 +26,9 @@ public class Bean {
 
     @Properties("myProperties.properties")
     private java.util.Properties myProperties;
+
+    @DBProperty(configuration = "database.properties", key = "bean.name")
+    private String name;
 
     public void setUserHome(String userHome) {
         this.userHome = userHome;
@@ -77,4 +77,13 @@ public class Bean {
     public java.util.Properties getMyProperties() {
         return myProperties;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

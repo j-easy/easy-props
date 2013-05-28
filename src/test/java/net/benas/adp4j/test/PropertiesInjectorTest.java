@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -26,31 +28,35 @@ public class PropertiesInjectorTest {
         System.setProperty("threshold", "30");
         propertiesInjector = new PropertiesInjectorBuilder().build();
         bean = new Bean();
-        propertiesInjector.injectProperties(bean);
     }
 
     @Test
     public void testSystemPropertyInjection() throws Exception {
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals(System.getProperty("user.home"), bean.getUserHome()); //test String property injection
     }
 
     @Test
     public void testSystemPropertyDefaultValueInjection() throws Exception {
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals("default", bean.getValue()); //test default value injection
     }
 
     @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals(30, bean.getThreshold()); //test type conversion
     }
 
     @Test
     public void testI18NPropertyInjection() throws Exception {
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals(ResourceBundle.getBundle("i18n/messages").getString("my.message"), bean.getMessage());
     }
 
     @Test
     public void testPropertyInjection() throws Exception {
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals("Foo", bean.getBeanName());
     }
 
@@ -58,7 +64,15 @@ public class PropertiesInjectorTest {
     public void testPropertiesInjection() throws Exception {
         Properties properties = new Properties();
         properties.load(this.getClass().getClassLoader().getResourceAsStream("myProperties.properties"));
+        propertiesInjector.injectProperties(bean);
         Assert.assertEquals(properties.getProperty("bean.name"), bean.getMyProperties().getProperty("bean.name"));
+    }
+
+    @Test
+    public void testDBPropertyInjection() throws Exception {
+        new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
+        propertiesInjector.injectProperties(bean);
+        Assert.assertEquals("Foo", bean.getName());
     }
 
     @After
