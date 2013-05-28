@@ -96,7 +96,7 @@ ADP4J handles all this plumbing for you, which makes your code cleaner, more rea
 
 ## Built-in Annotations
 
-By default, ADP4J provides 4 annotations to load configuration properties from a variety of sources.
+By default, ADP4J provides 6 annotations to load configuration properties from a variety of sources.
 
 ### @SystemProperty
 
@@ -122,7 +122,7 @@ In this example, ADP4J will look for the system property `user.home` and set its
 
 This annotation can be declared on a field of type `java.util.Properties` and allows you to inject all properties of a properties file in that field.
 
-The annotation have a single attribute which value corresponds to the properties file name. Example:
+The annotation have a single attribute that corresponds to the properties file name. Example:
 
 ```java
 @Properties("myProperties.properties")
@@ -179,6 +179,60 @@ private String message;
 In this example, ADP4J will look for the property `my.message` in the resource bundle `i18n/messages.properties` in the classpath and set its value to the `message` field.
 
 Note that this annotation is not suited to applications where the locale may change during the application lifetime. This is because java annotation attributes can only have constant values.
+
+### @DBProperty
+
+This annotation can be used to load properties from a database.
+
+Attributes of this annotation are described in the following table:
+
+| Attribute     | Type    | Required | Description                                                        |
+|:--------------|:-------:|:--------:|--------------------------------------------------------------------|
+| configuration | String  | yes      | The configuration file containing database connection properties.  |
+| key           | String  | yes      | The key to load from the specified column in database table.       |
+
+The annotation processor of `@DBProperty` will load database connection properties from the file specified in `configuration` attribute. The following is an example of a configuration file:
+
+```
+db.driver=org.hsqldb.jdbcDriver
+db.url=jdbc:hsqldb:mem:test
+db.user=sa
+db.password=pwd
+db.schema=public
+db.table=ApplicationProperties
+db.table.keyColumn=key
+db.table.valueColumn=value
+```
+
+Properties `db.driver`, `db.url`, `db.user`, `db.password` and `db.schema` are self explanatory : ADP4J will use these parameters to connect to the database.
+
+`db.table` specifies the table containing keys (in `db.table.keyColumn` column) and values (in `db.table.valueColumn` column).
+
+Example :
+
+```java
+@DBProperty(configuration = "database.properties", key = "bean.name")
+private String name;
+```
+
+In this example, if we use the previous configuration file, ADP4J will look for the key `bean.name` in the `key` column of the `ApplicationProperties` table defined in `test` database and set its value to the `name` field.
+
+Note that ADP4J caches properties loaded from a database for further reuse. If you have more than one field annotated with @DBProperty with the same database configuration, ADP4J will connect only once the the specified database.
+
+### @JNDIProperty
+
+This annotation can be declared on a field to inject a property or an object from a JNDI context.
+
+The annotation have a single attribute that corresponds to the object name in JNDI context. Example:
+
+```java
+@JNDIProperty("jdbc/dataSource")
+private javax.sql.DataSource dataSource;
+```
+
+In this example, ADP4J will look for an object named `jdbc/dataSource` in JNDI context and inject it in `dataSource` field.
+
+Of course, you should have already specified JNDI parameters (context provider, factory, etc) via system properties or a properties file `jndi.properties` in the classpath (standard JNDI configuration).
 
 ## Custom Annotations
 
