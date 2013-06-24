@@ -62,7 +62,7 @@ public class PropertiesInjectorImpl implements PropertiesInjector {
         /*
          * Retrieve declared fields
          */
-        List<Field> declaredFields = Arrays.asList(object.getClass().getDeclaredFields());
+        List<Field> declaredFields = new ArrayList<Field>(Arrays.asList(object.getClass().getDeclaredFields()));
 
         /*
          * Retrieve inherited fields for all type hierarchy
