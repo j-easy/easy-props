@@ -234,6 +234,102 @@ In this example, ADP4J will look for an object named `jdbc/dataSource` in JNDI c
 
 Of course, you should have already specified JNDI parameters (context provider, factory, etc) via system properties or a properties file `jndi.properties` in the classpath (standard JNDI configuration).
 
+## Using ADP4J in a web environment
+
+Using ADP4J to inject properties in web components is straightforward. Like any other object, all you need is to annotate your instance variable with ADP4J annotations and provide a setter.
+
+Usually, web frameworks provide initialization methods in components lifecycle, you can call ADP4J code inside these methods.
+
+This section will show how to use ADP4J to inject properties in several web frameworks components.
+
+### Injecting properties in a Servlet
+
+The servlet API provides an initialization method `init` that is called when a servlet is first initialized by the container.
+This is a good place to call ADP4J code to inject properties in the servlet instance variables.
+
+```java
+public class MyServlet extends HttpServlet {
+
+    @SystemProperty(value = "user.home", defaultValue = "/home/me")
+    private String userHome;
+
+    @Override
+    public void init() throws ServletException {
+        PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
+        try {
+            propertiesInjector.injectProperties(this);
+        } catch (Exception e) {
+            System.err.println("Unable to inject properties in servlet MyServlet!");
+        }
+    }
+
+    public void setUserHome(String userHome) {
+        this.userHome = userHome;
+    }
+}
+```
+
+In this example, ADP4J will inject the System property `user.home` in the `userHome` field when the servlet `MyServlet` is first initialized by the container.
+
+### Injecting properties in a Struts Action
+
+Struts 2 provides an initialization hook for actions through the [Preparable][] interface.
+
+The following example shows how to inject the System property `user.home` in the `userHome` field of the `MyAction` action when it is initialized by Struts.
+
+```java
+public class MyAction extends ActionSupport implements Preparable {
+
+    @SystemProperty(value = "user.home", defaultValue = "/home/me")
+    private String userHome;
+
+    public void prepare() throws Exception {
+        PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
+        try {
+            propertiesInjector.injectProperties(this);
+        } catch (Exception e) {
+            System.err.println("Unable to inject properties in action MyAction!");
+        }
+    }
+
+    public void setUserHome(String userHome) {
+        this.userHome = userHome;
+    }
+
+}
+```
+
+Note that the `prepare` interceptor should be enabled, as mentioned in Struts documentation [here].
+
+### Injecting properties in a Tapestry Page
+
+Tapestry 5 provides an initialization hook for pages through the [Activate][] event.
+
+The following example shows how to inject the System property `user.home` in the `userHome` field of the `MyPage` page when it is initialized by Tapestry.
+
+```java
+public class MyPage {
+
+    @SystemProperty(value = "user.home", defaultValue = "/home/me")
+    private String userHome;
+
+    @OnEvent(EventConstants.ACTIVATE)
+    public void init(){
+        PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
+        try {
+            propertiesInjector.injectProperties(this);
+        } catch (Exception e) {
+            System.err.println("Unable to inject properties in page MyPage !");
+        }
+    }
+
+    public void setUserHome(String userHome) {
+        this.userHome = userHome;
+    }
+
+}
+```
+
 ## Custom Annotations
 
 With ADP4J, you can write your own annotations to load configuration properties from a custom location.
@@ -309,4 +405,7 @@ ADP4J is released under the [MIT License][].
 
 [annotationsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/net/benas/adp4j/annotations
 [processorsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/net/benas/adp4j/processors
+[Preparable]: http://struts.apache.org/release/2.1.x/struts2-core/apidocs/com/opensymphony/xwork2/Preparable.html
+[here]: http://struts.apache.org/release/2.1.x/docs/prepare-interceptor.html
+[Activate]: http://tapestry.apache.org/current/apidocs/org/apache/tapestry5/EventConstants.html#ACTIVATE
 [MIT License]: http://opensource.org/licenses/mit-license.php/
