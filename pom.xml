@@ -4,7 +4,7 @@
 
     <groupId>net.benas</groupId>
     <artifactId>adp4j</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>adp4j</name>
@@ -70,5 +70,6 @@
         </dependency>
 
     </dependencies>
+
 
 </project>

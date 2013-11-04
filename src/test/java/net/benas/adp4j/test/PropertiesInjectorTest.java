@@ -8,6 +8,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -54,6 +55,11 @@ public class PropertiesInjectorTest {
     @Test
     public void testSystemPropertyDefaultValueInjection() throws Exception {
         Assert.assertEquals("default", bean.getValue()); //test default value injection
+    }
+
+    @Test
+    public void testSystemMavenVersionValueInjection() throws Exception {
+        Assert.assertEquals("1.8.3", bean.getPomVersion()); //test maven value injection
     }
 
     @Test
