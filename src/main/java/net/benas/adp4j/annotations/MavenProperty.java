@@ -1,0 +1,34 @@
+package net.benas.adp4j.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * This annotation injects a property from a Maven context in the annotated field.
+ *
+ * @author lhottois (natlantisprog@gmail.com)
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface MavenProperty {
+
+    /**
+     * The field name in MAVEN context.
+     * By default, we get the version ID.
+     * @return The value in MAVEN context
+     */
+    public String key() default "version";
+
+    /**
+     * The artifact of the maven JAR to search
+     */
+    public String artifact() ;
+
+    /**
+     * The groupId of the maven JAR to search
+     */
+    public String groupId() ;
+
+}

@@ -33,6 +33,9 @@ public class Bean {
     @JNDIProperty("foo.property")
     private String jndiProperty;
 
+    @MavenProperty(key="version",groupId="commons-beanutils",artifact="commons-beanutils")
+    private String pomVersion;
+
     public void setUserHome(String userHome) {
         this.userHome = userHome;
     }
@@ -97,4 +100,11 @@ public class Bean {
         this.jndiProperty = jndiProperty;
     }
 
+    public String getPomVersion() {
+        return pomVersion;
+    }
+
+    public void setPomVersion(String pomVersion) {
+        this.pomVersion = pomVersion;
+    }
 }

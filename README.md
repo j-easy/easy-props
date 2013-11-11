@@ -234,6 +234,35 @@ In this example, ADP4J will look for an object named `jdbc/dataSource` in JNDI c
 
 Of course, you should have already specified JNDI parameters (context provider, factory, etc) via system properties or a properties file `jndi.properties` in the classpath (standard JNDI configuration).
 
+
+### @MavenProperty
+
+This annotation can be used to load properties from maven configuration.
+
+For the moment, we're only able to get the version number.
+
+We're working on how to get every declared information from MAVEN context into JAVA context.
+
+Attributes of this annotation are described in the following table:
+
+| Attribute     | Type    | Required | Description                                                        |
+|:--------------|:-------:|:--------:|--------------------------------------------------------------------|
+| key           | String  | no       | The key to load from the specified parameter in pom property       |
+| groupId       | String  | yes      | The groupId where is located the pom.xml wanted                    |
+| artifact      | String  | yes      | The artifact where is located the pom.xml wanted                   |
+
+Example :
+
+```java
+@MavenProperty(key="version",groupId="commons-beanutils",artifact="commons-beanutils")
+private String pomVersion;
+```
+
+In this example, we are fetching the actuel version of the commons-beanutils dependency
+
+Note that ADP4J caches maven context loaded from pom.properties for further reuse.
+
+
 ## Using ADP4J in a web environment
 
 Using ADP4J to inject properties in web components is straightforward. Like any other object, all you need is to annotate your instance variable with ADP4J annotations and provide a setter.
