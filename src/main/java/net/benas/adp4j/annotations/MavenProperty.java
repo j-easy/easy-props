@@ -22,10 +22,9 @@ public @interface MavenProperty {
 
     /**
      * The field name in MAVEN context.
-     * By default, we get the version ID.
      * @return The value in MAVEN context
      */
-    public String key() default "version";
+    public String key();
 
     /**
      * The artifactId of the maven JAR to search.
