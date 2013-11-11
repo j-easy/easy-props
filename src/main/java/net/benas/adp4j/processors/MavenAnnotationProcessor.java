@@ -57,6 +57,14 @@ public class MavenAnnotationProcessor extends AbstractAnnotationProcessor implem
             throw new Exception(missingAttributeValue("key", "@MavenProperty", field, object));
         }
 
+        if (groupId.isEmpty()) {
+            throw new Exception(missingAttributeValue("groupId", "@MavenProperty", field, object));
+        }
+
+        if (artifactId.isEmpty()) {
+            throw new Exception(missingAttributeValue("artifactId", "@MavenProperty", field, object));
+        }
+
         //check if the maven value is not already loaded
         String cacheKey = groupId + "." + artifactId + "." + key;
         if (!mavenMap.containsKey(cacheKey)) {
