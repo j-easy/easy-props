@@ -24,6 +24,13 @@
         </developer>
     </developers>
 
+    <contributors>
+        <contributor>
+            <name>lhottois</name>
+            <email>natlantisprog@gmail.com</email>
+        </contributor>
+    </contributors>
+
     <licenses>
         <license>
             <name>MIT License</name>
