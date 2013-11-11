@@ -50,6 +50,7 @@ public class MavenAnnotationProcessor extends AbstractAnnotationProcessor implem
 
         // We get the key to find into the pom
         String key = mavenAnnotation.key().trim();
+        String source = mavenAnnotation.source().trim();
         String groupId = mavenAnnotation.groupId().trim();
         String artifactId = mavenAnnotation.artifactId().trim();
 
@@ -70,7 +71,7 @@ public class MavenAnnotationProcessor extends AbstractAnnotationProcessor implem
         if (!mavenMap.containsKey(cacheKey)) {
             java.util.Properties properties = new java.util.Properties();
             // We search directly into the META-INF generated property
-            String pathToMaven = "META-INF/maven/" + groupId + "/" + artifactId + "/pom.properties";
+            String pathToMaven = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
 
             try {
                 InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(pathToMaven);

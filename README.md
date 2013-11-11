@@ -247,6 +247,7 @@ Attributes of this annotation are described in the following table:
 
 | Attribute     | Type    | Required | Description                                                        |
 |:--------------|:-------:|:--------:|--------------------------------------------------------------------|
+| source        | String  | no       | The source file containing maven properties                        |
 | key           | String  | no       | The key to load from the specified parameter in pom property       |
 | groupId       | String  | yes      | The groupId where is located the pom.xml wanted                    |
 | artifact      | String  | yes      | The artifact where is located the pom.xml wanted                   |
