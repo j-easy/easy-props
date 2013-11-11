@@ -22,12 +22,12 @@ public @interface MavenProperty {
     public String key() default "version";
 
     /**
-     * The artifact of the maven JAR to search
+     * The artifactId of the maven JAR to search.
      */
-    public String artifact() ;
+    public String artifactId() ;
 
     /**
-     * The groupId of the maven JAR to search
+     * The groupId of the maven JAR to search.
      */
     public String groupId() ;
 

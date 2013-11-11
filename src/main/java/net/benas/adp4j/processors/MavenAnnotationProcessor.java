@@ -51,7 +51,7 @@ public class MavenAnnotationProcessor extends AbstractAnnotationProcessor implem
         // We get the key to find into the pom
         String key = mavenAnnotation.key().trim();
         String groupId = mavenAnnotation.groupId().trim();
-        String artifactId = mavenAnnotation.artifact().trim();
+        String artifactId = mavenAnnotation.artifactId().trim();
 
         if (key.isEmpty()) {
             throw new Exception(missingAttributeValue("key", "@MavenProperty", field, object));
