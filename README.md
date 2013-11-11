@@ -96,7 +96,7 @@ ADP4J handles all this plumbing for you, which makes your code cleaner, more rea
 
 ## Built-in Annotations
 
-By default, ADP4J provides 6 annotations to load configuration properties from a variety of sources.
+By default, ADP4J provides 7 annotations to load configuration properties from a variety of sources.
 
 ### @SystemProperty
 
@@ -237,29 +237,25 @@ Of course, you should have already specified JNDI parameters (context provider, 
 
 ### @MavenProperty
 
-This annotation can be used to load properties from maven configuration.
-
-For the moment, we're only able to get the version number.
-
-We're working on how to get every declared information from MAVEN context into JAVA context.
+This annotation can be used to load and inject maven properties into java objects. A typical usage of this annotation is to know the application version at runtime.
 
 Attributes of this annotation are described in the following table:
 
-| Attribute     | Type    | Required | Description                                                        |
-|:--------------|:-------:|:--------:|--------------------------------------------------------------------|
-| source        | String  | no       | The source file containing maven properties                        |
-| key           | String  | no       | The key to load from the specified parameter in pom property       |
-| groupId       | String  | yes      | The groupId where is located the pom.xml wanted                    |
-| artifact      | String  | yes      | The artifact where is located the pom.xml wanted                   |
+| Attribute     | Type    | Required | Description                                                             |
+|:--------------|:-------:|:--------:|-------------------------------------------------------------------------|
+| source        | String  | no       | The source file containing maven properties (pom.properties by default) |
+| key           | String  | yes      | The key to load from the specified pom properties                       |
+| groupId       | String  | yes      | The groupId of the JAR containing the pom.properties file               |
+| artifact      | String  | yes      | The artifact of the JAR containing the pom.properties file              |
 
 Example :
 
 ```java
-@MavenProperty(key="version",groupId="commons-beanutils",artifact="commons-beanutils")
+@MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
 private String pomVersion;
 ```
 
-In this example, we are fetching the actuel version of the commons-beanutils dependency
+In this example, we are injecting the current version number of the commons-beanutils dependency into the `pomVersion` field.
 
 Note that ADP4J caches maven context loaded from pom.properties for further reuse.
 
