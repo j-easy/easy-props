@@ -55,6 +55,7 @@ public class PropertiesInjectorImpl implements PropertiesInjector {
         annotationProcessors.put(DBProperty.class, new DBPropertyAnnotationProcessor());
         annotationProcessors.put(JNDIProperty.class, new JNDIPropertyAnnotationProcessor());
         annotationProcessors.put(MavenProperty.class, new MavenAnnotationProcessor());
+        annotationProcessors.put(ManifestProperty.class, new ManifestPropertyAnnotationProcessor());
     }
 
     @Override

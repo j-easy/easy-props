@@ -36,6 +36,9 @@ public class Bean {
     @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
     private String pomVersion;
 
+    @ManifestProperty(jar = "junit-4.11.jar", header = "Created-By")
+    private String createdByJdk;
+
     public void setUserHome(String userHome) {
         this.userHome = userHome;
     }
@@ -106,5 +109,13 @@ public class Bean {
 
     public void setPomVersion(String pomVersion) {
         this.pomVersion = pomVersion;
+    }
+
+    public String getCreatedByJdk() {
+        return createdByJdk;
+    }
+
+    public void setCreatedByJdk(String createdByJdk) {
+        this.createdByJdk = createdByJdk;
     }
 }

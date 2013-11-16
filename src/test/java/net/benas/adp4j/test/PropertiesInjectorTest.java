@@ -92,6 +92,11 @@ public class PropertiesInjectorTest {
         Assert.assertEquals("jndi", bean.getJndiProperty());
     }
 
+    @Test
+    public void testManifestPropertyInjection() throws Exception {
+        Assert.assertEquals("1.7.0_04-b20 (Oracle Corporation)", bean.getCreatedByJdk());
+    }
+
     @After
     public void tearDown() throws Exception {
         propertiesInjector = null;
