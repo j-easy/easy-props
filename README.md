@@ -98,39 +98,6 @@ ADP4J handles all this plumbing for you, which makes your code cleaner, more rea
 
 By default, ADP4J provides 8 annotations to load configuration properties from a variety of sources.
 
-### @SystemProperty
-
-This annotation allows you to inject a property from the system properties passed to your java program at JVM startup using the -D prefix.
-
-The @SystemProperty annotation can be declared on a field and have the following attributes :
-
-| Attribute    | Type    | Required | Description                                                         |
-|:-------------|:-------:|:--------:|---------------------------------------------------------------------|
-| value        | String  | yes      | The system property to inject in the annotated field.               |
-| defaultValue | String  | no       | The default value to set in case the system property does not exist |
-
-Example:
-
-```java
-@SystemProperty("user.home")
-private String userHome;
-```
-
-In this example, ADP4J will look for the system property `user.home` and set its value to the `userHome` field.
-
-### @Properties
-
-This annotation can be declared on a field of type `java.util.Properties` and allows you to inject all properties of a properties file in that field.
-
-The annotation have a single attribute that corresponds to the properties file name. Example:
-
-```java
-@Properties("myProperties.properties")
-private java.util.Properties myProperties;
-```
-
-In this example, ADP4J will populate the `myProperties` field with properties from the file `myProperties.properties`.
-
 ### @Property
 
 This annotation can be used to load a property from a java properties file.
@@ -152,6 +119,26 @@ private String beanName;
 ```
 
 In this example, ADP4J will look for the property `bean.name` in the `myProperties.properties` properties file in the classpath and set its value to the `userHome` field.
+
+### @SystemProperty
+
+This annotation allows you to inject a property from the system properties passed to your java program at JVM startup using the -D prefix.
+
+The @SystemProperty annotation can be declared on a field and have the following attributes :
+
+| Attribute    | Type    | Required | Description                                                         |
+|:-------------|:-------:|:--------:|---------------------------------------------------------------------|
+| value        | String  | yes      | The system property to inject in the annotated field.               |
+| defaultValue | String  | no       | The default value to set in case the system property does not exist |
+
+Example:
+
+```java
+@SystemProperty("user.home")
+private String userHome;
+```
+
+In this example, ADP4J will look for the system property `user.home` and set its value to the `userHome` field.
 
 ### @I18NProperty
 
@@ -278,6 +265,18 @@ In this example, we are injecting the current version number of the commons-bean
 
 Note that ADP4J caches maven context loaded from pom.properties for further reuse.
 
+### @Properties
+
+This annotation can be declared on a field of type `java.util.Properties` and allows you to inject all properties of a properties file in that field.
+
+The annotation have a single attribute that corresponds to the properties file name. Example:
+
+```java
+@Properties("myProperties.properties")
+private java.util.Properties myProperties;
+```
+
+In this example, ADP4J will populate the `myProperties` field with properties from the file `myProperties.properties`.
 
 ## Using ADP4J in a web environment
 
