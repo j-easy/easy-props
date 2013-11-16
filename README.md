@@ -96,7 +96,7 @@ ADP4J handles all this plumbing for you, which makes your code cleaner, more rea
 
 ## Built-in Annotations
 
-By default, ADP4J provides 7 annotations to load configuration properties from a variety of sources.
+By default, ADP4J provides 8 annotations to load configuration properties from a variety of sources.
 
 ### @SystemProperty
 
@@ -234,6 +234,25 @@ In this example, ADP4J will look for an object named `jdbc/dataSource` in JNDI c
 
 Of course, you should have already specified JNDI parameters (context provider, factory, etc) via system properties or a properties file `jndi.properties` in the classpath (standard JNDI configuration).
 
+### @ManifestProperty
+
+This annotation can be used to inject a header value from a META-INF/MANIFEST.MF file in the annotated field.
+
+Attributes of this annotation are described in the following table:
+
+| Attribute     | Type    | Required | Description                                                                                          |
+|:--------------|:-------:|:--------:|------------------------------------------------------------------------------------------------------|
+| jar           | String  | no       | The jar file containing the manifest file to load (by default, the jar containing the target object) |
+| header        | String  | yes      | The header to load from the specified manifest file                                                  |
+
+Example :
+
+```java
+@ManifestProperty(jar = "junit-4.11.jar", header = "Created-By")
+private String createdByJdk;
+```
+
+In this example, we are injecting the `Created-By` header value of the META-INF/MANIFEST.MF file of the jar `junit-4.11.jar` into the `createdByJdk` field.
 
 ### @MavenProperty
 
