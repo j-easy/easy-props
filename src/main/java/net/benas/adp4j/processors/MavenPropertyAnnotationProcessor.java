@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author lhottois (natlantisprog@gmail.com)
  */
-public class MavenAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<MavenProperty> {
+public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<MavenProperty> {
 
     /**
      * A map holding pom and Properties object serving as a cache.
