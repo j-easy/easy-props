@@ -383,7 +383,7 @@ The following steps describe how to create your own annotation and how to use it
 
 First, you need to create your annotation with all the necessary information about where to load properties, which property to load, etc.
 You can specify these parameters using public methods in your annotation interface.
-You can see how the built-in annotations are defined in the `net.benas.adp4j.annotations` [package][annotationsPackage].
+You can see how the built-in annotations are defined in the `io.github.benas.adp4j.annotations` [package][annotationsPackage].
 
 ### 2. Implement the `AnnotationProcessor` interface
 
@@ -407,7 +407,7 @@ public interface AnnotationProcessor<T extends Annotation> {
 }
  ```
 
-You can see some examples of how the built-in annotations are processed in the `net.benas.adp4j.processors` [package][processorsPackage].
+You can see some examples of how the built-in annotations are processed in the `io.github.benas.adp4j.processors` [package][processorsPackage].
 
 ### 3. Register the annotation processor within ADP4J
 
