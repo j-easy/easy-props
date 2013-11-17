@@ -11,7 +11,7 @@
     <description>
         Annotation Driven Properties For Java allows you to inject properties in your objects in a declarative way using annotations
     </description>
-    <url>https://github.com/benas/jads</url>
+    <url>https://github.com/benas/adp4j</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
