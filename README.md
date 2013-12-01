@@ -435,10 +435,10 @@ To use ADP4J, please follow these instructions :
 
  * Add the generated jar `target/adp4j-${version}.jar` to your application's classpath
 
-If you use maven, you should build/install the jar to your local maven repository and add the following dependency to your pom.xml :
+If you use maven, you should add the following dependency to your pom.xml :
 ```xml
 <dependency>
-    <groupId>net.benas</groupId>
+    <groupId>io.github.benas</groupId>
     <artifactId>adp4j</artifactId>
     <version>${version}</version>
 </dependency>
@@ -447,8 +447,8 @@ If you use maven, you should build/install the jar to your local maven repositor
 ## License
 ADP4J is released under the [MIT License][].
 
-[annotationsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/net/benas/adp4j/annotations
-[processorsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/net/benas/adp4j/processors
+[annotationsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/io/github/benas/adp4j/annotations
+[processorsPackage]: https://github.com/benas/adp4j/tree/master/src/main/java/io/github/benas/adp4j/processors
 [Preparable]: http://struts.apache.org/release/2.1.x/struts2-core/apidocs/com/opensymphony/xwork2/Preparable.html
 [here]: http://struts.apache.org/release/2.1.x/docs/prepare-interceptor.html
 [Activate]: http://tapestry.apache.org/current/apidocs/org/apache/tapestry5/EventConstants.html#ACTIVATE
