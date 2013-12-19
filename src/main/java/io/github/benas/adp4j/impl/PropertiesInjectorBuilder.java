@@ -54,7 +54,7 @@ public class PropertiesInjectorBuilder {
      * @param annotationProcessor the annotation processor to register
      * @return this instance of @{link PropertiesInjectorBuilder}
      */
-    public PropertiesInjectorBuilder registerAnnotationProcessor(final Class<? extends Annotation> annotation,final AnnotationProcessor annotationProcessor) {
+    public PropertiesInjectorBuilder registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         propertiesInjector.registerAnnotationProcessor(annotation, annotationProcessor);
         return this;
     }
