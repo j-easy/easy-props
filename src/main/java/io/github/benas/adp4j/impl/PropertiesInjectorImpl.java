@@ -39,7 +39,7 @@ import java.util.*;
  *
  * @author benas (md.benhassine@gmail.com)
  */
-public class PropertiesInjectorImpl implements PropertiesInjector {
+final class PropertiesInjectorImpl implements PropertiesInjector {
 
     /**
      * A map holding registered annotations with their processors.
