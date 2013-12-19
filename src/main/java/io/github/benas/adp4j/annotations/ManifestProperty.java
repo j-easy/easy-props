@@ -44,12 +44,12 @@ public @interface ManifestProperty {
      * If not specified, it will be the jar file containing the target object.
      * @return jar file name (in the classpath) containing the META-INF/MANIFEST.MF file.
      */
-    public String jar() default "";
+    String jar() default "";
 
     /**
      * The header name in the META-INF/MANIFEST.MF file.
      * @return the header name in the META-INF/MANIFEST.MF file.
      */
-    public String header();
+    String header();
 
 }

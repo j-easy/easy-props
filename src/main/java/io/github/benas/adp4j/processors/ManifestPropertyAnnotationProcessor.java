@@ -55,7 +55,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     private Map<String, Manifest> manifestEntries = new HashMap<String, Manifest>();
 
     @Override
-    public void processAnnotation(ManifestProperty manifestPropertyAnnotation, Field field, Object object) throws Exception {
+    public void processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field, Object object) throws Exception {
 
         String jar = manifestPropertyAnnotation.jar().trim();
         String header = manifestPropertyAnnotation.header().trim();
@@ -69,7 +69,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
             try {
                 InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(MANIFEST);
                 if (inputStream != null) {
-                    Manifest manifest = new Manifest((inputStream));
+                    Manifest manifest = new Manifest(inputStream);
                     manifestEntries.put(jar, manifest);
                 } else {
                     throw new Exception(missingSourceFile(MANIFEST, field, object));
@@ -84,7 +84,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
                 JarInputStream jarStream;
                 final String classPath = System.getProperty("java.class.path");
                 final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
-                for(final String element : classPathElements){
+                for (final String element : classPathElements) {
                     if (element.endsWith(jar)) {
                         jarStream = new JarInputStream(new FileInputStream(element));
                         manifestEntries.put(jar, jarStream.getManifest());

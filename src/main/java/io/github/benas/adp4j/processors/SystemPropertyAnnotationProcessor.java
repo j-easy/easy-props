@@ -38,10 +38,13 @@ import java.util.logging.Logger;
  */
 public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<SystemProperty> {
 
+    /**
+     * Logger instance.
+     */
     private Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
-    public void processAnnotation(SystemProperty systemProperty, Field field, Object object) throws Exception {
+    public void processAnnotation(final SystemProperty systemProperty, final Field field, Object object) throws Exception {
 
         String key = systemProperty.value().trim();
 

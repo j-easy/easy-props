@@ -42,6 +42,6 @@ public @interface JNDIProperty {
      * The object name in JNDI context.
      * @return The object name in JNDI context
      */
-    public String value();
+    String value();
 
 }

@@ -42,12 +42,12 @@ public @interface DBProperty {
      * The configuration file containing database connection properties.
      * @return The configuration file containing database connection properties
      */
-    public String configuration();
+    String configuration();
 
     /**
      * The key value to load from the table specified in the configuration properties.
      * @return The key value to load from the table specified in the configuration properties
      */
-    public String key();
+    String key();
 
 }

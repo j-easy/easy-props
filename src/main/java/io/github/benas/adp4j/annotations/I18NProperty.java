@@ -42,30 +42,30 @@ public @interface I18NProperty {
      * The resource bundle containing the property to load.
      * @return The resource bundle containing the property to load
      */
-    public String bundle();
+    String bundle();
 
     /**
      * The key to load from the resource bundle.
      * @return The key to load from the resource bundle
      */
-    public String key();
+    String key();
 
     /**
      * The locale language to use.
      * @return The locale language to use
      */
-    public String language() default "";
+    String language() default "";
 
     /**
      * The locale country to use.
      * @return The locale country to use
      */
-    public String country() default "";
+    String country() default "";
 
     /**
      * The locale variant to use.
      * @return The locale variant to use
      */
-    public String variant() default "";
+    String variant() default "";
 
 }

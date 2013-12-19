@@ -51,7 +51,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
     private Map<String, Properties> dbPropertiesMap = new HashMap<String, Properties>();
 
     @Override
-    public void processAnnotation(DBProperty dbPropertyAnnotation, Field field, Object object) throws Exception {
+    public void processAnnotation(final DBProperty dbPropertyAnnotation, final Field field, Object object) throws Exception {
 
         String configuration = dbPropertyAnnotation.configuration().trim();
         String key = dbPropertyAnnotation.key().trim();

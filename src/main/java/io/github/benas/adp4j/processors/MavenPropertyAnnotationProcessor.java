@@ -46,7 +46,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
     private Map<String, String> mavenMap = new HashMap<String, String>();
 
     @Override
-    public void processAnnotation(MavenProperty mavenAnnotation, Field field, Object object) throws Exception {
+    public void processAnnotation(final MavenProperty mavenAnnotation, final Field field, Object object) throws Exception {
 
         // We get the key to find into the pom
         String key = mavenAnnotation.key().trim();
@@ -79,7 +79,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
                     properties.load(inputStream);
                     Object keyValue = properties.get(key);
                     String keyValueAnalyzed = String.valueOf(keyValue);
-                    mavenMap.put(cacheKey,keyValueAnalyzed);
+                    mavenMap.put(cacheKey, keyValueAnalyzed);
                 } else {
                     throw new Exception(missingSourceFile(pathToMaven, field, object));
                 }

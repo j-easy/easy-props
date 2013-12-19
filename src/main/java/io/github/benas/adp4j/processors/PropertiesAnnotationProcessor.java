@@ -46,7 +46,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor i
     private Map<String, java.util.Properties> propertiesMap = new HashMap<String, java.util.Properties>();
 
     @Override
-    public void processAnnotation(Properties propertiesAnnotation, Field field, Object object) throws Exception {
+    public void processAnnotation(final Properties propertiesAnnotation, final Field field, Object object) throws Exception {
 
         if (!field.getType().equals(java.util.Properties.class)) {
             throw new Exception("@Properties declared on field " + field.getName() + " of type " +

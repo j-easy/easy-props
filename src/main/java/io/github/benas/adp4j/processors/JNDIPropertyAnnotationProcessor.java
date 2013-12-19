@@ -44,7 +44,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Context context;
 
     @Override
-    public void processAnnotation(JNDIProperty jndiPropertyAnnotation, Field field, Object object) throws Exception {
+    public void processAnnotation(final JNDIProperty jndiPropertyAnnotation, final Field field, Object object) throws Exception {
 
         if (context == null) {
             context = new InitialContext(); // not in constructor cause throw NamingException

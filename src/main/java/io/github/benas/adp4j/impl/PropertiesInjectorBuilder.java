@@ -41,6 +41,9 @@ public class PropertiesInjectorBuilder {
      */
     private PropertiesInjectorImpl propertiesInjector;
 
+    /**
+     * Public constructor.
+     */
     public PropertiesInjectorBuilder() {
         propertiesInjector = new PropertiesInjectorImpl();
     }
@@ -49,8 +52,9 @@ public class PropertiesInjectorBuilder {
      * Register a custom annotation processor for a given annotation.
      * @param annotation the annotation type to be processed
      * @param annotationProcessor the annotation processor to register
+     * @return this instance of @{link PropertiesInjectorBuilder}
      */
-    public PropertiesInjectorBuilder registerAnnotationProcessor(Class<? extends Annotation> annotation, AnnotationProcessor annotationProcessor) {
+    public PropertiesInjectorBuilder registerAnnotationProcessor(final Class<? extends Annotation> annotation,final AnnotationProcessor annotationProcessor) {
         propertiesInjector.registerAnnotationProcessor(annotation, annotationProcessor);
         return this;
     }

@@ -43,7 +43,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Map<String, ResourceBundle> resourceBundlesMap = new HashMap<String, ResourceBundle>();
 
     @Override
-    public void processAnnotation(I18NProperty property, Field field, Object object) throws Exception {
+    public void processAnnotation(final I18NProperty property, final Field field, Object object) throws Exception {
 
         String key = property.key().trim();
         String bundle = property.bundle().trim();
@@ -75,7 +75,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check if the resource bundle is not already loaded
         if (!resourceBundlesMap.containsKey(bundle)) {
-            try{
+            try {
                 ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
                 resourceBundlesMap.put(bundle, resourceBundle);
             } catch (MissingResourceException e) {

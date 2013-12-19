@@ -37,6 +37,6 @@ public interface PropertiesInjector {
      * @param object the object in which to inject properties.
      * @throws Exception thrown if an exception occurs during properties injection
      */
-    public void injectProperties(Object object) throws Exception;
+    void injectProperties(Object object) throws Exception;
 
 }

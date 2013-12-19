@@ -47,7 +47,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
     private Map<String, Properties> propertiesMap = new HashMap<String, Properties>();
 
     @Override
-    public void processAnnotation(Property property, Field field, Object object) throws Exception {
+    public void processAnnotation(final Property property, final Field field, Object object) throws Exception {
 
         String source = property.source().trim();
         String key = property.key().trim();

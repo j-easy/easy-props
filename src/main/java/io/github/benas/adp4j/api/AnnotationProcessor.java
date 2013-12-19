@@ -27,6 +27,10 @@ package io.github.benas.adp4j.api;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+/**
+ * Annotation processor interface.
+ * @param <T> The annotation type processed.
+ */
 public interface AnnotationProcessor<T extends Annotation> {
 
     /**

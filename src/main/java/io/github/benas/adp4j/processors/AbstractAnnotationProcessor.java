@@ -66,7 +66,7 @@ public abstract class AbstractAnnotationProcessor {
      * @param object the target object
      * @return the formatted error message
      */
-    protected String missingSourceFile(String source, Field field, Object object) {
+    protected String missingSourceFile(final String source, final Field field, final Object object) {
         return MessageFormat.format("Unable to load properties from source {0} for field {1} of type {2}",
                 source, field.getName(), object.getClass().getName());
     }
@@ -80,7 +80,7 @@ public abstract class AbstractAnnotationProcessor {
      * @param object the target object
      * @return the formatted error message
      */
-    protected String missingAttributeValue(String attribute, String annotation,  Field field, Object object) {
+    protected String missingAttributeValue(final String attribute, final String annotation, final Field field, final Object object) {
         return MessageFormat.format("No value specified for attribute {0} of {1} annotation on field {2} of type {3}",
                 attribute, annotation, field.getName(), object.getClass().getName());
     }

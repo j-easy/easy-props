@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains main adp4j annotation.
+ * This package contains main adp4j annotations.
  */
 package io.github.benas.adp4j.annotations;

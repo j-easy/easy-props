@@ -42,12 +42,12 @@ public @interface Property {
      * The properties file name.
      * @return The properties file name
      */
-    public String source();
+    String source();
 
     /**
      * The key to load from the source properties file.
      * @return The key to load from the source properties file
      */
-    public String key();
+    String key();
 
 }

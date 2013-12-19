@@ -43,6 +43,6 @@ public @interface Properties {
      * The properties file name.
      * @return The properties file name
      */
-    public String value();
+    String value();
 
 }

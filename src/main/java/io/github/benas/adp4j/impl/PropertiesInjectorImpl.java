@@ -46,6 +46,9 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
+    /**
+     * Public constructor.
+     */
     public PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<Class<? extends Annotation>, AnnotationProcessor>();
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
@@ -96,7 +99,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      * @param annotation the annotation type to be processed
      * @param annotationProcessor the annotation processor to register
      */
-    public void registerAnnotationProcessor(Class<? extends Annotation> annotation, AnnotationProcessor annotationProcessor) {
+    public void registerAnnotationProcessor(final Class<? extends Annotation> annotation,final AnnotationProcessor annotationProcessor) {
         annotationProcessors.put(annotation, annotationProcessor);
     }
 
