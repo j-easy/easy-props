@@ -9,7 +9,7 @@
 
     <groupId>io.github.benas</groupId>
     <artifactId>adp4j</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>adp4j</name>
@@ -47,7 +47,7 @@
         <url>git@github.com:benas/adp4j.git</url>
         <connection>scm:git:git@github.com:benas/adp4j.git</connection>
         <developerConnection>scm:git:git@github.com:benas/adp4j.git</developerConnection>
-        <tag>adp4j-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencies>
