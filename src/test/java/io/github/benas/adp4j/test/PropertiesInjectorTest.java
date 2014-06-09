@@ -82,7 +82,7 @@ public class PropertiesInjectorTest {
 
     @Test
     public void testSystemMavenVersionValueInjection() throws Exception {
-        Assert.assertEquals("1.8.3", bean.getPomVersion()); //test maven value injection
+        Assert.assertEquals("1.9.2", bean.getPomVersion()); //test maven value injection
     }
 
     @Test
