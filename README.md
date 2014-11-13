@@ -6,7 +6,7 @@ The idea behind ADP4J is to implement the "Inversion Of Control" principle : Ins
 
 ## Documentation
 
-All ADP4J documentation can be found here : [http://benas.github.io/adp4j/][]
+All ADP4J documentation can be found here : [https://github.com/benas/adp4j/wiki][]
 
 ## Awesome contributors
 
@@ -15,5 +15,5 @@ All ADP4J documentation can be found here : [http://benas.github.io/adp4j/][]
 ## License
 ADP4J is released under the [MIT License][].
 
-[http://benas.github.io/adp4j/]: http://benas.github.io/adp4j/
+[https://github.com/benas/adp4j/wiki]: https://github.com/benas/adp4j/wiki
 [MIT License]: http://opensource.org/licenses/mit-license.php/
