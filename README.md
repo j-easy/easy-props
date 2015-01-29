@@ -1,6 +1,6 @@
-## Introduction
+## What is Projector?
 
-Projector (PROperty injECTOR) is a Java library that allows you to inject configuration properties in your Java objects in a declarative way using annotations.
+Projector (**PRO**perty inj**ECTOR**) is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
 The idea behind Projector is to implement the "Inversion Of Control" principle : Instead of having objects looking actively for configuration properties, these objects simply declare configuration properties they need and these properties will be provided to them by a tool, Projector for instance!
 
@@ -8,13 +8,13 @@ It is a kind of dependency injection tool, but for properties. Let's call it "pr
 
 ## Why Projector?
 
-Dependency injections frameworks allows you to inject properties in your Java objects and they do it very well.
+Dependency injections frameworks allow you to inject properties in your Java objects and they do it very well.
 
 In order to benefit from this feature, your code should run inside a DI container, or at least, the object in which your are trying to inject properties must be managed by a DI container.
 
-But what if your code does not run inside a DI container? This is where projector comes to play, to allow you to benefit from DI without requiring your code to run inside a container.
+But what if your code does not run inside a DI container? This is where Projector comes to play, to allow you to benefit from DI without requiring your code to run inside a container.
 
-That said, **projector is a library, not a framework**. It is not YADIF (Yet Another DI Framework ;-) ).
+That said, **Projector is a library, not a framework**. It is not YADIF (Yet Another DI Framework ;-) ).
 
 ## Quick example
 
@@ -42,7 +42,7 @@ public class Bean {
 }
 ```
 
-and instructs Projector to inject these configuration properties in the annotated fields :
+and instructs Projector to inject these configuration properties in the annotated fields:
 
 ```java
 //Instantiate your object
@@ -55,9 +55,9 @@ PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
 propertiesInjector.injectProperties(bean);
 ```
 
-That it! Projector will introspect the `Bean` instance looking for fields annotated with @Property and @SystemProperty, convert each property value to the field type and inject that value into the annotated field.
+That's it! Projector will introspect the `Bean` instance looking for fields annotated with @Property and @SystemProperty, convert each property value to the field type and inject that value into the annotated field.
 
-**Without** Projector, you would write something like this :
+**Without** Projector, you would write something like this:
 
 ```java
 public class Bean {
@@ -104,11 +104,11 @@ As you can see, a lot of boilerplate code is written to load two properties, con
 
 Projector handles all this boilerplate for you, which makes your code cleaner, more readable and maintainable.
 
-In this quick example, you have seen two types of properties sources (System and resource bundle). Projector allows you to inject properties from many other sources like database, JNDI, and more.
+In this quick example, you have seen two types of properties sources (system and resource bundle). Projector allows you to inject properties from many other sources like databases, JNDI contexts, and more.
 
 Even better, Projector allows you write your own annotations and inject properties from a custom configuration source.
 
-Checkout the complete reference in project's [wiki](https://github.com/benas/projector/wiki).
+Checkout the complete reference in the project's [wiki](https://github.com/benas/projector/wiki).
 
 ## Documentation
 
@@ -119,7 +119,4 @@ Projector's documentation can be found here : [https://github.com/benas/projecto
 * [natlantisprog](https://github.com/natlantisprog)
 
 ## License
-Projector is released under the [MIT License][].
-
-[https://github.com/benas/projector/wiki]: https://github.com/benas/projector/wiki
-[MIT License]: http://opensource.org/licenses/mit-license.php/
+Projector is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
