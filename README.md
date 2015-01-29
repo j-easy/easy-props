@@ -12,9 +12,9 @@ Dependency injections frameworks allow you to inject properties in your Java obj
 
 In order to benefit from this feature, your code should run inside a DI container, or at least, the object in which your are trying to inject properties must be managed by a DI container.
 
-But what if your code does not run inside a DI container? This is where Projector comes to play, to allow you to benefit from DI without requiring your code to run inside a container.
+But what if your code does not run inside a DI container? This is where Projector comes to play, to allow you to benefit from DI without requiring your code to run inside a DI container.
 
-That said, **Projector is a library, not a framework**. It is not YADIF (Yet Another DI Framework :smirk: ).
+That said, **Projector is a library, not a framework**. It is **not** YADIF (Yet Another DI Framework) :smirk:
 
 ## Quick example
 
