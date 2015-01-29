@@ -2,7 +2,7 @@
  *
  *   The MIT License
  *
- *    Copyright (c) 2014, Mahmoud Ben Hassine (md.benhassine@gmail.com)
+ *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ import java.util.jar.Manifest;
 /**
  * An annotation processor that loads a header value from META-INF/MANIFEST.MF file.
  *
- * @author Mahmoud Ben Hassine (md.benhassine@gmail.com)
+ * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<ManifestProperty> {
 
