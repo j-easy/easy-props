@@ -2,9 +2,9 @@
 
 Projector (**PRO**perty inj**ECTOR**) is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
-The idea behind Projector is to implement the "Inversion Of Control" principle : Instead of having objects looking actively for configuration properties, these objects simply declare configuration properties they need and these properties will be provided to them by a tool, Projector for instance!
+The idea behind Projector is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking actively for configuration properties, these objects simply declare configuration properties they need and these properties will be provided to them by a tool, Projector for instance!
 
-It is a kind of dependency injection tool, but for properties. Let's call it "property injection".
+It is a kind of dependency injection tool, but for properties. Let's call it _"property injection"_.
 
 ## Why Projector?
 
@@ -14,7 +14,7 @@ In order to benefit from this feature, your code should run inside a DI containe
 
 But what if your code does not run inside a DI container? This is where Projector comes to play, to allow you to benefit from DI without requiring your code to run inside a container.
 
-That said, **Projector is a library, not a framework**. It is not YADIF (Yet Another DI Framework ;-) ).
+That said, **Projector is a library, not a framework**. It is not YADIF (Yet Another DI Framework :smirk: ).
 
 ## Quick example
 
