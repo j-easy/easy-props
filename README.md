@@ -8,7 +8,7 @@ It is a kind of dependency injection, but for properties. Let's call it _"proper
 
 ## Why Projector?
 
-Dependency injections frameworks allow you to inject properties in your Java objects and they do it very well.
+Dependency injection frameworks allow you to inject properties in your Java objects and they do it very well.
 
 But in order to benefit from this feature, your code should run inside a DI container, or at least, the object in which your are trying to inject properties must be managed by a DI container.
 
