@@ -33,6 +33,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An annotation processor that loads properties from properties files.
@@ -40,6 +42,8 @@ import java.util.Properties;
  * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
  */
 public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<Property> {
+
+    private Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * A map holding source file name and Properties object serving as a cache.
@@ -80,11 +84,18 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
 
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
-        if (value != null && !value.isEmpty()) {
-            injectProperty(object, field, key, value);
-        } else {
-            throw new Exception("Key " + key + " not found or empty in source " + source);
+        if (value == null) {
+            logger.log(Level.WARNING, "Property " + key + " on field '" + field.getName() +
+                    "' of type '" + object.getClass() + "' not found in properties file: "
+                    + source);
+            return;
         }
+        if (value.isEmpty()) {
+            //silently ignore empty values
+            return;
+        }
+
+        injectProperty(object, field, key, value);
 
     }
 

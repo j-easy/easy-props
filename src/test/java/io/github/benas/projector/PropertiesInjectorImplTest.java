@@ -27,7 +27,6 @@ package io.github.benas.projector;
 import io.github.benas.projector.api.PropertiesInjector;
 import io.github.benas.projector.impl.PropertiesInjectorBuilder;
 import org.junit.*;
-
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.naming.Context;
@@ -118,6 +117,18 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testManifestPropertyInjection() throws Exception {
         Assert.assertEquals("Apache Maven 3.0.4", bean.getCreatedBy());
+    }
+
+    @Test
+    public void testEmptyPropertyInjection() throws Exception {
+        Pojo pojo = new Pojo();
+
+        propertiesInjector.injectProperties(pojo);
+
+        Assert.assertEquals("value1", pojo.getField1());
+        Assert.assertEquals("value2", pojo.getField2());
+        Assert.assertNull(pojo.getField3());
+        Assert.assertEquals("value4", pojo.getField4());
     }
 
     @After
