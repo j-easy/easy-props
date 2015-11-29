@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains main adp4j API.
+ * This package contains main Easy Properties API.
  */
 package io.github.benas.easyproperties.api;

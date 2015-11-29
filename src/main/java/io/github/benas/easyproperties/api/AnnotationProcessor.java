@@ -35,7 +35,7 @@ import java.lang.reflect.Field;
 public interface AnnotationProcessor<T extends Annotation> {
 
     /**
-     * Process an annotation of type T to be introspected by ADP4J.
+     * Process an annotation of type T to be introspected by Easy Properties.
      *
      * @param annotation the annotation to process.
      * @param field      the field annotated with the annotation.

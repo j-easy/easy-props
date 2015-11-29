@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains main adp4j annotations.
+ * This package contains main Easy Properties annotations.
  */
 package io.github.benas.easyproperties.annotations;

@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains core adp4j implementation.
+ * This package contains core Easy Properties implementation.
  */
 package io.github.benas.easyproperties.impl;

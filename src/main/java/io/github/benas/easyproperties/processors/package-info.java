@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains adp4j annotation processors.
+ * This package contains Easy Properties annotation processors.
  */
 package io.github.benas.easyproperties.processors;

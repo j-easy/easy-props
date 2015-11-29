@@ -46,9 +46,9 @@ public @interface MavenProperty {
     String source() default "pom.properties";
 
     /**
-     * The field name in MAVEN context.
+     * The field name in maven context.
      *
-     * @return The value in MAVEN context
+     * @return The value in maven context
      */
     String key();
 
