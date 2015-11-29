@@ -40,8 +40,8 @@ public interface AnnotationProcessor<T extends Annotation> {
      * @param annotation the annotation to process.
      * @param field      the field annotated with the annotation.
      * @param object     the object being configured.
-     * @throws Exception thrown if an exception occurs during annotation processing
+     * @throws AnnotationProcessingException thrown if an exception occurs during annotation processing
      */
-    void processAnnotation(T annotation, Field field, Object object) throws Exception;
+    void processAnnotation(T annotation, Field field, Object object) throws AnnotationProcessingException;
 
 }

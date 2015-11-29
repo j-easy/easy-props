@@ -24,11 +24,13 @@
 
 package io.github.benas.easyproperties.processors;
 
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
-import java.text.MessageFormat;
+
+import static java.lang.String.format;
 
 /**
  * Base class for {@link io.github.benas.easyproperties.api.AnnotationProcessor} implementations providing common methods.
@@ -44,16 +46,16 @@ public abstract class AbstractAnnotationProcessor {
      * @param field  the annotated field
      * @param key    the annotation property attribute
      * @param value  the value to inject
-     * @throws Exception thrown if an exception occurs when trying to set the field value
+     * @throws AnnotationProcessingException thrown if an exception occurs when trying to set the field value
      */
-    protected void injectProperty(Object target, Field field, String key, Object value) throws Exception {
+    protected void processAnnotation(final Object target, final Field field, final String key, final Object value) throws AnnotationProcessingException {
 
         Object typedValue = ConvertUtils.convert(value, field.getType());
         try {
             PropertyUtils.setProperty(target, field.getName(), typedValue);
         } catch (Exception e) {
-            throw new Exception("Unable to set property " + key + " on field " + field.getName() + " of type " +
-                    target.getClass() + ". A setter may be missing for this field.", e);
+            throw new AnnotationProcessingException(format("Unable to set property %s on field %s of type %s." +
+                    " A setter may be missing for this field.", key, field.getName(), target.getClass()), e);
         }
 
     }
@@ -67,7 +69,7 @@ public abstract class AbstractAnnotationProcessor {
      * @return the formatted error message
      */
     protected String missingSourceFile(final String source, final Field field, final Object object) {
-        return MessageFormat.format("Unable to load properties from source {0} for field {1} of type {2}",
+        return String.format("Unable to load properties from source %s for field %s of type %s",
                 source, field.getName(), object.getClass().getName());
     }
 
@@ -81,7 +83,7 @@ public abstract class AbstractAnnotationProcessor {
      * @return the formatted error message
      */
     protected String missingAttributeValue(final String attribute, final String annotation, final Field field, final Object object) {
-        return MessageFormat.format("No value specified for attribute {0} of {1} annotation on field {2} of type {3}",
+        return String.format("No value specified for attribute %s of %s annotation on field %s of type %s",
                 attribute, annotation, field.getName(), object.getClass().getName());
     }
 

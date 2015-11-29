@@ -25,10 +25,12 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.JNDIProperty;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.lang.reflect.Field;
 
 /**
@@ -44,29 +46,38 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Context context;
 
     @Override
-    public void processAnnotation(final JNDIProperty jndiPropertyAnnotation, final Field field, Object object) throws Exception {
+    public void processAnnotation(final JNDIProperty jndiPropertyAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
         if (context == null) {
-            context = new InitialContext(); // not in constructor cause throw NamingException
+            try {
+                context = new InitialContext(); // not in constructor cause throw NamingException
+            } catch (NamingException e) {
+                throw new AnnotationProcessingException("Unable to initialize JNDI context", e);
+            }
         }
 
         String name = jndiPropertyAnnotation.value().trim();
 
         //check name attribute value
         if (name.isEmpty()) {
-            throw new Exception(missingAttributeValue("name", "@JNDIProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("name", "@JNDIProperty", field, object));
         }
 
         //get object from JNDI context
-        Object value = context.lookup(name);
+        Object value;
+        try {
+            value = context.lookup(name);
+        } catch (NamingException e) {
+            throw new AnnotationProcessingException(String.format("Unable to lookup object %s from JNDI context", name), e);
+        }
 
         //check object obtained from JNDI context
         if (value == null) {
-            throw new Exception("JNDI object " + name + " not found in JNDI context.");
+            throw new AnnotationProcessingException("JNDI object " + name + " not found in JNDI context.");
         }
 
         //inject object in annotated field
-        injectProperty(object, field, name, value);
+        processAnnotation(object, field, name, value);
 
     }
 

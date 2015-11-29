@@ -26,6 +26,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.ManifestProperty;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.FileInputStream;
@@ -55,13 +56,13 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     private Map<String, Manifest> manifestEntries = new HashMap<>();
 
     @Override
-    public void processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field, Object object) throws Exception {
+    public void processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
         String jar = manifestPropertyAnnotation.jar().trim();
         String header = manifestPropertyAnnotation.header().trim();
 
         if (header.isEmpty()) {
-            throw new Exception(missingAttributeValue("header", "@ManifestProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("header", "@ManifestProperty", field, object));
         }
 
         //process default jar attribute value, look for manifest in the target object jar
@@ -72,10 +73,10 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
                     Manifest manifest = new Manifest(inputStream);
                     manifestEntries.put(jar, manifest);
                 } else {
-                    throw new Exception(missingSourceFile(MANIFEST, field, object));
+                    throw new AnnotationProcessingException(missingSourceFile(MANIFEST, field, object));
                 }
             } catch (IOException ex) {
-                throw new Exception(missingSourceFile(MANIFEST, field, object), ex);
+                throw new AnnotationProcessingException(missingSourceFile(MANIFEST, field, object), ex);
             }
         }
 
@@ -92,16 +93,16 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
                     }
                 }
             } catch (IOException ex) {
-                throw new Exception(missingSourceFile(jar, field, object), ex);
+                throw new AnnotationProcessingException(missingSourceFile(jar, field, object), ex);
             }
         }
 
         //the jar was not found in the classpath
         if (manifestEntries.get(jar) == null) {
-            throw new Exception(missingSourceFile(jar, field, object));
+            throw new AnnotationProcessingException(missingSourceFile(jar, field, object));
         }
 
-        injectProperty(object, field, header, manifestEntries.get(jar).getMainAttributes().getValue(header));
+        processAnnotation(object, field, header, manifestEntries.get(jar).getMainAttributes().getValue(header));
 
     }
 

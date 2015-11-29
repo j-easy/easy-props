@@ -25,6 +25,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.SystemProperty;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.lang.reflect.Field;
@@ -44,13 +45,13 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
     private Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
-    public void processAnnotation(final SystemProperty systemProperty, final Field field, Object object) throws Exception {
+    public void processAnnotation(final SystemProperty systemProperty, final Field field, final Object object) throws AnnotationProcessingException {
 
         String key = systemProperty.value().trim();
 
         //check key value
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("value", "@SystemProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("value", "@SystemProperty", field, object));
         }
 
         //check system property
@@ -65,11 +66,11 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                throw new Exception(missingAttributeValue("defaultValue", "@SystemProperty", field, object));
+                throw new AnnotationProcessingException(missingAttributeValue("defaultValue", "@SystemProperty", field, object));
             }
         }
 
-        injectProperty(object, field, key, value);
+        processAnnotation(object, field, key, value);
 
     }
 }

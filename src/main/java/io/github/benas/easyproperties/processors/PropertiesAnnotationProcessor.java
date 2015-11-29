@@ -25,6 +25,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.Properties;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.IOException;
@@ -46,17 +47,17 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor i
     private Map<String, java.util.Properties> propertiesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final Properties propertiesAnnotation, final Field field, Object object) throws Exception {
+    public void processAnnotation(final Properties propertiesAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
         if (!field.getType().equals(java.util.Properties.class)) {
-            throw new Exception("@Properties declared on field " + field.getName() + " of type " +
+            throw new AnnotationProcessingException("@Properties declared on field " + field.getName() + " of type " +
                     object.getClass() + " is incompatible with type " + field.getType());
         }
 
         String source = propertiesAnnotation.value().trim();
 
         if (source.isEmpty()) {
-            throw new Exception(missingAttributeValue("source", "@Properties", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("source", "@Properties", field, object));
         }
 
 
@@ -69,14 +70,14 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor i
                     properties.load(inputStream);
                     propertiesMap.put(source, properties);
                 } else {
-                    throw new Exception(missingSourceFile(source, field, object));
+                    throw new AnnotationProcessingException(missingSourceFile(source, field, object));
                 }
             } catch (IOException ex) {
-                throw new Exception(missingSourceFile(source, field, object), ex);
+                throw new AnnotationProcessingException(missingSourceFile(source, field, object), ex);
             }
         }
 
-        injectProperty(object, field, source, propertiesMap.get(source));
+        processAnnotation(object, field, source, propertiesMap.get(source));
 
     }
 

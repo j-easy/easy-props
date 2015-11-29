@@ -25,6 +25,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.MavenProperty;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
     private Map<String, String> mavenMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final MavenProperty mavenAnnotation, final Field field, Object object) throws Exception {
+    public void processAnnotation(final MavenProperty mavenAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
         // We get the key to find into the pom
         String key = mavenAnnotation.key().trim();
@@ -55,15 +56,15 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
         String artifactId = mavenAnnotation.artifactId().trim();
 
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("key", "@MavenProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("key", "@MavenProperty", field, object));
         }
 
         if (groupId.isEmpty()) {
-            throw new Exception(missingAttributeValue("groupId", "@MavenProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("groupId", "@MavenProperty", field, object));
         }
 
         if (artifactId.isEmpty()) {
-            throw new Exception(missingAttributeValue("artifactId", "@MavenProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("artifactId", "@MavenProperty", field, object));
         }
 
         //check if the maven value is not already loaded
@@ -81,14 +82,14 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
                     String keyValueAnalyzed = String.valueOf(keyValue);
                     mavenMap.put(cacheKey, keyValueAnalyzed);
                 } else {
-                    throw new Exception(missingSourceFile(pathToMaven, field, object));
+                    throw new AnnotationProcessingException(missingSourceFile(pathToMaven, field, object));
                 }
             } catch (IOException ex) {
-                throw new Exception(missingSourceFile(pathToMaven, field, object), ex);
+                throw new AnnotationProcessingException(missingSourceFile(pathToMaven, field, object), ex);
             }
         }
 
-        injectProperty(object, field, key, mavenMap.get(cacheKey));
+        processAnnotation(object, field, key, mavenMap.get(cacheKey));
 
     }
 

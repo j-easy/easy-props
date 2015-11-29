@@ -35,8 +35,8 @@ public interface PropertiesInjector {
      * Inject properties in annotated fields of the given object.
      *
      * @param object the object in which to inject properties.
-     * @throws Exception thrown if an exception occurs during properties injection
+     * @throws PropertyInjectionException thrown if an exception occurs during properties injection
      */
-    void injectProperties(Object object) throws Exception;
+    void injectProperties(final Object object) throws PropertyInjectionException;
 
 }

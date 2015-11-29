@@ -26,13 +26,17 @@ package io.github.benas.easyproperties.impl;
 
 import io.github.benas.easyproperties.annotations.*;
 import io.github.benas.easyproperties.annotations.Properties;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
+import io.github.benas.easyproperties.api.PropertyInjectionException;
 import io.github.benas.easyproperties.processors.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static java.lang.String.format;
 
 /**
  * The core implementation of the {@link io.github.benas.easyproperties.api.PropertiesInjector} interface.
@@ -62,7 +66,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
     }
 
     @Override
-    public void injectProperties(Object object) throws Exception {
+    public void injectProperties(final Object object) throws PropertyInjectionException {
 
         /*
          * Retrieve declared fields
@@ -87,7 +91,11 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
                 AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
                 if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
                     Annotation annotation = field.getAnnotation(annotationType);
-                    annotationProcessor.processAnnotation(annotation, field, object);
+                    try {
+                        annotationProcessor.processAnnotation(annotation, field, object);
+                    } catch (AnnotationProcessingException e) {
+                        throw new PropertyInjectionException(format("Unable to inject property %s in field %s of object %s", annotation, field.getName(), object), e);
+                    }
                 }
             }
         }

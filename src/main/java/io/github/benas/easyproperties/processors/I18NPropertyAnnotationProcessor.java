@@ -25,6 +25,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.I18NProperty;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.lang.reflect.Field;
@@ -43,7 +44,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Map<String, ResourceBundle> resourceBundlesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final I18NProperty property, final Field field, Object object) throws Exception {
+    public void processAnnotation(final I18NProperty property, final Field field, final Object object) throws AnnotationProcessingException {
 
         String key = property.key().trim();
         String bundle = property.bundle().trim();
@@ -53,12 +54,12 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check bundle attribute value
         if (bundle.isEmpty()) {
-            throw new Exception(missingAttributeValue("bundle", "I18NProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("bundle", "I18NProperty", field, object));
         }
 
         //check key attribute value
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("key", "I18NProperty", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("key", "I18NProperty", field, object));
         }
 
         Locale locale = Locale.getDefault();
@@ -79,16 +80,16 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
                 ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
                 resourceBundlesMap.put(bundle, resourceBundle);
             } catch (MissingResourceException e) {
-                throw new Exception("Resource bundle " + bundle + " not found", e);
+                throw new AnnotationProcessingException("Resource bundle " + bundle + " not found", e);
             }
         }
 
         //get key value, convert it to the right type and set it to the field
         String value = resourceBundlesMap.get(bundle).getString(key);
         if (value != null && !value.isEmpty()) {
-            injectProperty(object, field, key, value);
+            processAnnotation(object, field, key, value);
         } else {
-            throw new Exception("Key " + key + " not found or empty in resource bundle " + bundle);
+            throw new AnnotationProcessingException("Key " + key + " not found or empty in resource bundle " + bundle);
         }
 
     }

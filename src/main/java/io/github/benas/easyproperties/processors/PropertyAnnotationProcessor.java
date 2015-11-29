@@ -25,6 +25,7 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.Property;
+import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.IOException;
@@ -51,19 +52,19 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
     private Map<String, Properties> propertiesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final Property property, final Field field, Object object) throws Exception {
+    public void processAnnotation(final Property property, final Field field, final Object object) throws AnnotationProcessingException {
 
         String source = property.source().trim();
         String key = property.key().trim();
 
         //check source attribute value
         if (source.isEmpty()) {
-            throw new Exception(missingAttributeValue("source", "@Property", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("source", "@Property", field, object));
         }
 
         //check key attribute value
         if (key.isEmpty()) {
-            throw new Exception(missingAttributeValue("key", "@Property", field, object));
+            throw new AnnotationProcessingException(missingAttributeValue("key", "@Property", field, object));
         }
 
         //check if the source file is not already loaded
@@ -75,10 +76,10 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
                     properties.load(inputStream);
                     propertiesMap.put(source, properties);
                 } else {
-                    throw new Exception(missingSourceFile(source, field, object));
+                    throw new AnnotationProcessingException(missingSourceFile(source, field, object));
                 }
             } catch (IOException ex) {
-                throw new Exception(missingSourceFile(source, field, object), ex);
+                throw new AnnotationProcessingException(missingSourceFile(source, field, object), ex);
             }
         }
 
@@ -95,7 +96,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
             return;
         }
 
-        injectProperty(object, field, key, value);
+        processAnnotation(object, field, key, value);
 
     }
 
