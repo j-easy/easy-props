@@ -87,7 +87,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
     private void loadProperties(final String source) throws AnnotationProcessingException {
         Properties properties = new Properties();
         try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
+            InputStream inputStream = getResourceAsStream(source);
             if (inputStream != null) {
                 properties.load(inputStream);
                 propertiesMap.put(source, properties);

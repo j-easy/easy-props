@@ -155,7 +155,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
     private void loadDatabaseConfigurationProperties(final String configuration) throws AnnotationProcessingException {
         Properties dbConfigurationProperties = new Properties();
         try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(configuration);
+            InputStream inputStream = getResourceAsStream(configuration);
             if (inputStream != null) {
                 dbConfigurationProperties.load(inputStream);
                 dbConfigurationMap.put(configuration, dbConfigurationProperties);

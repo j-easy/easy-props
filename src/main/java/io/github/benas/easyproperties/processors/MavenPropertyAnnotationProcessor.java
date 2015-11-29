@@ -65,7 +65,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
             java.util.Properties properties = new java.util.Properties();
             String pathToMavenPom = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
             try {
-                InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(pathToMavenPom);
+                InputStream inputStream = getResourceAsStream(pathToMavenPom);
                 if (inputStream != null) {
                     properties.load(inputStream);
                     mavenMap.put(property, properties.getProperty(key));

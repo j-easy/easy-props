@@ -28,6 +28,7 @@ import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -79,6 +80,10 @@ public abstract class AbstractAnnotationProcessor {
         if (value.isEmpty()) {
             throw new AnnotationProcessingException(message);
         }
+    }
+
+    protected InputStream getResourceAsStream(final String configuration) {
+        return this.getClass().getClassLoader().getResourceAsStream(configuration);
     }
 
 }
