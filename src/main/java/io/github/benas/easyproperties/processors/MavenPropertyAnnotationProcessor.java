@@ -49,47 +49,33 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
     @Override
     public void processAnnotation(final MavenProperty mavenAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
-        // We get the key to find into the pom
         String key = mavenAnnotation.key().trim();
         String source = mavenAnnotation.source().trim();
         String groupId = mavenAnnotation.groupId().trim();
         String artifactId = mavenAnnotation.artifactId().trim();
 
-        if (key.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("key", "@MavenProperty", field, object));
-        }
+        //check attributes
+        checkIfEmpty(key, missingAttributeValue("key", "@MavenProperty", field, object));
+        checkIfEmpty(groupId, missingAttributeValue("groupId", "@MavenProperty", field, object));
+        checkIfEmpty(artifactId, missingAttributeValue("artifactId", "@MavenProperty", field, object));
 
-        if (groupId.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("groupId", "@MavenProperty", field, object));
-        }
-
-        if (artifactId.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("artifactId", "@MavenProperty", field, object));
-        }
-
-        //check if the maven value is not already loaded
-        String cacheKey = groupId + "." + artifactId + "." + key;
-        if (!mavenMap.containsKey(cacheKey)) {
+        //check if the maven property is not already loaded
+        String property = groupId + "." + artifactId + "." + key;
+        if (!mavenMap.containsKey(property)) {
             java.util.Properties properties = new java.util.Properties();
-            // We search directly into the META-INF generated property
-            String pathToMaven = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
-
+            String pathToMavenPom = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
             try {
-                InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(pathToMaven);
+                InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(pathToMavenPom);
                 if (inputStream != null) {
                     properties.load(inputStream);
-                    Object keyValue = properties.get(key);
-                    String keyValueAnalyzed = String.valueOf(keyValue);
-                    mavenMap.put(cacheKey, keyValueAnalyzed);
-                } else {
-                    throw new AnnotationProcessingException(missingSourceFile(pathToMaven, field, object));
+                    mavenMap.put(property, properties.getProperty(key));
                 }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(pathToMaven, field, object), ex);
+            } catch (IOException e) {
+                throw new AnnotationProcessingException(String.format("Unable to load pom file from %s", pathToMavenPom), e);
             }
         }
 
-        processAnnotation(object, field, key, mavenMap.get(cacheKey));
+        processAnnotation(object, field, key, mavenMap.get(property));
 
     }
 

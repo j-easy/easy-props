@@ -34,6 +34,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads all properties from a properties file.
  *
@@ -49,36 +51,38 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor i
     @Override
     public void processAnnotation(final Properties propertiesAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
-        if (!field.getType().equals(java.util.Properties.class)) {
-            throw new AnnotationProcessingException("@Properties declared on field " + field.getName() + " of type " +
-                    object.getClass() + " is incompatible with type " + field.getType());
-        }
+        checkIfFieldIsOfType(field, object, java.util.Properties.class);
 
         String source = propertiesAnnotation.value().trim();
-
-        if (source.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("source", "@Properties", field, object));
-        }
-
+        checkIfEmpty(source, missingAttributeValue("source", "@Properties", field, object));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
-            java.util.Properties properties = new java.util.Properties();
-            try {
-                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
-                if (inputStream != null) {
-                    properties.load(inputStream);
-                    propertiesMap.put(source, properties);
-                } else {
-                    throw new AnnotationProcessingException(missingSourceFile(source, field, object));
-                }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(source, field, object), ex);
-            }
+            loadProperties(source);
         }
 
         processAnnotation(object, field, source, propertiesMap.get(source));
 
+    }
+
+    private void loadProperties(final String source) throws AnnotationProcessingException {
+        java.util.Properties properties = new java.util.Properties();
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
+            if (inputStream != null) {
+                properties.load(inputStream);
+                propertiesMap.put(source, properties);
+            }
+        } catch (IOException e) {
+            throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);
+        }
+    }
+
+    private void checkIfFieldIsOfType(Field field, Object object, Class type) throws AnnotationProcessingException {
+        if (!field.getType().equals(type)) {
+            throw new AnnotationProcessingException(format("Annotation @Properties declared on field %s of type %s is incompatible with type %s",
+                    field.getName(), object.getClass(), field.getType()));
+        }
     }
 
 }

@@ -65,81 +65,18 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
         String configuration = dbPropertyAnnotation.configuration().trim();
         String key = dbPropertyAnnotation.key().trim();
 
-        //check configuration attribute value
-        if (configuration.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("configuration", "@DBProperty", field, object));
-        }
+        //check attributes
+        checkIfEmpty(configuration, missingAttributeValue("configuration", "@DBProperty", field, object));
+        checkIfEmpty(key, missingAttributeValue("key", "@DBProperty", field, object));
 
-        //check key attribute value
-        if (key.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("key", "@DBProperty", field, object));
+        //check if database connection configuration is not already loaded
+        if (!dbConfigurationMap.containsKey(configuration)) {
+            loadDatabaseConfigurationProperties(configuration);
         }
 
         //check if database connection properties are not already loaded
-        if (!dbConfigurationMap.containsKey(configuration)) {
-            Properties dbConfigurationProperties = new Properties();
-            try {
-                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(configuration);
-                if (inputStream != null) {
-                    dbConfigurationProperties.load(inputStream);
-                    dbConfigurationMap.put(configuration, dbConfigurationProperties);
-                } else {
-                    throw new AnnotationProcessingException(missingSourceFile(configuration, field, object));
-                }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(configuration, field, object), ex);
-            }
-        }
-
-        //check if database properties are not already loaded
         if (!dbPropertiesMap.containsKey(configuration)) {
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet resultSet = null;
-            try {
-                Properties dbConfigurationProperties = dbConfigurationMap.get(configuration);
-
-                Class.forName(dbConfigurationProperties.getProperty("db.driver"));
-
-                String url = dbConfigurationProperties.getProperty("db.url");
-                String user = dbConfigurationProperties.getProperty("db.user");
-                String password = dbConfigurationProperties.getProperty("db.password");
-                connection = DriverManager.getConnection(url, user, password);
-
-                String schema = dbConfigurationProperties.getProperty("db.schema");
-                String table = dbConfigurationProperties.getProperty("db.table");
-                String keyColumn = dbConfigurationProperties.getProperty("db.table.keyColumn");
-                String valueColumn = dbConfigurationProperties.getProperty("db.table.valueColumn");
-                statement = connection.createStatement();
-                resultSet = statement.executeQuery(
-                        "SELECT " + keyColumn + ", " + valueColumn + " FROM " + schema + "." + table
-                );
-
-                Properties dbProperties = new Properties();
-                while (resultSet.next()) {
-                    String dbKey = resultSet.getString(keyColumn);
-                    String dbValue = resultSet.getString(valueColumn);
-                    dbProperties.put(dbKey, dbValue);
-                }
-                dbPropertiesMap.put(configuration, dbProperties);
-
-            } catch (Exception e) {
-                throw new AnnotationProcessingException("Unable to get database properties", e);
-            } finally {
-                try {
-                    if (resultSet != null ) {
-                        resultSet.close();
-                    }
-                    if (statement != null) {
-                        statement.close();
-                    }
-                    if (connection != null) {
-                        connection.close();
-                    }
-                } catch(SQLException e) {
-                    LOGGER.log(Level.WARNING, "Unable to close database resources", e);
-                }
-            }
+            loadDatabaseProperties(configuration);
         }
 
         //check object obtained from database
@@ -151,6 +88,81 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
         //inject object in annotated field
         processAnnotation(object, field, key, value);
 
+    }
+
+    private void loadDatabaseProperties(String configuration) throws AnnotationProcessingException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            Properties dbConfigurationProperties = dbConfigurationMap.get(configuration);
+            Class.forName(dbConfigurationProperties.getProperty("db.driver"));
+            connection = getConnection(dbConfigurationProperties);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(getSqlQuery(dbConfigurationProperties));
+            Properties dbProperties = extractProperties(resultSet, dbConfigurationProperties);
+            dbPropertiesMap.put(configuration, dbProperties);
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new AnnotationProcessingException("Unable to get database properties", e);
+        } finally {
+            try {
+                closeResources(connection, statement, resultSet);
+            } catch(SQLException e) {
+                LOGGER.log(Level.WARNING, "Unable to close database resources", e);
+            }
+        }
+    }
+
+    private Properties extractProperties(final ResultSet resultSet, final Properties dbConfigurationProperties) throws SQLException {
+        Properties dbProperties = new Properties();
+        String keyColumn = dbConfigurationProperties.getProperty("db.table.keyColumn");
+        String valueColumn = dbConfigurationProperties.getProperty("db.table.valueColumn");
+        while (resultSet.next()) {
+            String dbKey = resultSet.getString(keyColumn);
+            String dbValue = resultSet.getString(valueColumn);
+            dbProperties.put(dbKey, dbValue);
+        }
+        return dbProperties;
+    }
+
+    private Connection getConnection(final Properties dbConfigurationProperties) throws SQLException {
+        String url = dbConfigurationProperties.getProperty("db.url");
+        String user = dbConfigurationProperties.getProperty("db.user");
+        String password = dbConfigurationProperties.getProperty("db.password");
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    private String getSqlQuery(final Properties dbConfigurationProperties) {
+        String schema = dbConfigurationProperties.getProperty("db.schema");
+        String table = dbConfigurationProperties.getProperty("db.table");
+        String keyColumn = dbConfigurationProperties.getProperty("db.table.keyColumn");
+        String valueColumn = dbConfigurationProperties.getProperty("db.table.valueColumn");
+        return format("SELECT %s, %s FROM %s.%s", keyColumn, valueColumn, schema, table);
+    }
+
+    private void closeResources(final Connection connection, final Statement statement, final ResultSet resultSet) throws SQLException {
+        if (resultSet != null ) {
+            resultSet.close();
+        }
+        if (statement != null) {
+            statement.close();
+        }
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
+    private void loadDatabaseConfigurationProperties(final String configuration) throws AnnotationProcessingException {
+        Properties dbConfigurationProperties = new Properties();
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(configuration);
+            if (inputStream != null) {
+                dbConfigurationProperties.load(inputStream);
+                dbConfigurationMap.put(configuration, dbConfigurationProperties);
+            }
+        } catch (IOException e) {
+            throw new AnnotationProcessingException(format("Unable to get properties from %s", configuration), e);
+        }
     }
 
 }

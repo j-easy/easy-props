@@ -33,6 +33,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.lang.reflect.Field;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads properties from a JNDI context.
  *
@@ -58,22 +60,20 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         String name = jndiPropertyAnnotation.value().trim();
 
-        //check name attribute value
-        if (name.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("name", "@JNDIProperty", field, object));
-        }
+        //check attributes
+        checkIfEmpty(name, missingAttributeValue("name", "@JNDIProperty", field, object));
 
         //get object from JNDI context
         Object value;
         try {
             value = context.lookup(name);
         } catch (NamingException e) {
-            throw new AnnotationProcessingException(String.format("Unable to lookup object %s from JNDI context", name), e);
+            throw new AnnotationProcessingException(format("Unable to lookup object %s from JNDI context", name), e);
         }
 
         //check object obtained from JNDI context
         if (value == null) {
-            throw new AnnotationProcessingException("JNDI object " + name + " not found in JNDI context.");
+            throw new AnnotationProcessingException(String.format("JNDI object %s not found in JNDI context.", name));
         }
 
         //inject object in annotated field

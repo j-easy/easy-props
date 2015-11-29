@@ -31,12 +31,13 @@ import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
+
+import static java.lang.String.format;
 
 /**
  * An annotation processor that loads a header value from META-INF/MANIFEST.MF file.
@@ -45,10 +46,9 @@ import java.util.jar.Manifest;
  */
 public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<ManifestProperty> {
 
-    /**
-     * Manifest file location.
-     */
-    private static final String MANIFEST = "META-INF/MANIFEST.MF";
+    public static final String CLASSPATH = System.getProperty("java.class.path");
+
+    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
     /**
      * A map of jar / manifest entries pairs.
@@ -61,49 +61,38 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
         String jar = manifestPropertyAnnotation.jar().trim();
         String header = manifestPropertyAnnotation.header().trim();
 
-        if (header.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("header", "@ManifestProperty", field, object));
-        }
-
-        //process default jar attribute value, look for manifest in the target object jar
-        if (jar.length() == 0) {
-            try {
-                InputStream inputStream = object.getClass().getClassLoader().getResourceAsStream(MANIFEST);
-                if (inputStream != null) {
-                    Manifest manifest = new Manifest(inputStream);
-                    manifestEntries.put(jar, manifest);
-                } else {
-                    throw new AnnotationProcessingException(missingSourceFile(MANIFEST, field, object));
-                }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(MANIFEST, field, object), ex);
-            }
-        }
+        //check attributes
+        checkIfEmpty(jar, missingAttributeValue("jar", "@ManifestProperty", field, object));
+        checkIfEmpty(header, missingAttributeValue("header", "@ManifestProperty", field, object));
 
         if (manifestEntries.get(jar) == null) {
-            try {
-                JarInputStream jarStream;
-                final String classPath = System.getProperty("java.class.path");
-                final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
-                for (final String element : classPathElements) {
-                    if (element.endsWith(jar)) {
-                        jarStream = new JarInputStream(new FileInputStream(element));
-                        manifestEntries.put(jar, jarStream.getManifest());
-                        break;
-                    }
-                }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(jar, field, object), ex);
-            }
+            loadManifestFromJar(jar);
         }
 
         //the jar was not found in the classpath
         if (manifestEntries.get(jar) == null) {
-            throw new AnnotationProcessingException(missingSourceFile(jar, field, object));
+            throw new AnnotationProcessingException(format("Unable to find jar %s in classpath: %s", jar, CLASSPATH));
         }
 
         processAnnotation(object, field, header, manifestEntries.get(jar).getMainAttributes().getValue(header));
 
+    }
+
+    private void loadManifestFromJar(final String jar) throws AnnotationProcessingException {
+        try {
+            JarInputStream jarStream;
+            final String classPath = CLASSPATH;
+            final String[] classPathElements = classPath.split(PATH_SEPARATOR);
+            for (final String element : classPathElements) {
+                if (element.endsWith(jar)) {
+                    jarStream = new JarInputStream(new FileInputStream(element));
+                    manifestEntries.put(jar, jarStream.getManifest());
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            throw new AnnotationProcessingException(format("Unable to load manifest file from jar %s", jar), e);
+        }
     }
 
 }

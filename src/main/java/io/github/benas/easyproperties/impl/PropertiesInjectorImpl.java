@@ -55,6 +55,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     public PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<>();
+        //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
         annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
@@ -71,22 +72,17 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         /*
          * Retrieve declared fields
          */
-        List<Field> declaredFields = new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
+        List<Field> fields = getDeclaredFields(object);
 
         /*
          * Retrieve inherited fields for all type hierarchy
          */
-        Class clazz = object.getClass();
-        while (clazz.getSuperclass() != null) {
-            Class superclass = clazz.getSuperclass();
-            declaredFields.addAll(Arrays.asList(superclass.getDeclaredFields()));
-            clazz = superclass;
-        }
+        fields.addAll(getInheritedFields(object));
 
         /*
          * Introspect fields for each registered annotation, and delegate its processing to the right annotation processor
          */
-        for (Field field : declaredFields) {
+        for (Field field : fields) {
             for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {
                 AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
                 if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
@@ -110,6 +106,21 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     public void registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         annotationProcessors.put(annotation, annotationProcessor);
+    }
+
+    private List<Field> getDeclaredFields(final Object object) {
+        return new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
+    }
+
+    private List<Field> getInheritedFields(final Object object) {
+        List<Field> inheritedFields = new ArrayList<>();
+        Class clazz = object.getClass();
+        while (clazz.getSuperclass() != null) {
+            Class superclass = clazz.getSuperclass();
+            inheritedFields.addAll(Arrays.asList(superclass.getDeclaredFields()));
+            clazz = superclass;
+        }
+        return inheritedFields;
     }
 
 }

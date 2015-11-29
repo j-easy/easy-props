@@ -37,6 +37,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads properties from properties files.
  *
@@ -57,38 +59,20 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
         String source = property.source().trim();
         String key = property.key().trim();
 
-        //check source attribute value
-        if (source.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("source", "@Property", field, object));
-        }
-
-        //check key attribute value
-        if (key.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("key", "@Property", field, object));
-        }
+        //check attributes
+        checkIfEmpty(source, missingAttributeValue("source", "@Property", field, object));
+        checkIfEmpty(key, missingAttributeValue("key", "@Property", field, object));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
-            Properties properties = new Properties();
-            try {
-                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
-                if (inputStream != null) {
-                    properties.load(inputStream);
-                    propertiesMap.put(source, properties);
-                } else {
-                    throw new AnnotationProcessingException(missingSourceFile(source, field, object));
-                }
-            } catch (IOException ex) {
-                throw new AnnotationProcessingException(missingSourceFile(source, field, object), ex);
-            }
+            loadProperties(source);
         }
 
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
         if (value == null) {
-            logger.log(Level.WARNING, "Property " + key + " on field '" + field.getName() +
-                    "' of type '" + object.getClass() + "' not found in properties file: "
-                    + source);
+            logger.log(Level.WARNING, String.format("Property %s on field '%s' of type '%s' not found in properties file: %s",
+                    key, field.getName(), object.getClass(), source));
             return;
         }
         if (value.isEmpty()) {
@@ -98,6 +82,19 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
 
         processAnnotation(object, field, key, value);
 
+    }
+
+    private void loadProperties(final String source) throws AnnotationProcessingException {
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(source);
+            if (inputStream != null) {
+                properties.load(inputStream);
+                propertiesMap.put(source, properties);
+            }
+        } catch (IOException e) {
+            throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);
+        }
     }
 
 }

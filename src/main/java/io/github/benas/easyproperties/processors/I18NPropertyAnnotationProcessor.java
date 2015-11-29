@@ -31,6 +31,8 @@ import io.github.benas.easyproperties.api.AnnotationProcessor;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads properties from I18N resource bundles.
  *
@@ -52,46 +54,40 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String country = property.country().trim();
         String variant = property.variant().trim();
 
-        //check bundle attribute value
-        if (bundle.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("bundle", "I18NProperty", field, object));
-        }
-
-        //check key attribute value
-        if (key.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("key", "I18NProperty", field, object));
-        }
+        //check attributes
+        checkIfEmpty(bundle, missingAttributeValue("bundle", "I18NProperty", field, object));
+        checkIfEmpty(key, missingAttributeValue("key", "I18NProperty", field, object));
 
         Locale locale = Locale.getDefault();
-        if (language != null && !language.isEmpty()) {
+        if (!language.isEmpty()) {
             locale = new Locale(language);
         }
-        if (language != null && !language.isEmpty() && country != null && !country.isEmpty()) {
+        if (!language.isEmpty() && !country.isEmpty()) {
             locale = new Locale(language, country);
         }
-        if (language != null && !language.isEmpty() && country != null && !country.isEmpty()
-                && variant != null && !variant.isEmpty()) {
+        if (!language.isEmpty() && !country.isEmpty() && !variant.isEmpty()) {
             locale = new Locale(language, country, variant);
         }
 
         //check if the resource bundle is not already loaded
         if (!resourceBundlesMap.containsKey(bundle)) {
-            try {
-                ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
-                resourceBundlesMap.put(bundle, resourceBundle);
-            } catch (MissingResourceException e) {
-                throw new AnnotationProcessingException("Resource bundle " + bundle + " not found", e);
-            }
+            loadResourceBundle(bundle, locale);
         }
 
         //get key value, convert it to the right type and set it to the field
         String value = resourceBundlesMap.get(bundle).getString(key);
-        if (value != null && !value.isEmpty()) {
-            processAnnotation(object, field, key, value);
-        } else {
-            throw new AnnotationProcessingException("Key " + key + " not found or empty in resource bundle " + bundle);
-        }
+        checkIfEmpty(value, format("Key %s not found or empty in resource bundle %s", key, bundle));
 
+        processAnnotation(object, field, key, value);
+    }
+
+    private void loadResourceBundle(final String bundle, final Locale locale) throws AnnotationProcessingException {
+        try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
+            resourceBundlesMap.put(bundle, resourceBundle);
+        } catch (MissingResourceException e) {
+            throw new AnnotationProcessingException("Resource bundle " + bundle + " not found", e);
+        }
     }
 
 }

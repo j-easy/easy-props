@@ -29,6 +29,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.String.format;
 
@@ -53,24 +54,11 @@ public abstract class AbstractAnnotationProcessor {
         Object typedValue = ConvertUtils.convert(value, field.getType());
         try {
             PropertyUtils.setProperty(target, field.getName(), typedValue);
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new AnnotationProcessingException(format("Unable to set property %s on field %s of type %s." +
                     " A setter may be missing for this field.", key, field.getName(), target.getClass()), e);
         }
 
-    }
-
-    /**
-     * Constructs an error message to signal missing properties file.
-     *
-     * @param source the source file name
-     * @param field  the target field
-     * @param object the target object
-     * @return the formatted error message
-     */
-    protected String missingSourceFile(final String source, final Field field, final Object object) {
-        return String.format("Unable to load properties from source %s for field %s of type %s",
-                source, field.getName(), object.getClass().getName());
     }
 
     /**
@@ -83,8 +71,14 @@ public abstract class AbstractAnnotationProcessor {
      * @return the formatted error message
      */
     protected String missingAttributeValue(final String attribute, final String annotation, final Field field, final Object object) {
-        return String.format("No value specified for attribute %s of %s annotation on field %s of type %s",
+        return format("No value specified for attribute '%s' of annotation '%s' on field '%s' of type '%s'",
                 attribute, annotation, field.getName(), object.getClass().getName());
+    }
+
+    protected void checkIfEmpty(final String value, final String message) throws AnnotationProcessingException {
+        if (value.isEmpty()) {
+            throw new AnnotationProcessingException(message);
+        }
     }
 
 }

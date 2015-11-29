@@ -32,6 +32,8 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads properties from system properties.
  *
@@ -39,9 +41,6 @@ import java.util.logging.Logger;
  */
 public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<SystemProperty> {
 
-    /**
-     * Logger instance.
-     */
     private Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
@@ -49,17 +48,14 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
 
         String key = systemProperty.value().trim();
 
-        //check key value
-        if (key.isEmpty()) {
-            throw new AnnotationProcessingException(missingAttributeValue("value", "@SystemProperty", field, object));
-        }
+        //check attribute
+        checkIfEmpty(key, missingAttributeValue("value", "@SystemProperty", field, object));
 
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
-            logger.log(Level.WARNING, "System property " + key + " on field " + field.getName() +
-                    " of type " + object.getClass() + " not found in system properties: "
-                    + System.getProperties());
+            logger.log(Level.WARNING, format("System property %s on field %s of type %s not found in system properties: %s",
+                    key, field.getName(), object.getClass(), System.getProperties()));
 
             //Use default value if specified
             String defaultValue = systemProperty.defaultValue();
@@ -71,6 +67,5 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         }
 
         processAnnotation(object, field, key, value);
-
     }
 }
