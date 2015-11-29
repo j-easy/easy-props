@@ -52,7 +52,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     /**
      * A map of jar / manifest entries pairs.
      */
-    private Map<String, Manifest> manifestEntries = new HashMap<String, Manifest>();
+    private Map<String, Manifest> manifestEntries = new HashMap<>();
 
     @Override
     public void processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field, Object object) throws Exception {

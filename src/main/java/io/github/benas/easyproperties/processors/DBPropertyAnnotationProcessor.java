@@ -48,12 +48,12 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
     /**
      * A map holding database configuration properties file names and properties object serving as a cache.
      */
-    private Map<String, Properties> dbConfigurationMap = new HashMap<String, Properties>();
+    private Map<String, Properties> dbConfigurationMap = new HashMap<>();
 
     /**
      * A map holding database properties file name and resource properties object serving as a cache.
      */
-    private Map<String, Properties> dbPropertiesMap = new HashMap<String, Properties>();
+    private Map<String, Properties> dbPropertiesMap = new HashMap<>();
 
     @Override
     public void processAnnotation(final DBProperty dbPropertyAnnotation, final Field field, Object object) throws Exception {

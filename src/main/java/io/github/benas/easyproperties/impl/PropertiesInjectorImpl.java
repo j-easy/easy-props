@@ -50,7 +50,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      * Public constructor.
      */
     public PropertiesInjectorImpl() {
-        annotationProcessors = new HashMap<Class<? extends Annotation>, AnnotationProcessor>();
+        annotationProcessors = new HashMap<>();
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
         annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
@@ -67,7 +67,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         /*
          * Retrieve declared fields
          */
-        List<Field> declaredFields = new ArrayList<Field>(Arrays.asList(object.getClass().getDeclaredFields()));
+        List<Field> declaredFields = new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
 
         /*
          * Retrieve inherited fields for all type hierarchy
@@ -80,7 +80,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         }
 
         /*
-         * Introspect fields for each registered annotation, and delegate it processing to the right annotation processor
+         * Introspect fields for each registered annotation, and delegate its processing to the right annotation processor
          */
         for (Field field : declaredFields) {
             for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {

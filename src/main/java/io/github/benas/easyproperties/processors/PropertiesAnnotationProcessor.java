@@ -43,7 +43,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor i
     /**
      * A map holding source file name and Properties object serving as a cache.
      */
-    private Map<String, java.util.Properties> propertiesMap = new HashMap<String, java.util.Properties>();
+    private Map<String, java.util.Properties> propertiesMap = new HashMap<>();
 
     @Override
     public void processAnnotation(final Properties propertiesAnnotation, final Field field, Object object) throws Exception {
