@@ -40,6 +40,9 @@ public class Bean {
     @Property(source = "myProperties.properties", key = "bean.name")
     private String beanName;
 
+    @Property(source = "myProperties.properties", key = "empty.key")
+    private String emptyField;
+
     @I18NProperty(bundle = "i18n/messages", key = "my.message")
     private String message;
 
@@ -136,5 +139,13 @@ public class Bean {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getEmptyField() {
+        return emptyField;
+    }
+
+    public void setEmptyField(String emptyField) {
+        this.emptyField = emptyField;
     }
 }

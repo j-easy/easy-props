@@ -26,13 +26,18 @@ package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.impl.PropertiesInjectorBuilder;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
 
@@ -66,64 +71,57 @@ public class PropertiesInjectorImplTest {
 
     @Test
     public void testSystemPropertyInjection() throws Exception {
-        Assert.assertEquals(System.getProperty("user.home"), bean.getUserHome()); //test String property injection
+        assertThat(bean.getUserHome()).isEqualTo(System.getProperty("user.home"));//test String property injection
     }
 
     @Test
     public void testSystemPropertyDefaultValueInjection() throws Exception {
-        Assert.assertEquals("default", bean.getValue()); //test default value injection
+        assertThat(bean.getValue()).isEqualTo("default");//test default value injection
     }
 
     @Test
     public void testSystemMavenVersionValueInjection() throws Exception {
-        Assert.assertEquals("1.9.2", bean.getPomVersion()); //test maven value injection
+        assertThat(bean.getPomVersion()).isEqualTo("1.9.2"); //test maven value injection
     }
 
     @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
-        Assert.assertEquals(30, bean.getThreshold()); //test type conversion
+        assertThat(bean.getThreshold()).isEqualTo(30); //test type conversion
     }
 
     @Test
     public void testI18NPropertyInjection() throws Exception {
-        Assert.assertEquals(resourceBundle.getString("my.message"), bean.getMessage());
+        assertThat(bean.getMessage()).isEqualTo(resourceBundle.getString("my.message"));
     }
 
     @Test
     public void testPropertyInjection() throws Exception {
-        Assert.assertEquals("Foo", bean.getBeanName());
+        assertThat(bean.getBeanName()).isEqualTo("Foo");
     }
 
     @Test
     public void testPropertiesInjection() throws Exception {
-        Assert.assertEquals(properties.getProperty("bean.name"), bean.getMyProperties().getProperty("bean.name"));
+        assertThat(bean.getMyProperties().getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
     }
 
     @Test
     public void testDBPropertyInjection() throws Exception {
-        Assert.assertEquals("Foo", bean.getName());
+        assertThat(bean.getName()).isEqualTo("Foo");
     }
 
     @Test
     public void testJNDIPropertyInjection() throws Exception {
-        Assert.assertEquals("jndi", bean.getJndiProperty());
+        assertThat(bean.getJndiProperty()).isEqualTo("jndi");
     }
 
     @Test
     public void testManifestPropertyInjection() throws Exception {
-        Assert.assertEquals("Apache Maven 3.0.4", bean.getCreatedBy());
+        assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.0.4");
     }
 
     @Test
     public void testEmptyPropertyInjection() throws Exception {
-        Pojo pojo = new Pojo();
-
-        propertiesInjector.injectProperties(pojo);
-
-        Assert.assertEquals("value1", pojo.getField1());
-        Assert.assertEquals("value2", pojo.getField2());
-        Assert.assertNull(pojo.getField3());
-        Assert.assertEquals("value4", pojo.getField4());
+        assertThat(bean.getEmptyField()).isNull();
     }
 
     @After
