@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,17 @@ import java.lang.reflect.Field;
 
 /**
  * Annotation processor interface.
+ *
  * @param <T> The annotation type processed.
  */
 public interface AnnotationProcessor<T extends Annotation> {
 
     /**
      * Process an annotation of type T to be introspected by ADP4J.
+     *
      * @param annotation the annotation to process.
-     * @param field the field annotated with the annotation.
-     * @param object the object being configured.
+     * @param field      the field annotated with the annotation.
+     * @param object     the object being configured.
      * @throws Exception thrown if an exception occurs during annotation processing
      */
     void processAnnotation(T annotation, Field field, Object object) throws Exception;

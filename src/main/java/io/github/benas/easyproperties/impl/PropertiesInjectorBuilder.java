@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import java.lang.annotation.Annotation;
 /**
  * A builder to create {@link io.github.benas.easyproperties.api.PropertiesInjector} instances.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class PropertiesInjectorBuilder {
 
@@ -50,7 +50,8 @@ public class PropertiesInjectorBuilder {
 
     /**
      * Register a custom annotation processor for a given annotation.
-     * @param annotation the annotation type to be processed
+     *
+     * @param annotation          the annotation type to be processed
      * @param annotationProcessor the annotation processor to register
      * @return this instance of @{link PropertiesInjectorBuilder}
      */
@@ -61,6 +62,7 @@ public class PropertiesInjectorBuilder {
 
     /**
      * Build a {@link PropertiesInjector} instance.
+     *
      * @return a {@link PropertiesInjector} instance
      */
     public PropertiesInjector build() {

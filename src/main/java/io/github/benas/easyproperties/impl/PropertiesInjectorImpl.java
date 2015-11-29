@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ import java.util.*;
 /**
  * The core implementation of the {@link io.github.benas.easyproperties.api.PropertiesInjector} interface.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
@@ -96,10 +96,11 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
 
     /**
      * Register a custom annotation processor for a given annotation.
-     * @param annotation the annotation type to be processed
+     *
+     * @param annotation          the annotation type to be processed
      * @param annotationProcessor the annotation processor to register
      */
-    public void registerAnnotationProcessor(final Class<? extends Annotation> annotation,final AnnotationProcessor annotationProcessor) {
+    public void registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         annotationProcessors.put(annotation, annotationProcessor);
     }
 

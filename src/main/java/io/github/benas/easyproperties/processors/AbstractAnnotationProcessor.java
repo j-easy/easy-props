@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import java.text.MessageFormat;
 /**
  * Base class for {@link io.github.benas.easyproperties.api.AnnotationProcessor} implementations providing common methods.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public abstract class AbstractAnnotationProcessor {
 
@@ -41,9 +41,9 @@ public abstract class AbstractAnnotationProcessor {
      * Convert the value to field type and set it in the target object.
      *
      * @param target the target object
-     * @param field the annotated field
-     * @param key the annotation property attribute
-     * @param value the value to inject
+     * @param field  the annotated field
+     * @param key    the annotation property attribute
+     * @param value  the value to inject
      * @throws Exception thrown if an exception occurs when trying to set the field value
      */
     protected void injectProperty(Object target, Field field, String key, Object value) throws Exception {
@@ -62,7 +62,7 @@ public abstract class AbstractAnnotationProcessor {
      * Constructs an error message to signal missing properties file.
      *
      * @param source the source file name
-     * @param field the target field
+     * @param field  the target field
      * @param object the target object
      * @return the formatted error message
      */
@@ -74,10 +74,10 @@ public abstract class AbstractAnnotationProcessor {
     /**
      * Constructs an error message to signal missing annotation attribute value.
      *
-     * @param attribute the target attribute
+     * @param attribute  the target attribute
      * @param annotation the annotation concerned
-     * @param field the target field
-     * @param object the target object
+     * @param field      the target field
+     * @param object     the target object
      * @return the formatted error message
      */
     protected String missingAttributeValue(final String attribute, final String annotation, final Field field, final Object object) {

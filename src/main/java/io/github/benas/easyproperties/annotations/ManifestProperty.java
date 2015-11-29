@@ -2,7 +2,7 @@
  *
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation injects a header value from a META-INF/MANIFEST.MF file in the annotated field.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -42,12 +42,14 @@ public @interface ManifestProperty {
     /**
      * The jar file name (in the classpath) containing the META-INF/MANIFEST.MF file.
      * If not specified, it will be the jar file containing the target object.
+     *
      * @return jar file name (in the classpath) containing the META-INF/MANIFEST.MF file.
      */
     String jar() default "";
 
     /**
      * The header name in the META-INF/MANIFEST.MF file.
+     *
      * @return the header name in the META-INF/MANIFEST.MF file.
      */
     String header();

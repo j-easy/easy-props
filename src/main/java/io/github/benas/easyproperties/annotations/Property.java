@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation can be declared on a field in which a property should be injected from a properties file.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -40,12 +40,14 @@ public @interface Property {
 
     /**
      * The properties file name.
+     *
      * @return The properties file name
      */
     String source();
 
     /**
      * The key to load from the source properties file.
+     *
      * @return The key to load from the source properties file
      */
     String key();

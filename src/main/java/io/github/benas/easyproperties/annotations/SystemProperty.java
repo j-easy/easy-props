@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation can be declared on a field in which a system property should be injected.
  *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -40,12 +40,14 @@ public @interface SystemProperty {
 
     /**
      * The system property to load.
+     *
      * @return The system property to load
      */
     String value();
 
     /**
      * The default value to set in case the system property does not exist or cannot be loaded.
+     *
      * @return the default value to set
      */
     String defaultValue() default "";

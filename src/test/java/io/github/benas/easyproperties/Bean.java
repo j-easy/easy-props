@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,6 @@ package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.annotations.*;
 
-/**
- * A dummy object to be used in test.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class Bean {
 
     @SystemProperty("user.home")
@@ -63,26 +58,6 @@ public class Bean {
     @ManifestProperty(jar = "junit-4.12.jar", header = "Created-By")
     private String createdBy;
 
-    public void setUserHome(String userHome) {
-        this.userHome = userHome;
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
-    }
-
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setMyProperties(java.util.Properties myProperties) {
-        this.myProperties = myProperties;
-    }
-
     public String getValue() {
         return value;
     }
@@ -95,20 +70,40 @@ public class Bean {
         return userHome;
     }
 
+    public void setUserHome(String userHome) {
+        this.userHome = userHome;
+    }
+
     public int getThreshold() {
         return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
 
     public String getBeanName() {
         return beanName;
     }
 
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
     public String getMessage() {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public java.util.Properties getMyProperties() {
         return myProperties;
+    }
+
+    public void setMyProperties(java.util.Properties myProperties) {
+        this.myProperties = myProperties;
     }
 
     public String getName() {

@@ -1,7 +1,7 @@
 /*
  *   The MIT License
  *
- *    Copyright (c) 2015, Mahmoud Ben Hassine (mahmoud@benhassine.fr)
+ *    Copyright (c) 2016, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
@@ -34,11 +34,6 @@ import javax.naming.InitialContext;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-/**
- * Test class for ADP4J {@link io.github.benas.easyproperties.api.PropertiesInjector} implementation.
- *
- * @author Mahmoud Ben Hassine (mahmoud@benhassine.fr)
- */
 public class PropertiesInjectorImplTest {
 
     private PropertiesInjector propertiesInjector;
@@ -91,7 +86,7 @@ public class PropertiesInjectorImplTest {
 
     @Test
     public void testI18NPropertyInjection() throws Exception {
-        Assert.assertEquals(resourceBundle.getString("my.message") , bean.getMessage());
+        Assert.assertEquals(resourceBundle.getString("my.message"), bean.getMessage());
     }
 
     @Test
