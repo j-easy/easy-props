@@ -2,7 +2,7 @@
 
 Easy Properties is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
-The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking actively for configuration properties,
+The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking **actively** for configuration properties,
  these objects simply declare configuration properties they need, and these properties will be provided to them by a tool, Easy Properties for instance!
 
 It is a kind of dependency injection, but for properties. Let's call it _"property injection"_.
@@ -15,19 +15,19 @@ But in order to benefit from this feature, your code should run inside a DI cont
 
 What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from dependency injection without requiring your code to run inside a DI container.
 
-That said, **Easy Properties is a library, not a framework**. It is **not** YADIF (Yet Another DI Framework) :smirk:
+That said, **Easy Properties is a library, not a (yet another DI) framework**.
 
 ## Quick example
 
-With Easy Properties, you declare properties you need on your object's fields using a set of intuitive annotations and instruct it to inject these properties. Let's see an example:
+With Easy Properties, you declare properties you need on your object's fields using a set of intuitive annotations and instruct the library to inject these properties. Let's see an example:
 
 Suppose you have a Java object of type `Bean` which should be configured with:
 
-* An Integer property `threshold` from a system property passed to the JVM with -Dthreshold=100
+* An Integer property `threshold` from a system property passed to the JVM with `-Dthreshold=100`
 
 * A String property `bean.name` from a properties file named `myProperties.properties`
 
-To load these properties in your `Bean` object using Easy Properties, you annotate fields to declare needed configuration properties as follows:
+To load these properties in your `Bean` object using Easy Properties, you annotate fields as follows:
 
 ```java
 public class Bean {
@@ -43,7 +43,7 @@ public class Bean {
 }
 ```
 
-and instructs Easy Properties to inject these configuration properties in the annotated fields:
+and instructs Easy Properties to inject these properties in the annotated fields:
 
 ```java
 //Instantiate your object
@@ -56,7 +56,11 @@ PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
 propertiesInjector.injectProperties(bean);
 ```
 
-That's it! Easy Properties will introspect the `Bean` instance looking for fields annotated with `@Property` and `@SystemProperty`, convert each property value to the field's type and inject that value into the annotated field.
+That's it! Easy Properties will:
+ 
+* introspect the `Bean` instance looking for fields annotated with `@Property` and `@SystemProperty`
+* convert each property value to the field's type
+* and inject that value into the annotated field
 
 **Without** Easy Properties, you would write something like this:
 
@@ -101,7 +105,7 @@ public class Bean {
 }
 ```
 
-As you can see, a lot of boilerplate code is written to load two properties, convert them to the right type, etc.
+As you can see, a lot of boilerplate code is written to load two properties, convert them to the target field type, etc.
 
 Easy Properties takes care of all this boilerplate for you, which makes your code cleaner, more readable and maintainable.
 
