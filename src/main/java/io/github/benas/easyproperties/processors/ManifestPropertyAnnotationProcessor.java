@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -45,6 +47,8 @@ import static java.lang.String.format;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<ManifestProperty> {
+
+    private static final Logger LOGGER = Logger.getLogger(ManifestPropertyAnnotationProcessor.class.getName());
 
     public static final String CLASSPATH = System.getProperty("java.class.path");
 
@@ -79,8 +83,8 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     }
 
     private void loadManifestFromJar(final String jar) throws AnnotationProcessingException {
+        JarInputStream jarStream = null;
         try {
-            JarInputStream jarStream;
             final String classPath = CLASSPATH;
             final String[] classPathElements = classPath.split(PATH_SEPARATOR);
             for (final String element : classPathElements) {
@@ -92,6 +96,18 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
             }
         } catch (IOException e) {
             throw new AnnotationProcessingException(format("Unable to load manifest file from jar %s", jar), e);
+        } finally {
+            closeJarStream(jarStream);
+        }
+    }
+
+    private void closeJarStream(final JarInputStream jarStream) {
+        try {
+            if (jarStream != null) {
+                jarStream.close();
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to close jar stream", e);
         }
     }
 
