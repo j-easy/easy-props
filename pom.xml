@@ -8,15 +8,15 @@
     </parent>
 
     <groupId>io.github.benas</groupId>
-    <artifactId>projector</artifactId>
+    <artifactId>easy-properties</artifactId>
     <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>projector</name>
+    <name>easy-properties</name>
     <description>
-        Projector allows you to inject properties in Java objects in a declarative way using annotations
+        Easy Properties allows you to inject properties in Java objects in a declarative way using annotations
     </description>
-    <url>https://github.com/benas/projector</url>
+    <url>https://github.com/benas/easy-properties</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,9 +25,12 @@
     <developers>
         <developer>
             <id>benas</id>
+            <roles>
+                <role>Lead developer</role>
+            </roles>
             <name>Mahmoud Ben Hassine</name>
-            <url>http://www.mahmoud-benhassine.fr</url>
-            <email>mahmoud@benhassine.fr</email>
+            <url>http://benas.github.io</url>
+            <email>mahmoud.benhassine@icloud.com</email>
         </developer>
     </developers>
 
@@ -46,9 +49,9 @@
     </licenses>
 
     <scm>
-        <url>git@github.com:benas/projector.git</url>
-        <connection>scm:git:git@github.com:benas/projector.git</connection>
-        <developerConnection>scm:git:git@github.com:benas/projector.git</developerConnection>
+        <url>git@github.com:benas/easy-properties.git</url>
+        <connection>scm:git:git@github.com:benas/easy-properties.git</connection>
+        <developerConnection>scm:git:git@github.com:benas/easy-properties.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 

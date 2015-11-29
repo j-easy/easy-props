@@ -1,24 +1,25 @@
-## What is Projector?
+## What is Easy Properties?
 
-Projector (**PRO**perty in**JECTOR**) is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
+Easy Properties is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
-The idea behind Projector is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking actively for configuration properties, these objects simply declare configuration properties they need, and these properties will be provided to them by a tool, Projector for instance!
+The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking actively for configuration properties,
+ these objects simply declare configuration properties they need, and these properties will be provided to them by a tool, Easy Properties for instance!
 
 It is a kind of dependency injection, but for properties. Let's call it _"property injection"_.
 
-## Why Projector?
+## Why Easy Properties?
 
 Dependency injection frameworks allow you to inject properties in your Java objects and they do it very well.
 
 But in order to benefit from this feature, your code should run inside a DI container, or at least, the object in which your are trying to inject properties must be managed by a DI container.
 
-So what if your code does not run inside a DI container? This is where Projector comes to play, to allow you to benefit from dependency injection without requiring your code to run inside a DI container.
+What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from dependency injection without requiring your code to run inside a DI container.
 
-That said, **Projector is a library, not a framework**. It is **not** YADIF (Yet Another DI Framework) :smirk:
+That said, **Easy Properties is a library, not a framework**. It is **not** YADIF (Yet Another DI Framework) :smirk:
 
 ## Quick example
 
-With Projector, you declare properties you need on your object's fields using a set of intuitive annotations and instruct it to inject these properties. Let's see an example:
+With Easy Properties, you declare properties you need on your object's fields using a set of intuitive annotations and instruct it to inject these properties. Let's see an example:
 
 Suppose you have a Java object of type `Bean` which should be configured with:
 
@@ -26,7 +27,7 @@ Suppose you have a Java object of type `Bean` which should be configured with:
 
 * A String property `bean.name` from a properties file named `myProperties.properties`
 
-To load these properties in your `Bean` object using Projector, you annotate fields to declare needed configuration properties as follows:
+To load these properties in your `Bean` object using Easy Properties, you annotate fields to declare needed configuration properties as follows:
 
 ```java
 public class Bean {
@@ -42,22 +43,22 @@ public class Bean {
 }
 ```
 
-and instructs Projector to inject these configuration properties in the annotated fields:
+and instructs Easy Properties to inject these configuration properties in the annotated fields:
 
 ```java
 //Instantiate your object
 Bean bean = new Bean();
 
-//Instantiate Projector
+//Instantiate a properties injector
 PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder().build();
 
 //Inject properties in your object
 propertiesInjector.injectProperties(bean);
 ```
 
-That's it! Projector will introspect the `Bean` instance looking for fields annotated with `@Property` and `@SystemProperty`, convert each property value to the field's type and inject that value into the annotated field.
+That's it! Easy Properties will introspect the `Bean` instance looking for fields annotated with `@Property` and `@SystemProperty`, convert each property value to the field's type and inject that value into the annotated field.
 
-**Without** Projector, you would write something like this:
+**Without** Easy Properties, you would write something like this:
 
 ```java
 public class Bean {
@@ -102,21 +103,22 @@ public class Bean {
 
 As you can see, a lot of boilerplate code is written to load two properties, convert them to the right type, etc.
 
-Projector takes care of all this boilerplate for you, which makes your code cleaner, more readable and maintainable.
+Easy Properties takes care of all this boilerplate for you, which makes your code cleaner, more readable and maintainable.
 
-In this quick example, you have seen two types of properties sources (system and resource bundle). Projector allows you to inject properties from many other sources like databases, JNDI contexts, and more.
+In this quick example, you have seen two types of properties sources (system and resource bundle). 
+Easy Properties allows you to inject properties from many other sources like databases, JNDI contexts, and more.
 
-Even better, Projector allows you write your own annotations and inject properties from a custom configuration source.
+Even better, Easy Properties allows you write your own annotations and inject properties from a custom configuration source.
 
-Checkout the complete reference in the project's [wiki](https://github.com/benas/projector/wiki).
+Checkout the complete reference in the project's [wiki](https://github.com/benas/easy-properties/wiki).
 
 ## Documentation
 
-Projector's documentation can be found here : [https://github.com/benas/projector/wiki](https://github.com/benas/projector/wiki)
+Easy Properties documentation can be found here : [https://github.com/benas/easy-properties/wiki](https://github.com/benas/easy-properties/wiki)
 
 ## Awesome contributors
 
 * [natlantisprog](https://github.com/natlantisprog)
 
 ## License
-Projector is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
+Easy Properties is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
