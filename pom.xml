@@ -20,6 +20,20 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.7</java.version>
+        <junit.version>4.12</junit.version>
+        <assertj.version>2.2.0</assertj.version>
+        <commons-beanutils.version>1.9.2</commons-beanutils.version>
+        <spring-jdbc.version>4.2.3.RELEASE</spring-jdbc.version>
+        <hsqldb.version>2.3.3</hsqldb.version>
+        <simple-jndi.version>0.11.4.1</simple-jndi.version>
+
+        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-cobertura-plugin.version>2.7</maven-cobertura-plugin.version>
+        <maven-coveralls-plugin.version>4.0.0</maven-coveralls-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
     <developers>
@@ -56,64 +70,81 @@
     </scm>
 
     <dependencies>
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.2</version>
+            <version>${commons-beanutils.version}</version>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!--spring jdbc-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.1.2.RELEASE</version>
+            <version>${spring-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!-- HSQL -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.3.2</version>
+            <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!--in memory JNDI provider used for test-->
+        <!--in memory JNDI provider-->
         <dependency>
             <groupId>simple-jndi</groupId>
             <artifactId>simple-jndi</artifactId>
-            <version>0.11.4.1</version>
+            <version>${simple-jndi.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${maven-coveralls-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${maven-cobertura-plugin.version}</version>
+                <configuration>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Test*.java</include>
@@ -121,11 +152,10 @@
                     <reportFormat>html</reportFormat>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -135,13 +165,11 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>${maven-release-plugin.version}</version>
             </plugin>
-
         </plugins>
     </build>
 
