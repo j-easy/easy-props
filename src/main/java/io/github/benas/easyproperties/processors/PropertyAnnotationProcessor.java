@@ -71,7 +71,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
         if (value == null) {
-            logger.log(Level.WARNING, String.format("Property %s on field '%s' of type '%s' not found in properties file: %s",
+            logger.log(Level.WARNING, format("Property %s on field '%s' of type '%s' not found in properties file: %s",
                     key, field.getName(), object.getClass(), source));
             return;
         }

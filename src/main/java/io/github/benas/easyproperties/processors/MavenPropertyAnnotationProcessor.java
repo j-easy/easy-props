@@ -34,6 +34,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 /**
  * An annotation processor that loads all properties from a maven pom.
  *
@@ -71,7 +73,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
                     mavenMap.put(property, properties.getProperty(key));
                 }
             } catch (IOException e) {
-                throw new AnnotationProcessingException(String.format("Unable to load pom file from %s", pathToMavenPom), e);
+                throw new AnnotationProcessingException(format("Unable to load pom file from %s", pathToMavenPom), e);
             }
         }
 

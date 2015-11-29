@@ -73,7 +73,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check object obtained from JNDI context
         if (value == null) {
-            throw new AnnotationProcessingException(String.format("JNDI object %s not found in JNDI context.", name));
+            throw new AnnotationProcessingException(format("JNDI object %s not found in JNDI context.", name));
         }
 
         //inject object in annotated field
