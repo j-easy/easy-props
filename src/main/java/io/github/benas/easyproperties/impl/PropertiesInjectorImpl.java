@@ -50,10 +50,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
-    /**
-     * Public constructor.
-     */
-    public PropertiesInjectorImpl() {
+    PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<>();
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
@@ -90,7 +87,8 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
                     try {
                         annotationProcessor.processAnnotation(annotation, field, object);
                     } catch (AnnotationProcessingException e) {
-                        throw new PropertyInjectionException(format("Unable to inject property %s in field %s of object %s", annotation, field.getName(), object), e);
+                        throw new PropertyInjectionException(format("Unable to inject property %s in field %s of object %s",
+                                annotation, field.getName(), object), e);
                     }
                 }
             }
