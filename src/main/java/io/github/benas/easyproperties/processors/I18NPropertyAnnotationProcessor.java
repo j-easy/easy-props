@@ -29,6 +29,8 @@ import io.github.benas.easyproperties.api.AnnotationProcessingException;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -38,6 +40,8 @@ import static java.lang.String.format;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor<I18NProperty> {
+
+    private static final Logger LOGGER = Logger.getLogger(I18NPropertyAnnotationProcessor.class.getName());
 
     /**
      * A map holding bundle file name and resource bundle object serving as a cache.
@@ -75,7 +79,10 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //get key value, convert it to the right type and set it to the field
         String value = resourceBundlesMap.get(bundle).getString(key);
-        checkIfEmpty(value, format("Key '%s' not found or empty in resource bundle: %s", key, bundle));
+        if (value.isEmpty()) {
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found or empty in resource bundle: {1}", new Object[]{key, bundle});
+            return;
+        }
 
         processAnnotation(object, field, key, value);
     }

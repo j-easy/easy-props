@@ -26,12 +26,13 @@ package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.JNDIProperty;
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
-import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -41,6 +42,8 @@ import static java.lang.String.format;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor<JNDIProperty> {
+
+    private static final Logger LOGGER = Logger.getLogger(JNDIPropertyAnnotationProcessor.class.getName());
 
     /**
      * The JNDI context.
@@ -73,7 +76,8 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check object obtained from JNDI context
         if (value == null) {
-            throw new AnnotationProcessingException(format("JNDI object '%s' not found in JNDI context.", name));
+            LOGGER.log(Level.WARNING, "JNDI object ''{0}'' not found in JNDI context", name);
+            return;
         }
 
         //inject object in annotated field

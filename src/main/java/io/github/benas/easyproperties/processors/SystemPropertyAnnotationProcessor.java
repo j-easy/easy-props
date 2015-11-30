@@ -59,7 +59,8 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                throw new AnnotationProcessingException(missingAttributeValue("defaultValue", "@SystemProperty", field, object));
+                //silently ignore empty default values
+                return;
             }
         }
 

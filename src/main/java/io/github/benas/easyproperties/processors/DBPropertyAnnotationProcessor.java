@@ -81,7 +81,9 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         //check object obtained from database
         String value = dbPropertiesMap.get(configuration).getProperty(key);
         if (value == null || value.isEmpty()) {
-            throw new AnnotationProcessingException(format("Key '%s' not found or empty in database configured with properties: %s", key, dbConfigurationMap.get(configuration)));
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found or empty in database configured with properties:: {1}",
+                    new Object[]{key, dbConfigurationMap.get(configuration)});
+            return;
         }
 
         //inject object in annotated field
