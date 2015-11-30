@@ -25,14 +25,13 @@
 package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -41,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
 
-    private PropertiesInjector propertiesInjector;
+    private static EmbeddedDatabase embeddedDatabase;
 
     private Bean bean;
 
@@ -52,8 +51,13 @@ public class PropertiesInjectorImplTest {
     private ResourceBundle resourceBundle;
 
     @BeforeClass
-    public static void initEmbeddedDB() throws Exception {
-        new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
+    public static void initEmbeddedDatabase() throws Exception {
+        embeddedDatabase = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
+    }
+
+    @AfterClass
+    public static void shutdownEmbeddedDatabase() throws Exception {
+        embeddedDatabase.shutdown();
     }
 
     @Before
@@ -62,31 +66,31 @@ public class PropertiesInjectorImplTest {
         context = new InitialContext();
         context.bind("foo.property", "jndi");
         properties = new Properties();
-        properties.load(this.getClass().getClassLoader().getResourceAsStream("myProperties.properties"));
+        properties.load(getResourceAsStream("myProperties.properties"));
         resourceBundle = ResourceBundle.getBundle("i18n/messages");
-        propertiesInjector = aNewPropertiesInjector().build();
+        PropertiesInjector propertiesInjector = aNewPropertiesInjector().build();
         bean = new Bean();
         propertiesInjector.injectProperties(bean);
     }
 
     @Test
     public void testSystemPropertyInjection() throws Exception {
-        assertThat(bean.getUserHome()).isEqualTo(System.getProperty("user.home"));//test String property injection
+        assertThat(bean.getUserHome()).isEqualTo(System.getProperty("user.home"));
     }
 
     @Test
     public void testSystemPropertyDefaultValueInjection() throws Exception {
-        assertThat(bean.getValue()).isEqualTo("default");//test default value injection
+        assertThat(bean.getValue()).isEqualTo("default");
     }
 
     @Test
     public void testSystemMavenVersionValueInjection() throws Exception {
-        assertThat(bean.getPomVersion()).isEqualTo("1.9.2"); //test maven value injection
+        assertThat(bean.getPomVersion()).isEqualTo("1.9.2");
     }
 
     @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
-        assertThat(bean.getThreshold()).isEqualTo(30); //test type conversion
+        assertThat(bean.getThreshold()).isEqualTo(30);
     }
 
     @Test
@@ -126,9 +130,11 @@ public class PropertiesInjectorImplTest {
 
     @After
     public void tearDown() throws Exception {
-        propertiesInjector = null;
         context.close();
-        bean = null;
+    }
+
+    private InputStream getResourceAsStream(final String resource) {
+        return this.getClass().getClassLoader().getResourceAsStream(resource);
     }
 
 }
