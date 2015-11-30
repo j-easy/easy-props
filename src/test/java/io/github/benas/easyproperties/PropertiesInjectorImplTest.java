@@ -40,8 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
 
-    private static EmbeddedDatabase embeddedDatabase;
-
     private Bean bean;
 
     private Context context;
@@ -49,16 +47,6 @@ public class PropertiesInjectorImplTest {
     private Properties properties;
 
     private ResourceBundle resourceBundle;
-
-    @BeforeClass
-    public static void initEmbeddedDatabase() throws Exception {
-        embeddedDatabase = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
-    }
-
-    @AfterClass
-    public static void shutdownEmbeddedDatabase() throws Exception {
-        embeddedDatabase.shutdown();
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -108,11 +96,6 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testPropertiesInjection() throws Exception {
         assertThat(bean.getMyProperties().getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
-    }
-
-    @Test
-    public void testDBPropertyInjection() throws Exception {
-        assertThat(bean.getName()).isEqualTo("Foo");
     }
 
     @Test

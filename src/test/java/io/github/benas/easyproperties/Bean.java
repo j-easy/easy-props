@@ -49,9 +49,6 @@ public class Bean {
     @Properties("myProperties.properties")
     private java.util.Properties myProperties;
 
-    @DBProperty(configuration = "database.properties", key = "bean.name")
-    private String name;
-
     @JNDIProperty("foo.property")
     private String jndiProperty;
 
@@ -110,14 +107,6 @@ public class Bean {
 
     public void setMyProperties(java.util.Properties myProperties) {
         this.myProperties = myProperties;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getJndiProperty() {

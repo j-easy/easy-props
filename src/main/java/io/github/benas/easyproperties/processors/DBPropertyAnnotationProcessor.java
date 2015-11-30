@@ -80,8 +80,8 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
 
         //check object obtained from database
         String value = dbPropertiesMap.get(configuration).getProperty(key);
-        if (value == null || value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' not found or empty in database configured with properties:: {1}",
+        if (value == null) {
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties:: {1}",
                     new Object[]{key, dbConfigurationMap.get(configuration)});
             return;
         }
@@ -103,7 +103,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             resultSet = statement.executeQuery(getSqlQuery(dbConfigurationProperties));
             Properties dbProperties = extractProperties(resultSet, dbConfigurationProperties);
             dbPropertiesMap.put(configuration, dbProperties);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (Exception e) {
             throw new AnnotationProcessingException("Unable to get database properties", e);
         } finally {
             try {
