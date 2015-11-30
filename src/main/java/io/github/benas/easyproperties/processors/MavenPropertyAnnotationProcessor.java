@@ -26,7 +26,6 @@ package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.MavenProperty;
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
-import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +40,7 @@ import static java.lang.String.format;
  *
  * @author lhottois (natlantisprog@gmail.com)
  */
-public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<MavenProperty> {
+public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor<MavenProperty> {
 
     /**
      * A map holding pom and Properties object serving as a cache.

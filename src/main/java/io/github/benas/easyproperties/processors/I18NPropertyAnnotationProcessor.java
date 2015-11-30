@@ -26,7 +26,6 @@ package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.I18NProperty;
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
-import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -38,7 +37,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<I18NProperty> {
+public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor<I18NProperty> {
 
     /**
      * A map holding bundle file name and resource bundle object serving as a cache.

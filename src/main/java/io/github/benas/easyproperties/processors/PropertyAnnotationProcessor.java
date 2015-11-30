@@ -26,7 +26,6 @@ package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.Property;
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
-import io.github.benas.easyproperties.api.AnnotationProcessor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +43,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<Property> {
+public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Property> {
 
     private Logger LOGGER = Logger.getLogger(getClass().getName());
 

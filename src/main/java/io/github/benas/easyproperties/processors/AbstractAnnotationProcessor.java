@@ -25,10 +25,12 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
+import io.github.benas.easyproperties.api.AnnotationProcessor;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -39,7 +41,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public abstract class AbstractAnnotationProcessor {
+public abstract class AbstractAnnotationProcessor<A extends Annotation> implements AnnotationProcessor<A> {
 
     /**
      * Convert the value to field type and set it in the target object.
@@ -56,7 +58,7 @@ public abstract class AbstractAnnotationProcessor {
         try {
             PropertyUtils.setProperty(target, field.getName(), typedValue);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new AnnotationProcessingException(format("Unable to set property %s on field %s of type %s." +
+            throw new AnnotationProcessingException(format("Unable to set property '%s' on field '%s' of type '%s'." +
                     " A setter may be missing for this field.", key, field.getName(), target.getClass()), e);
         }
 

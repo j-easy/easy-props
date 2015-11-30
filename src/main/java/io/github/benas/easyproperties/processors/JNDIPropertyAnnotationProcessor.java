@@ -40,7 +40,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<JNDIProperty> {
+public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor<JNDIProperty> {
 
     /**
      * The JNDI context.
