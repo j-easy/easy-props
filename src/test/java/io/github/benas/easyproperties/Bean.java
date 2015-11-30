@@ -61,6 +61,9 @@ public class Bean {
     @ManifestProperty(jar = "junit-4.12.jar", header = "Created-By")
     private String createdBy;
 
+    @MyCustomAnnotation(value = "foo")
+    private String custom;
+
     public String getValue() {
         return value;
     }
@@ -147,5 +150,13 @@ public class Bean {
 
     public void setEmptyField(String emptyField) {
         this.emptyField = emptyField;
+    }
+
+    public String getCustom() {
+        return custom;
+    }
+
+    public void setCustom(String custom) {
+        this.custom = custom;
     }
 }

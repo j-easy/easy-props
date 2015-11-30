@@ -68,7 +68,9 @@ public class PropertiesInjectorImplTest {
         properties = new Properties();
         properties.load(getResourceAsStream("myProperties.properties"));
         resourceBundle = ResourceBundle.getBundle("i18n/messages");
-        PropertiesInjector propertiesInjector = aNewPropertiesInjector().build();
+        PropertiesInjector propertiesInjector = aNewPropertiesInjector()
+                .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
+                .build();
         bean = new Bean();
         propertiesInjector.injectProperties(bean);
     }
@@ -126,6 +128,11 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testEmptyPropertyInjection() throws Exception {
         assertThat(bean.getEmptyField()).isNull();
+    }
+
+    @Test
+    public void testCustomAnnotationProcessor() throws Exception {
+        assertThat(bean.getCustom()).isEqualTo("foo");
     }
 
     @After
