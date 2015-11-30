@@ -59,8 +59,8 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
         String key = property.key().trim();
 
         //check attributes
-        checkIfEmpty(source, missingAttributeValue("source", "@Property", field, object));
-        checkIfEmpty(key, missingAttributeValue("key", "@Property", field, object));
+        rejectIfEmpty(source, missingAttributeValue("source", "@Property", field, object));
+        rejectIfEmpty(key, missingAttributeValue("key", "@Property", field, object));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {

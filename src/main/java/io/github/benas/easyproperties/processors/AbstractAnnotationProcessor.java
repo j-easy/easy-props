@@ -78,7 +78,7 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
                 attribute, annotation, field.getName(), object.getClass().getName());
     }
 
-    protected void checkIfEmpty(final String value, final String message) throws AnnotationProcessingException {
+    protected void rejectIfEmpty(final String value, final String message) throws AnnotationProcessingException {
         if (value.isEmpty()) {
             throw new AnnotationProcessingException(message);
         }

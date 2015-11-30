@@ -64,7 +64,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String name = jndiPropertyAnnotation.value().trim();
 
         //check attributes
-        checkIfEmpty(name, missingAttributeValue("name", "@JNDIProperty", field, object));
+        rejectIfEmpty(name, missingAttributeValue("name", "@JNDIProperty", field, object));
 
         //get object from JNDI context
         Object value;

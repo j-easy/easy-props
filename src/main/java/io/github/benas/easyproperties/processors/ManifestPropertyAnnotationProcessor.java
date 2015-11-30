@@ -65,8 +65,8 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
         String header = manifestPropertyAnnotation.header().trim();
 
         //check attributes
-        checkIfEmpty(jar, missingAttributeValue("jar", "@ManifestProperty", field, object));
-        checkIfEmpty(header, missingAttributeValue("header", "@ManifestProperty", field, object));
+        rejectIfEmpty(jar, missingAttributeValue("jar", "@ManifestProperty", field, object));
+        rejectIfEmpty(header, missingAttributeValue("header", "@ManifestProperty", field, object));
 
         if (manifestEntries.get(jar) == null) {
             loadManifestFromJar(jar);
