@@ -7,11 +7,11 @@ package io.github.benas.easyproperties.api;
  */
 public class AnnotationProcessingException extends Exception {
 
-    public AnnotationProcessingException(String message) {
+    public AnnotationProcessingException(final String message) {
         super(message);
     }
 
-    public AnnotationProcessingException(String message, Throwable cause) {
+    public AnnotationProcessingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

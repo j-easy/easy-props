@@ -7,7 +7,7 @@ package io.github.benas.easyproperties.api;
  */
 public class PropertyInjectionException extends Exception {
 
-    public PropertyInjectionException(String message, Throwable cause) {
+    public PropertyInjectionException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

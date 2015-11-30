@@ -90,7 +90,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
 
     }
 
-    private void loadDatabaseProperties(String configuration) throws AnnotationProcessingException {
+    private void loadDatabaseProperties(final String configuration) throws AnnotationProcessingException {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -107,7 +107,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
         } finally {
             try {
                 closeResources(connection, statement, resultSet);
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 LOGGER.log(Level.WARNING, "Unable to close database resources", e);
             }
         }
@@ -141,7 +141,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor i
     }
 
     private void closeResources(final Connection connection, final Statement statement, final ResultSet resultSet) throws SQLException {
-        if (resultSet != null ) {
+        if (resultSet != null) {
             resultSet.close();
         }
         if (statement != null) {
