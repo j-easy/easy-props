@@ -77,10 +77,15 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
             loadResourceBundle(bundle, locale);
         }
 
-        //get key value, convert it to the right type and set it to the field
-        String value = resourceBundlesMap.get(bundle).getString(key);
+        String value;
+        try {
+            value = resourceBundlesMap.get(bundle).getString(key);
+        } catch (MissingResourceException e) {
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in resource bundle: {1}", new Object[]{key, bundle});
+            return;
+        }
         if (value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' not found or empty in resource bundle: {1}", new Object[]{key, bundle});
+            LOGGER.log(Level.WARNING, "Key ''{0}'' is empty in resource bundle: {1}", new Object[]{key, bundle});
             return;
         }
 
