@@ -49,6 +49,15 @@ public class PropertiesInjectorBuilder {
     }
 
     /**
+     * Create a new {@link PropertiesInjectorBuilder}.
+     *
+     * @return a new {@link PropertiesInjectorBuilder}
+     */
+    public static PropertiesInjectorBuilder aNewPropertiesInjector() {
+        return new PropertiesInjectorBuilder();
+    }
+
+    /**
      * Register a custom annotation processor for a given annotation.
      *
      * @param annotation          the annotation type to be processed

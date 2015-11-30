@@ -25,7 +25,6 @@
 package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
-import io.github.benas.easyproperties.impl.PropertiesInjectorBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -37,6 +36,7 @@ import javax.naming.InitialContext;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
@@ -64,7 +64,7 @@ public class PropertiesInjectorImplTest {
         properties = new Properties();
         properties.load(this.getClass().getClassLoader().getResourceAsStream("myProperties.properties"));
         resourceBundle = ResourceBundle.getBundle("i18n/messages");
-        propertiesInjector = new PropertiesInjectorBuilder().build();
+        propertiesInjector = aNewPropertiesInjector().build();
         bean = new Bean();
         propertiesInjector.injectProperties(bean);
     }
