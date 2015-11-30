@@ -43,9 +43,6 @@ public class Bean {
     @Property(source = "myProperties.properties", key = "empty.key")
     private String emptyField;
 
-    @I18NProperty(bundle = "i18n/messages", key = "my.message")
-    private String message;
-
     @Properties("myProperties.properties")
     private java.util.Properties myProperties;
 
@@ -91,14 +88,6 @@ public class Bean {
 
     public void setBeanName(String beanName) {
         this.beanName = beanName;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public java.util.Properties getMyProperties() {

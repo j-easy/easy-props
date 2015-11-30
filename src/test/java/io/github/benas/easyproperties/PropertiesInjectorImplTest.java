@@ -25,15 +25,14 @@
 package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
-import org.junit.*;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,8 +45,6 @@ public class PropertiesInjectorImplTest {
 
     private Properties properties;
 
-    private ResourceBundle resourceBundle;
-
     @Before
     public void setUp() throws Exception {
         System.setProperty("threshold", "30");
@@ -55,7 +52,6 @@ public class PropertiesInjectorImplTest {
         context.bind("foo.property", "jndi");
         properties = new Properties();
         properties.load(getResourceAsStream("myProperties.properties"));
-        resourceBundle = ResourceBundle.getBundle("i18n/messages");
         PropertiesInjector propertiesInjector = aNewPropertiesInjector()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
@@ -81,11 +77,6 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
         assertThat(bean.getThreshold()).isEqualTo(30);
-    }
-
-    @Test
-    public void testI18NPropertyInjection() throws Exception {
-        assertThat(bean.getMessage()).isEqualTo(resourceBundle.getString("my.message"));
     }
 
     @Test
