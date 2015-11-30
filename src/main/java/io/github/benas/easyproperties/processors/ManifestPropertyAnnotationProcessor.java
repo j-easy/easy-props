@@ -50,9 +50,9 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
 
     private static final Logger LOGGER = Logger.getLogger(ManifestPropertyAnnotationProcessor.class.getName());
 
-    public static final String CLASSPATH = System.getProperty("java.class.path");
+    private static final String CLASSPATH = System.getProperty("java.class.path");
 
-    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
+    private static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
     /**
      * A map of jar / manifest entries pairs.
