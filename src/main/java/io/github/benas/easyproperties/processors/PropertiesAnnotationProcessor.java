@@ -79,7 +79,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
 
     private void checkIfFieldIsOfType(final Field field, final Object object, final Class type) throws AnnotationProcessingException {
         if (!field.getType().equals(type)) {
-            throw new AnnotationProcessingException(format("Annotation @Properties declared on field %s of type %s is incompatible with type %s",
+            throw new AnnotationProcessingException(format("Annotation @Properties declared on field '%s' of type '%s' is incompatible with type '%s'",
                     field.getName(), object.getClass(), field.getType()));
         }
     }

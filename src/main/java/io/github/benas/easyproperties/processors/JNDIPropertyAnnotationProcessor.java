@@ -68,12 +68,12 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         try {
             value = context.lookup(name);
         } catch (NamingException e) {
-            throw new AnnotationProcessingException(format("Unable to lookup object %s from JNDI context", name), e);
+            throw new AnnotationProcessingException(format("Unable to lookup object '%s' from JNDI context", name), e);
         }
 
         //check object obtained from JNDI context
         if (value == null) {
-            throw new AnnotationProcessingException(format("JNDI object %s not found in JNDI context.", name));
+            throw new AnnotationProcessingException(format("JNDI object '%s' not found in JNDI context.", name));
         }
 
         //inject object in annotated field

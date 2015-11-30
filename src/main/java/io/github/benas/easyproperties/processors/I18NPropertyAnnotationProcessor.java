@@ -75,7 +75,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //get key value, convert it to the right type and set it to the field
         String value = resourceBundlesMap.get(bundle).getString(key);
-        checkIfEmpty(value, format("Key %s not found or empty in resource bundle %s", key, bundle));
+        checkIfEmpty(value, format("Key '%s' not found or empty in resource bundle: %s", key, bundle));
 
         processAnnotation(object, field, key, value);
     }
@@ -85,7 +85,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
             ResourceBundle resourceBundle = ResourceBundle.getBundle(bundle, locale);
             resourceBundlesMap.put(bundle, resourceBundle);
         } catch (MissingResourceException e) {
-            throw new AnnotationProcessingException("Resource bundle " + bundle + " not found", e);
+            throw new AnnotationProcessingException(format("Resource bundle '%s' not found", bundle), e);
         }
     }
 
