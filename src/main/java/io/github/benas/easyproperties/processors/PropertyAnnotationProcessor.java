@@ -46,7 +46,7 @@ import static java.lang.String.format;
  */
 public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<Property> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     /**
      * A map holding source file name and Properties object serving as a cache.
@@ -71,8 +71,8 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor imp
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
         if (value == null) {
-            logger.log(Level.WARNING, format("Property %s on field '%s' of type '%s' not found in properties file: %s",
-                    key, field.getName(), object.getClass(), source));
+            LOGGER.log(Level.WARNING, "Property ''{0}'' on field ''{1}'' of type ''{2}'' not found in properties file: {3}",
+                    new Object[]{key, field.getName(), object.getClass(), source});
             return;
         }
         if (value.isEmpty()) {

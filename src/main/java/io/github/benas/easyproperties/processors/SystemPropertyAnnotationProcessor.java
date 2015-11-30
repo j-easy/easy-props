@@ -32,8 +32,6 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.String.format;
-
 /**
  * An annotation processor that loads properties from system properties.
  *
@@ -41,7 +39,7 @@ import static java.lang.String.format;
  */
 public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor implements AnnotationProcessor<SystemProperty> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
     public void processAnnotation(final SystemProperty systemProperty, final Field field, final Object object) throws AnnotationProcessingException {
@@ -54,8 +52,8 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
-            logger.log(Level.WARNING, format("System property %s on field %s of type %s not found in system properties: %s",
-                    key, field.getName(), object.getClass(), System.getProperties()));
+            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' not found in system properties: {3}",
+                    new Object[]{key, field.getName(), object.getClass(), System.getProperties()});
 
             //Use default value if specified
             String defaultValue = systemProperty.defaultValue();
