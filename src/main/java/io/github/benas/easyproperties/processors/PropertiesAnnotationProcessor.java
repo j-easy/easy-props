@@ -50,7 +50,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
     @Override
     public void processAnnotation(final Properties propertiesAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
 
-        checkIfFieldIsOfType(field, object, java.util.Properties.class);
+        rejectIfFieldIsNotOfType(field, object, java.util.Properties.class);
 
         String source = propertiesAnnotation.value().trim();
         rejectIfEmpty(source, missingAttributeValue("source", "@Properties", field, object));
@@ -71,13 +71,15 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
             if (inputStream != null) {
                 properties.load(inputStream);
                 propertiesMap.put(source, properties);
+            } else {
+                throw new AnnotationProcessingException(format("Unable to load properties from source %s", source));
             }
         } catch (IOException e) {
             throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);
         }
     }
 
-    private void checkIfFieldIsOfType(final Field field, final Object object, final Class type) throws AnnotationProcessingException {
+    private void rejectIfFieldIsNotOfType(final Field field, final Object object, final Class type) throws AnnotationProcessingException {
         if (!field.getType().equals(type)) {
             throw new AnnotationProcessingException(format("Annotation @Properties declared on field '%s' of type '%s' is incompatible with type '%s'",
                     field.getName(), object.getClass(), field.getType()));

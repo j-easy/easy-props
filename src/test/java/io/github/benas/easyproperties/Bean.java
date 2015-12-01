@@ -43,9 +43,6 @@ public class Bean {
     @Property(source = "myProperties.properties", key = "empty.key")
     private String emptyField;
 
-    @Properties("myProperties.properties")
-    private java.util.Properties myProperties;
-
     @MyCustomAnnotation(value = "foo")
     private String custom;
 
@@ -81,13 +78,6 @@ public class Bean {
         this.beanName = beanName;
     }
 
-    public java.util.Properties getMyProperties() {
-        return myProperties;
-    }
-
-    public void setMyProperties(java.util.Properties myProperties) {
-        this.myProperties = myProperties;
-    }
 
     public String getEmptyField() {
         return emptyField;

@@ -28,9 +28,6 @@ import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
-import java.util.Properties;
-
 import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,13 +35,9 @@ public class PropertiesInjectorImplTest {
 
     private Bean bean;
 
-    private Properties properties;
-
     @Before
     public void setUp() throws Exception {
         System.setProperty("threshold", "30");
-        properties = new Properties();
-        properties.load(getResourceAsStream("myProperties.properties"));
         PropertiesInjector propertiesInjector = aNewPropertiesInjector()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
@@ -73,11 +66,6 @@ public class PropertiesInjectorImplTest {
     }
 
     @Test
-    public void testPropertiesInjection() throws Exception {
-        assertThat(bean.getMyProperties().getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
-    }
-
-    @Test
     public void testEmptyPropertyInjection() throws Exception {
         assertThat(bean.getEmptyField()).isNull();
     }
@@ -86,9 +74,4 @@ public class PropertiesInjectorImplTest {
     public void testCustomAnnotationProcessor() throws Exception {
         assertThat(bean.getCustom()).isEqualTo("foo");
     }
-
-    private InputStream getResourceAsStream(final String resource) {
-        return this.getClass().getClassLoader().getResourceAsStream(resource);
-    }
-
 }
