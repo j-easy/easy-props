@@ -90,6 +90,8 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
             if (inputStream != null) {
                 properties.load(inputStream);
                 propertiesMap.put(source, properties);
+            } else {
+                throw new AnnotationProcessingException(format("Unable to load properties from source %s", source));
             }
         } catch (IOException e) {
             throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);

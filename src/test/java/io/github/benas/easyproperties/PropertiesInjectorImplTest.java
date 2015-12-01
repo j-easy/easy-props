@@ -61,16 +61,6 @@ public class PropertiesInjectorImplTest {
     }
 
     @Test
-    public void testPropertyInjection() throws Exception {
-        assertThat(bean.getBeanName()).isEqualTo("Foo");
-    }
-
-    @Test
-    public void testEmptyPropertyInjection() throws Exception {
-        assertThat(bean.getEmptyField()).isNull();
-    }
-
-    @Test
     public void testCustomAnnotationProcessor() throws Exception {
         assertThat(bean.getCustom()).isEqualTo("foo");
     }

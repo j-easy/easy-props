@@ -37,12 +37,6 @@ public class Bean {
     @SystemProperty("threshold")
     private int threshold;
 
-    @Property(source = "myProperties.properties", key = "bean.name")
-    private String beanName;
-
-    @Property(source = "myProperties.properties", key = "empty.key")
-    private String emptyField;
-
     @MyCustomAnnotation(value = "foo")
     private String custom;
 
@@ -68,23 +62,6 @@ public class Bean {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
-    }
-
-    public String getBeanName() {
-        return beanName;
-    }
-
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
-    }
-
-
-    public String getEmptyField() {
-        return emptyField;
-    }
-
-    public void setEmptyField(String emptyField) {
-        this.emptyField = emptyField;
     }
 
     public String getCustom() {
