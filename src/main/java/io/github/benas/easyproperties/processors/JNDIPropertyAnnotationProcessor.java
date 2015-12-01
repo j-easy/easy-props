@@ -76,7 +76,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check object obtained from JNDI context
         if (value == null) {
-            LOGGER.log(Level.WARNING, "JNDI object ''{0}'' not found in JNDI context", name);
+            LOGGER.log(Level.WARNING, "Object ''{0}'' not found in JNDI context", name);
             return;
         }
 
