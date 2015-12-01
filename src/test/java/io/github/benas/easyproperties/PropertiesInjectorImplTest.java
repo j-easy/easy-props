@@ -63,11 +63,6 @@ public class PropertiesInjectorImplTest {
     }
 
     @Test
-    public void testSystemMavenVersionValueInjection() throws Exception {
-        assertThat(bean.getPomVersion()).isEqualTo("1.9.2");
-    }
-
-    @Test
     public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
         assertThat(bean.getThreshold()).isEqualTo(30);
     }

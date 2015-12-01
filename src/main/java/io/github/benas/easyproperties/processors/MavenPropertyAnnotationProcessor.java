@@ -70,6 +70,8 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
                 if (inputStream != null) {
                     properties.load(inputStream);
                     mavenMap.put(property, properties.getProperty(key));
+                } else {
+                    throw new AnnotationProcessingException(format("Unable to load pom file from %s", pathToMavenPom));
                 }
             } catch (IOException e) {
                 throw new AnnotationProcessingException(format("Unable to load pom file from %s", pathToMavenPom), e);

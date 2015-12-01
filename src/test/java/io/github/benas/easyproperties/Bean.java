@@ -46,9 +46,6 @@ public class Bean {
     @Properties("myProperties.properties")
     private java.util.Properties myProperties;
 
-    @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
-    private String pomVersion;
-
     @MyCustomAnnotation(value = "foo")
     private String custom;
 
@@ -92,13 +89,6 @@ public class Bean {
         this.myProperties = myProperties;
     }
 
-    public String getPomVersion() {
-        return pomVersion;
-    }
-
-    public void setPomVersion(String pomVersion) {
-        this.pomVersion = pomVersion;
-    }
     public String getEmptyField() {
         return emptyField;
     }
