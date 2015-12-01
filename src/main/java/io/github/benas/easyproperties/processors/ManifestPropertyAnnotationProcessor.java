@@ -77,7 +77,14 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
             throw new AnnotationProcessingException(format("Unable to find jar '%s' in classpath: %s", jar, CLASSPATH));
         }
 
-        processAnnotation(object, field, header, manifestEntries.get(jar).getMainAttributes().getValue(header));
+        String value = manifestEntries.get(jar).getMainAttributes().getValue(header);
+        if (value == null) {
+            //silently ignore field
+            LOGGER.log(Level.WARNING, "Header ''{0}'' not found in manifest of jar ''{1}''", new Object[]{header, jar});
+            return;
+        }
+
+        processAnnotation(object, field, header, value);
 
     }
 

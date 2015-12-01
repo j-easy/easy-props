@@ -83,11 +83,6 @@ public class PropertiesInjectorImplTest {
     }
 
     @Test
-    public void testManifestPropertyInjection() throws Exception {
-        assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.0.4");
-    }
-
-    @Test
     public void testEmptyPropertyInjection() throws Exception {
         assertThat(bean.getEmptyField()).isNull();
     }

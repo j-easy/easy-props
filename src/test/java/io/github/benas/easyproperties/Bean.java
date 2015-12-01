@@ -49,9 +49,6 @@ public class Bean {
     @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
     private String pomVersion;
 
-    @ManifestProperty(jar = "junit-4.12.jar", header = "Created-By")
-    private String createdBy;
-
     @MyCustomAnnotation(value = "foo")
     private String custom;
 
@@ -102,15 +99,6 @@ public class Bean {
     public void setPomVersion(String pomVersion) {
         this.pomVersion = pomVersion;
     }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public String getEmptyField() {
         return emptyField;
     }
