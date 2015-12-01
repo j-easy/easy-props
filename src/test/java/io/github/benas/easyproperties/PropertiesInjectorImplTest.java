@@ -25,12 +25,9 @@
 package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -41,15 +38,11 @@ public class PropertiesInjectorImplTest {
 
     private Bean bean;
 
-    private Context context;
-
     private Properties properties;
 
     @Before
     public void setUp() throws Exception {
         System.setProperty("threshold", "30");
-        context = new InitialContext();
-        context.bind("foo.property", "jndi");
         properties = new Properties();
         properties.load(getResourceAsStream("myProperties.properties"));
         PropertiesInjector propertiesInjector = aNewPropertiesInjector()
@@ -90,11 +83,6 @@ public class PropertiesInjectorImplTest {
     }
 
     @Test
-    public void testJNDIPropertyInjection() throws Exception {
-        assertThat(bean.getJndiProperty()).isEqualTo("jndi");
-    }
-
-    @Test
     public void testManifestPropertyInjection() throws Exception {
         assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.0.4");
     }
@@ -107,11 +95,6 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testCustomAnnotationProcessor() throws Exception {
         assertThat(bean.getCustom()).isEqualTo("foo");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        context.close();
     }
 
     private InputStream getResourceAsStream(final String resource) {

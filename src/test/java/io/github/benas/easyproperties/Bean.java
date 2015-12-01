@@ -46,9 +46,6 @@ public class Bean {
     @Properties("myProperties.properties")
     private java.util.Properties myProperties;
 
-    @JNDIProperty("foo.property")
-    private String jndiProperty;
-
     @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
     private String pomVersion;
 
@@ -96,14 +93,6 @@ public class Bean {
 
     public void setMyProperties(java.util.Properties myProperties) {
         this.myProperties = myProperties;
-    }
-
-    public String getJndiProperty() {
-        return jndiProperty;
-    }
-
-    public void setJndiProperty(String jndiProperty) {
-        this.jndiProperty = jndiProperty;
     }
 
     public String getPomVersion() {
