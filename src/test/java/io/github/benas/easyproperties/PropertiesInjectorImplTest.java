@@ -37,27 +37,11 @@ public class PropertiesInjectorImplTest {
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty("threshold", "30");
         PropertiesInjector propertiesInjector = aNewPropertiesInjector()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
         bean = new Bean();
         propertiesInjector.injectProperties(bean);
-    }
-
-    @Test
-    public void testSystemPropertyInjection() throws Exception {
-        assertThat(bean.getUserHome()).isEqualTo(System.getProperty("user.home"));
-    }
-
-    @Test
-    public void testSystemPropertyDefaultValueInjection() throws Exception {
-        assertThat(bean.getValue()).isEqualTo("default");
-    }
-
-    @Test
-    public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
-        assertThat(bean.getThreshold()).isEqualTo(30);
     }
 
     @Test

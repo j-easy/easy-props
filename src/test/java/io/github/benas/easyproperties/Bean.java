@@ -24,45 +24,10 @@
 
 package io.github.benas.easyproperties;
 
-import io.github.benas.easyproperties.annotations.*;
-
 public class Bean {
-
-    @SystemProperty("user.home")
-    private String userHome;
-
-    @SystemProperty(value = "blah", defaultValue = "default")
-    private String value;
-
-    @SystemProperty("threshold")
-    private int threshold;
 
     @MyCustomAnnotation(value = "foo")
     private String custom;
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getUserHome() {
-        return userHome;
-    }
-
-    public void setUserHome(String userHome) {
-        this.userHome = userHome;
-    }
-
-    public int getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
-    }
 
     public String getCustom() {
         return custom;
