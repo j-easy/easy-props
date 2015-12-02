@@ -65,35 +65,32 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
 
     @Override
     public void injectProperties(final Object object) throws PropertyInjectionException {
-
-        /*
-         * Retrieve declared fields
-         */
+        //Retrieve declared fields
         List<Field> fields = getDeclaredFields(object);
 
-        /*
-         * Retrieve inherited fields for all type hierarchy
-         */
+        //Retrieve inherited fields for all type hierarchy
         fields.addAll(getInheritedFields(object));
 
-        /*
-         * Introspect fields for each registered annotation, and delegate its processing to the right annotation processor
-         */
+        //Inject properties in each field
         for (Field field : fields) {
-            for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {
-                AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
-                if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
-                    Annotation annotation = field.getAnnotation(annotationType);
-                    try {
-                        annotationProcessor.processAnnotation(annotation, field, object);
-                    } catch (AnnotationProcessingException e) {
-                        throw new PropertyInjectionException(format("Unable to inject property '%s' in field '%s' of object '%s'",
-                                annotation, field.getName(), object), e);
-                    }
+            processField(field, object);
+        }
+    }
+
+    private void processField(final Field field, final Object object) throws PropertyInjectionException {
+        //Introspect the field for each registered annotation, and delegate its processing to the corresponding annotation processor
+        for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {
+            AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
+            if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
+                Annotation annotation = field.getAnnotation(annotationType);
+                try {
+                    annotationProcessor.processAnnotation(annotation, field, object);
+                } catch (AnnotationProcessingException e) {
+                    throw new PropertyInjectionException(format("Unable to inject property '%s' in field '%s' of object '%s'",
+                            annotation, field.getName(), object), e);
                 }
             }
         }
-
     }
 
     /**
