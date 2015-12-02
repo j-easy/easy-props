@@ -62,16 +62,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         rejectIfEmpty(bundle, missingAttributeValue("bundle", annotationName, field, object));
         rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
 
-        Locale locale = Locale.getDefault();
-        if (!language.isEmpty()) {
-            locale = new Locale(language);
-        }
-        if (!language.isEmpty() && !country.isEmpty()) {
-            locale = new Locale(language, country);
-        }
-        if (!language.isEmpty() && !country.isEmpty() && !variant.isEmpty()) {
-            locale = new Locale(language, country, variant);
-        }
+        Locale locale = getLocale(language, country, variant);
 
         //check if the resource bundle is not already loaded
         if (!resourceBundlesMap.containsKey(bundle)) {
@@ -91,6 +82,20 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         }
 
         processAnnotation(object, field, key, value);
+    }
+
+    private Locale getLocale(String language, String country, String variant) {
+        Locale locale = Locale.getDefault();
+        if (!language.isEmpty()) {
+            locale = new Locale(language);
+        }
+        if (!language.isEmpty() && !country.isEmpty()) {
+            locale = new Locale(language, country);
+        }
+        if (!language.isEmpty() && !country.isEmpty() && !variant.isEmpty()) {
+            locale = new Locale(language, country, variant);
+        }
+        return locale;
     }
 
     private void loadResourceBundle(final String bundle, final Locale locale) throws AnnotationProcessingException {
