@@ -31,7 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation injects a header value from a META-INF/MANIFEST.MF file in the annotated field.
+ * This annotation injects a header from a {@code META-INF/MANIFEST.MF} file in the annotated field.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
@@ -40,16 +40,16 @@ import java.lang.annotation.Target;
 public @interface ManifestProperty {
 
     /**
-     * The jar file name (in the classpath) containing the META-INF/MANIFEST.MF file.
+     * The jar file name (in the classpath) containing the {@code META-INF/MANIFEST.MF} file.
      *
-     * @return jar file name (in the classpath) containing the META-INF/MANIFEST.MF file.
+     * @return jar file name (in the classpath) containing {@code META-INF/MANIFEST.MF} file.
      */
     String jar();
 
     /**
-     * The header name in the META-INF/MANIFEST.MF file.
+     * The header name in the {@code META-INF/MANIFEST.MF} file.
      *
-     * @return the header name in the META-INF/MANIFEST.MF file.
+     * @return the header name in the {@code META-INF/MANIFEST.MF} file.
      */
     String header();
 

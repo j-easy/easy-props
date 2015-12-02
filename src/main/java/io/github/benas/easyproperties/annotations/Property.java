@@ -46,9 +46,9 @@ public @interface Property {
     String source();
 
     /**
-     * The key to load from the source properties file.
+     * The key to load from the properties file.
      *
-     * @return The key to load from the source properties file
+     * @return The key to load from the properties file
      */
     String key();
 

@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains main Easy Properties annotations.
+ * This package contains built-in annotations.
  */
 package io.github.benas.easyproperties.annotations;

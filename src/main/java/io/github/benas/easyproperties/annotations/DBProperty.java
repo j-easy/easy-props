@@ -46,9 +46,9 @@ public @interface DBProperty {
     String configuration();
 
     /**
-     * The key value to load from the table specified in the configuration properties.
+     * The key to load from the table specified in the configuration properties.
      *
-     * @return The key value to load from the table specified in the configuration properties
+     * @return The key to load from the table specified in the configuration properties
      */
     String key();
 

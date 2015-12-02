@@ -78,14 +78,27 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
                 attribute, annotation, field.getName(), object.getClass().getName());
     }
 
+    /**
+     * Reject a value (by throwing a {@link AnnotationProcessingException}) if it is empty
+     *
+     * @param value   the value to check
+     * @param message the message of the exception
+     * @throws AnnotationProcessingException thrown if the value is empty
+     */
     protected void rejectIfEmpty(final String value, final String message) throws AnnotationProcessingException {
         if (value.isEmpty()) {
             throw new AnnotationProcessingException(message);
         }
     }
 
-    protected InputStream getResourceAsStream(final String configuration) {
-        return this.getClass().getClassLoader().getResourceAsStream(configuration);
+    /**
+     * Get an {@link InputStream} from the given resource.
+     *
+     * @param resource the resource to look for.
+     * @return the resource as {@link InputStream}
+     */
+    protected InputStream getResourceAsStream(final String resource) {
+        return this.getClass().getClassLoader().getResourceAsStream(resource);
     }
 
 }

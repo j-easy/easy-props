@@ -39,9 +39,9 @@ import java.lang.annotation.Target;
 public @interface JNDIProperty {
 
     /**
-     * The object name in JNDI context.
+     * The object name in the JNDI context.
      *
-     * @return The object name in JNDI context
+     * @return The object name in the JNDI context
      */
     String value();
 

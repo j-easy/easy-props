@@ -30,12 +30,13 @@ import java.lang.reflect.Field;
 /**
  * Annotation processor interface.
  *
- * @param <T> The annotation type processed.
+ * @param <T> The annotation type.
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public interface AnnotationProcessor<T extends Annotation> {
 
     /**
-     * Process an annotation of type T to be introspected by Easy Properties.
+     * Process an annotation of type T.
      *
      * @param annotation the annotation to process.
      * @param field      the field annotated with the annotation.

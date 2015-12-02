@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains main Easy Properties API.
+ * This package contains public APIs.
  */
 package io.github.benas.easyproperties.api;
