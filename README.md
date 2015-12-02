@@ -1,5 +1,7 @@
 ## What is Easy Properties?
 
+[![Join the chat at https://gitter.im/benas/easy-properties](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/benas/easy-properties?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Easy Properties is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
 The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking **actively** for configuration properties,
