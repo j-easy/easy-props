@@ -22,8 +22,11 @@
  *    THE SOFTWARE.
  */
 
-package io.github.benas.easyproperties;
+package io.github.benas.easyproperties.impl;
 
+import io.github.benas.easyproperties.Bean;
+import io.github.benas.easyproperties.MyCustomAnnotation;
+import io.github.benas.easyproperties.MyCustomAnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,19 +36,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
 
-    private Bean bean;
+    PropertiesInjector propertiesInjector;
 
     @Before
     public void setUp() throws Exception {
-        PropertiesInjector propertiesInjector = aNewPropertiesInjector()
+        propertiesInjector = aNewPropertiesInjector()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
-        bean = new Bean();
-        propertiesInjector.injectProperties(bean);
     }
 
     @Test
     public void testCustomAnnotationProcessor() throws Exception {
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
         assertThat(bean.getCustom()).isEqualTo("foo");
     }
 }
