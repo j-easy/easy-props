@@ -1,9 +1,5 @@
 ## What is Easy Properties?
 
-[Build job @ Travis CI](https://travis-ci.org/benas/easy-properties)
-[![Coverage](https://coveralls.io/repos/benas/easy-properties/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/benas/easy-properties?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/565f5cc5f376cc002c0000ba/badge.svg?style=flat)](https://www.versioneye.com/user/projects/565f5cc5f376cc002c0000ba)
-
 Easy Properties is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
 The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking **actively** for configuration properties,
@@ -139,7 +135,7 @@ You are welcome to contribute to the project with pull requests on GitHub.
 
 If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/benas/easy-properties/issues).
 
-For any further question, you can use the [Gitter](https://gitter.im/benas/easy-properties) channel of the project.
+For any further question, you can use the Gitter channel of the project: [![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/benas/easy-properties)
 
 ## Documentation
 
