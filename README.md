@@ -1,5 +1,9 @@
 ## What is Easy Properties?
 
+[Build job @ Travis CI](https://travis-ci.org/benas/easy-properties)
+[![Coverage](https://coveralls.io/repos/benas/easy-properties/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/benas/easy-properties?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/565f5cc5f376cc002c0000ba/badge.svg?style=flat)](https://www.versioneye.com/user/projects/565f5cc5f376cc002c0000ba)
+
 Easy Properties is a Java library that allows you to inject configuration properties in Java objects in a declarative way using annotations.
 
 The idea is to implement the _"Inversion Of Control"_ principle : Instead of having objects looking **actively** for configuration properties,
@@ -15,7 +19,7 @@ But in order to benefit from this feature, your code should run inside a DI cont
 
 What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from dependency injection without requiring your code to run inside a DI container.
 
-That said, **Easy Properties is a library, not a (yet another DI) framework**.
+That said, **Easy Properties is a library, not a DI framework**.
 
 ## Quick example
 
@@ -106,7 +110,6 @@ public class Bean {
 ```
 
 As you can see, a lot of boilerplate code is written to load two properties, convert them to the target field type, etc.
-
 Easy Properties takes care of all this boilerplate for you, which makes your code cleaner, more readable and maintainable.
 
 In this quick example, you have seen two types of properties sources (system and resource bundle). 
@@ -115,6 +118,28 @@ Easy Properties allows you to inject properties from many other sources like dat
 Even better, Easy Properties allows you write your own annotations and inject properties from a custom configuration source.
 
 Checkout the complete reference in the project's [wiki](https://github.com/benas/easy-properties/wiki).
+
+## Current version
+
+* The current stable version is `1.2.0` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/easy-properties/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|io.github.benas|easy-properties|1.2.0|) 
+* The current development version is `1.2.1-SNAPSHOT` : [![Build Status](https://travis-ci.org/benas/easy-properties.svg?branch=master)](https://travis-ci.org/benas/easy-properties)
+
+In order to use snapshot versions, you need to add the following maven repository in your `pom.xml`:
+
+```xml
+<repository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+</repository>
+```
+
+## Contribution
+
+You are welcome to contribute to the project with pull requests on GitHub.
+
+If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/benas/easy-properties/issues).
+
+For any further question, you can use the [Gitter](https://gitter.im/benas/easy-properties) channel of the project.
 
 ## Documentation
 
@@ -125,4 +150,28 @@ Easy Properties documentation can be found here : [https://github.com/benas/easy
 * [natlantisprog](https://github.com/natlantisprog)
 
 ## License
-Easy Properties is released under the [MIT License](http://opensource.org/licenses/mit-license.php/).
+Easy Properties is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2016 Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
