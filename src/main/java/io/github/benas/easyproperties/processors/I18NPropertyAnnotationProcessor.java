@@ -49,7 +49,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Map<String, ResourceBundle> resourceBundlesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final I18NProperty property, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final I18NProperty property, final Field field) throws AnnotationProcessingException {
 
         String key = property.key().trim();
         String bundle = property.bundle().trim();
@@ -59,8 +59,8 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
 
         //check attributes
         String annotationName = I18NProperty.class.getName();
-        rejectIfEmpty(bundle, missingAttributeValue("bundle", annotationName, field, object));
-        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
+        rejectIfEmpty(bundle, missingAttributeValue("bundle", annotationName, field));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field));
 
         Locale locale = getLocale(language, country, variant);
 
@@ -74,14 +74,14 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
             value = resourceBundlesMap.get(bundle).getString(key);
         } catch (MissingResourceException e) {
             LOGGER.log(Level.WARNING, "Key ''{0}'' not found in resource bundle: {1}", new Object[]{key, bundle});
-            return;
+            return null;
         }
         if (value.isEmpty()) {
             LOGGER.log(Level.WARNING, "Key ''{0}'' is empty in resource bundle: {1}", new Object[]{key, bundle});
-            return;
+            return null;
         }
 
-        processAnnotation(object, field, value);
+        return value;
     }
 
     private Locale getLocale(String language, String country, String variant) {

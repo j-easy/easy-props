@@ -29,6 +29,8 @@ import java.lang.reflect.Field;
 
 /**
  * Annotation processor interface.
+ * Implementations should provide the logic to get the value to inject in the target field annotated with T.
+ * Easy Properties will convert the value to the target field's type and set it in the field.
  *
  * @param <T> The annotation type.
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
@@ -39,10 +41,10 @@ public interface AnnotationProcessor<T extends Annotation> {
      * Process an annotation of type T.
      *
      * @param annotation the annotation to process.
-     * @param field      the field annotated with the annotation.
-     * @param object     the object being configured.
+     * @param field      the target field
+     * @return Return the object to set in the annotated field or null if the value should be ignored
      * @throws AnnotationProcessingException thrown if an exception occurs during annotation processing
      */
-    void processAnnotation(T annotation, Field field, Object object) throws AnnotationProcessingException;
+    Object processAnnotation(final T annotation, final Field field) throws AnnotationProcessingException;
 
 }

@@ -26,13 +26,10 @@ package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 import static java.lang.String.format;
 
@@ -44,41 +41,20 @@ import static java.lang.String.format;
 public abstract class AbstractAnnotationProcessor<A extends Annotation> implements AnnotationProcessor<A> {
 
     /**
-     * Convert the value to field type and set it in the target object.
-     *
-     * @param target the target object
-     * @param field  the annotated field
-     * @param value  the value to inject
-     * @throws AnnotationProcessingException thrown if an exception occurs when trying to set the field value
-     */
-    protected void processAnnotation(final Object target, final Field field, final Object value) throws AnnotationProcessingException {
-
-        Object typedValue = ConvertUtils.convert(value, field.getType());
-        try {
-            PropertyUtils.setProperty(target, field.getName(), typedValue);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new AnnotationProcessingException(format("Unable to set field '%s' in type '%s'." +
-                    " A setter may be missing for this field.", field.getName(), target.getClass()), e);
-        }
-
-    }
-
-    /**
      * Constructs an error message to signal missing annotation attribute value.
      *
      * @param attribute  the target attribute
      * @param annotation the annotation concerned
      * @param field      the target field
-     * @param object     the target object
      * @return the formatted error message
      */
-    protected String missingAttributeValue(final String attribute, final String annotation, final Field field, final Object object) {
+    protected String missingAttributeValue(final String attribute, final String annotation, final Field field) {
         return format("No value specified for attribute '%s' of annotation '%s' on field '%s' of type '%s'",
-                attribute, annotation, field.getName(), object.getClass().getName());
+                attribute, annotation, field.getName(), field.getDeclaringClass().getName());
     }
 
     /**
-     * Reject a value (by throwing a {@link AnnotationProcessingException}) if it is empty
+     * Reject a value (by throwing a {@link AnnotationProcessingException}) if it is empty.
      *
      * @param value   the value to check
      * @param message the message of the exception

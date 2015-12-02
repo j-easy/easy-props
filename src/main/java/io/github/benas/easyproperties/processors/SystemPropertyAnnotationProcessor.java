@@ -41,29 +41,30 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
     private static final Logger LOGGER = Logger.getLogger(SystemPropertyAnnotationProcessor.class.getName());
 
     @Override
-    public void processAnnotation(final SystemProperty systemProperty, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final SystemProperty systemProperty, final Field field) throws AnnotationProcessingException {
 
         String key = systemProperty.value().trim();
 
         //check attribute
-        rejectIfEmpty(key, missingAttributeValue("value", SystemProperty.class.getName(), field, object));
+        rejectIfEmpty(key, missingAttributeValue("value", SystemProperty.class.getName(), field));
 
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
             LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' not found in system properties: {3}",
-                    new Object[]{key, field.getName(), object.getClass(), System.getProperties()});
+                    new Object[]{key, field.getName(), field.getDeclaringClass().getName(), System.getProperties()});
 
             //Use default value if specified
             String defaultValue = systemProperty.defaultValue();
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                //silently ignore empty default values
-                return;
+                LOGGER.log(Level.WARNING, "Default value of system property ''{0}'' on field ''{1}'' of type ''{2}'' is empty",
+                        new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
+                return null;
             }
         }
 
-        processAnnotation(object, field, value);
+        return value;
     }
 }

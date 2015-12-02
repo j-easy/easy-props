@@ -26,11 +26,12 @@ package io.github.benas.easyproperties.impl;
 
 import io.github.benas.easyproperties.annotations.*;
 import io.github.benas.easyproperties.annotations.Properties;
-import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.api.PropertyInjectionException;
 import io.github.benas.easyproperties.processors.*;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -83,13 +84,21 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
             AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
             if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
                 Annotation annotation = field.getAnnotation(annotationType);
-                try {
-                    annotationProcessor.processAnnotation(annotation, field, object);
-                } catch (AnnotationProcessingException e) {
-                    throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
-                            annotation, field.getName(), object), e);
-                }
+                injectProperty(field, object, annotation, annotationProcessor);
             }
+        }
+    }
+
+    private void injectProperty(Field field, Object object, Annotation annotation, AnnotationProcessor annotationProcessor) throws PropertyInjectionException {
+        try {
+            Object value = annotationProcessor.processAnnotation(annotation, field);
+            if (value != null) {
+                Object typedValue = ConvertUtils.convert(value, field.getType());
+                PropertyUtils.setProperty(object, field.getName(), typedValue);
+            }
+        } catch (Exception e) {
+            throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
+                    annotation, field.getName(), object), e);
         }
     }
 

@@ -51,7 +51,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     private Context context;
 
     @Override
-    public void processAnnotation(final JNDIProperty jndiPropertyAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final JNDIProperty jndiPropertyAnnotation, final Field field) throws AnnotationProcessingException {
 
         if (context == null) {
             try {
@@ -64,25 +64,28 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String name = jndiPropertyAnnotation.value().trim();
 
         //check attributes
-        rejectIfEmpty(name, missingAttributeValue("name", JNDIProperty.class.getName(), field, object));
+        rejectIfEmpty(name, missingAttributeValue("name", JNDIProperty.class.getName(), field));
 
         //get object from JNDI context
-        Object value;
-        try {
-            value = context.lookup(name);
-        } catch (NamingException e) {
-            throw new AnnotationProcessingException(format("Unable to lookup object '%s' from JNDI context", name), e);
-        }
+        Object value = getObjectFromJndiContext(name);
 
         //check object obtained from JNDI context
         if (value == null) {
             LOGGER.log(Level.WARNING, "Object ''{0}'' not found in JNDI context", name);
-            return;
         }
 
-        //inject object in annotated field
-        processAnnotation(object, field, value);
+        return value;
 
+    }
+
+    private Object getObjectFromJndiContext(String name) throws AnnotationProcessingException {
+        Object value;
+        try {
+            value = context.lookup(name);
+            return value;
+        } catch (NamingException e) {
+            throw new AnnotationProcessingException(format("Unable to lookup object '%s' from JNDI context", name), e);
+        }
     }
 
 }

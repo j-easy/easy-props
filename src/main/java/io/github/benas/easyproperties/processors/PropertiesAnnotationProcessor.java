@@ -48,19 +48,19 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
     private Map<String, java.util.Properties> propertiesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final Properties propertiesAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final Properties propertiesAnnotation, final Field field) throws AnnotationProcessingException {
 
-        rejectIfFieldIsNotOfType(field, object, java.util.Properties.class);
+        rejectIfFieldIsNotOfType(field, java.util.Properties.class);
 
         String source = propertiesAnnotation.value().trim();
-        rejectIfEmpty(source, missingAttributeValue("source", Properties.class.getName(), field, object));
+        rejectIfEmpty(source, missingAttributeValue("source", Properties.class.getName(), field));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
             loadProperties(source);
         }
 
-        processAnnotation(object, field, propertiesMap.get(source));
+        return propertiesMap.get(source);
 
     }
 
@@ -79,10 +79,10 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
         }
     }
 
-    private void rejectIfFieldIsNotOfType(final Field field, final Object object, final Class type) throws AnnotationProcessingException {
+    private void rejectIfFieldIsNotOfType(final Field field, final Class type) throws AnnotationProcessingException {
         if (!field.getType().equals(type)) {
-            throw new AnnotationProcessingException(format("Annotation @Properties declared on field '%s' of type '%s' is incompatible with type '%s'",
-                    field.getName(), object.getClass(), field.getType()));
+            throw new AnnotationProcessingException(format("Annotation %s declared on field '%s' of type '%s' is incompatible with type '%s'",
+                    Properties.class.getName(), field.getName(), field.getDeclaringClass().getName(), field.getType()));
         }
     }
 

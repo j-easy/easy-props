@@ -59,34 +59,41 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     private Map<String, Manifest> manifestEntries = new HashMap<>();
 
     @Override
-    public void processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final ManifestProperty manifestPropertyAnnotation, final Field field) throws AnnotationProcessingException {
 
         String jar = manifestPropertyAnnotation.jar().trim();
         String header = manifestPropertyAnnotation.header().trim();
 
         //check attributes
         String annotationName = ManifestProperty.class.getName();
-        rejectIfEmpty(jar, missingAttributeValue("jar", annotationName, field, object));
-        rejectIfEmpty(header, missingAttributeValue("header", annotationName, field, object));
+        rejectIfEmpty(jar, missingAttributeValue("jar", annotationName, field));
+        rejectIfEmpty(header, missingAttributeValue("header", annotationName, field));
 
         if (manifestEntries.get(jar) == null) {
             loadManifestFromJar(jar);
         }
 
         //the jar was not found in the classpath
-        if (manifestEntries.get(jar) == null) {
-            throw new AnnotationProcessingException(format("Unable to find jar '%s' in classpath: %s", jar, CLASSPATH));
-        }
+        rejectIfNotFound(jar);
 
         String value = manifestEntries.get(jar).getMainAttributes().getValue(header);
         if (value == null) {
-            //silently ignore field
             LOGGER.log(Level.WARNING, "Header ''{0}'' not found in manifest of jar ''{1}''", new Object[]{header, jar});
-            return;
+            return null;
+        }
+        if (value.isEmpty()) {
+            LOGGER.log(Level.WARNING, "Header ''{0}'' in manifest of jar ''{1}'' is empty", new Object[]{header, jar});
+            return null;
         }
 
-        processAnnotation(object, field, value);
+        return value;
 
+    }
+
+    private void rejectIfNotFound(String jar) throws AnnotationProcessingException {
+        if (manifestEntries.get(jar) == null) {
+            throw new AnnotationProcessingException(format("Unable to find jar '%s' in classpath: %s", jar, CLASSPATH));
+        }
     }
 
     private void loadManifestFromJar(final String jar) throws AnnotationProcessingException {

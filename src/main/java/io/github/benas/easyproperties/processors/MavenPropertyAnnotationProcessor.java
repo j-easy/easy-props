@@ -32,23 +32,24 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static java.lang.String.format;
 
 /**
- * An annotation processor that loads all properties from a maven pom.
+ * An annotation processor that loads all properties from {@code META-INF/maven/groupId/artifactId/pom.properties} .
  *
  * @author lhottois (natlantisprog@gmail.com)
  */
 public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor<MavenProperty> {
 
     /**
-     * A map holding pom and Properties object serving as a cache.
+     * A map holding pom.properties file with corresponding Properties object serving as a cache.
      */
-    private Map<String, String> mavenMap = new HashMap<>();
+    private Map<String, Properties> mavenMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final MavenProperty mavenAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final MavenProperty mavenAnnotation, final Field field) throws AnnotationProcessingException {
 
         String key = mavenAnnotation.key().trim();
         String source = mavenAnnotation.source().trim();
@@ -57,30 +58,33 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
 
         //check attributes
         String annotationName = MavenProperty.class.getName();
-        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
-        rejectIfEmpty(groupId, missingAttributeValue("groupId", annotationName, field, object));
-        rejectIfEmpty(artifactId, missingAttributeValue("artifactId", annotationName, field, object));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field));
+        rejectIfEmpty(groupId, missingAttributeValue("groupId", annotationName, field));
+        rejectIfEmpty(artifactId, missingAttributeValue("artifactId", annotationName, field));
 
-        //check if the maven property is not already loaded
-        String property = groupId + "." + artifactId + "." + key;
-        if (!mavenMap.containsKey(property)) {
-            java.util.Properties properties = new java.util.Properties();
-            String pathToMavenPom = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
-            try {
-                InputStream inputStream = getResourceAsStream(pathToMavenPom);
-                if (inputStream != null) {
-                    properties.load(inputStream);
-                    mavenMap.put(property, properties.getProperty(key));
-                } else {
-                    throw new AnnotationProcessingException(format("Unable to load pom file from %s", pathToMavenPom));
-                }
-            } catch (IOException e) {
-                throw new AnnotationProcessingException(format("Unable to load pom file from %s", pathToMavenPom), e);
-            }
+        //check if the maven properties for the given coordinates are not already loaded
+        String pomFile = "META-INF/maven/" + groupId + "/" + artifactId + "/" + source;
+        if (!mavenMap.containsKey(pomFile)) {
+            loadMavenProperties(pomFile);
         }
 
-        processAnnotation(object, field, mavenMap.get(property));
+        return mavenMap.get(pomFile).getProperty(key);
 
+    }
+
+    private void loadMavenProperties(final String pomFile) throws AnnotationProcessingException {
+        java.util.Properties properties = new java.util.Properties();
+        try {
+            InputStream inputStream = getResourceAsStream(pomFile);
+            if (inputStream != null) {
+                properties.load(inputStream);
+                mavenMap.put(pomFile, properties);
+            } else {
+                throw new AnnotationProcessingException(format("Unable to load pom file from %s", pomFile));
+            }
+        } catch (IOException e) {
+            throw new AnnotationProcessingException(format("Unable to load pom file from %s", pomFile), e);
+        }
     }
 
 }

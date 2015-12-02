@@ -59,15 +59,15 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
     private Map<String, Properties> dbPropertiesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final DBProperty dbPropertyAnnotation, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final DBProperty dbPropertyAnnotation, final Field field) throws AnnotationProcessingException {
 
         String configuration = dbPropertyAnnotation.configuration().trim();
         String key = dbPropertyAnnotation.key().trim();
 
         //check attributes
         String annotationName = DBProperty.class.getName();
-        rejectIfEmpty(configuration, missingAttributeValue("configuration", annotationName, field, object));
-        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
+        rejectIfEmpty(configuration, missingAttributeValue("configuration", annotationName, field));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field));
 
         //check if database connection configuration is not already loaded
         if (!dbConfigurationMap.containsKey(configuration)) {
@@ -82,13 +82,11 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         //check object obtained from database
         String value = dbPropertiesMap.get(configuration).getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties:: {1}",
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties: {1}",
                     new Object[]{key, dbConfigurationMap.get(configuration)});
-            return;
         }
 
-        //inject object in annotated field
-        processAnnotation(object, field, value);
+        return value;
 
     }
 

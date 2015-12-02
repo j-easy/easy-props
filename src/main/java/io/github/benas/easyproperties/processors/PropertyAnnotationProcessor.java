@@ -53,15 +53,15 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
     private Map<String, Properties> propertiesMap = new HashMap<>();
 
     @Override
-    public void processAnnotation(final Property property, final Field field, final Object object) throws AnnotationProcessingException {
+    public Object processAnnotation(final Property property, final Field field) throws AnnotationProcessingException {
 
         String source = property.source().trim();
         String key = property.key().trim();
 
         //check attributes
         String annotationName = Property.class.getName();
-        rejectIfEmpty(source, missingAttributeValue("source", annotationName, field, object));
-        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
+        rejectIfEmpty(source, missingAttributeValue("source", annotationName, field));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {
@@ -72,15 +72,15 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
         String value = propertiesMap.get(source).getProperty(key);
         if (value == null) {
             LOGGER.log(Level.WARNING, "Property ''{0}'' on field ''{1}'' of type ''{2}'' not found in properties file: {3}",
-                    new Object[]{key, field.getName(), object.getClass(), source});
-            return;
+                    new Object[]{key, field.getName(), field.getDeclaringClass().getName(), source});
+            return null;
         }
         if (value.isEmpty()) {
-            //silently ignore empty values
-            return;
+            LOGGER.log(Level.WARNING, "Property ''{0}'' is empty in properties file: {2}", new Object[]{key, source});
+            return null;
         }
 
-        processAnnotation(object, field, value);
+        return value;
 
     }
 
