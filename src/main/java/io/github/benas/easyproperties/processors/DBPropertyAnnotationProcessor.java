@@ -65,8 +65,9 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         String key = dbPropertyAnnotation.key().trim();
 
         //check attributes
-        rejectIfEmpty(configuration, missingAttributeValue("configuration", "@DBProperty", field, object));
-        rejectIfEmpty(key, missingAttributeValue("key", "@DBProperty", field, object));
+        String annotationName = DBProperty.class.getName();
+        rejectIfEmpty(configuration, missingAttributeValue("configuration", annotationName, field, object));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
 
         //check if database connection configuration is not already loaded
         if (!dbConfigurationMap.containsKey(configuration)) {

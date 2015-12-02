@@ -58,8 +58,9 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String variant = property.variant().trim();
 
         //check attributes
-        rejectIfEmpty(bundle, missingAttributeValue("bundle", "I18NProperty", field, object));
-        rejectIfEmpty(key, missingAttributeValue("key", "I18NProperty", field, object));
+        String annotationName = I18NProperty.class.getName();
+        rejectIfEmpty(bundle, missingAttributeValue("bundle", annotationName, field, object));
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
 
         Locale locale = Locale.getDefault();
         if (!language.isEmpty()) {

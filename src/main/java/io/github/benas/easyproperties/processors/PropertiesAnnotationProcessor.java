@@ -53,7 +53,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
         rejectIfFieldIsNotOfType(field, object, java.util.Properties.class);
 
         String source = propertiesAnnotation.value().trim();
-        rejectIfEmpty(source, missingAttributeValue("source", "@Properties", field, object));
+        rejectIfEmpty(source, missingAttributeValue("source", Properties.class.getName(), field, object));
 
         //check if the source file is not already loaded
         if (!propertiesMap.containsKey(source)) {

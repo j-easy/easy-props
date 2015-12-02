@@ -46,7 +46,7 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         String key = systemProperty.value().trim();
 
         //check attribute
-        rejectIfEmpty(key, missingAttributeValue("value", "@SystemProperty", field, object));
+        rejectIfEmpty(key, missingAttributeValue("value", SystemProperty.class.getName(), field, object));
 
         //check system property
         String value = System.getProperty(key);

@@ -56,9 +56,10 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
         String artifactId = mavenAnnotation.artifactId().trim();
 
         //check attributes
-        rejectIfEmpty(key, missingAttributeValue("key", "@MavenProperty", field, object));
-        rejectIfEmpty(groupId, missingAttributeValue("groupId", "@MavenProperty", field, object));
-        rejectIfEmpty(artifactId, missingAttributeValue("artifactId", "@MavenProperty", field, object));
+        String annotationName = MavenProperty.class.getName();
+        rejectIfEmpty(key, missingAttributeValue("key", annotationName, field, object));
+        rejectIfEmpty(groupId, missingAttributeValue("groupId", annotationName, field, object));
+        rejectIfEmpty(artifactId, missingAttributeValue("artifactId", annotationName, field, object));
 
         //check if the maven property is not already loaded
         String property = groupId + "." + artifactId + "." + key;
