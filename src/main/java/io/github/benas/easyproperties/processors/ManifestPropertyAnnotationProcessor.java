@@ -85,7 +85,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
             return;
         }
 
-        processAnnotation(object, field, header, value);
+        processAnnotation(object, field, value);
 
     }
 

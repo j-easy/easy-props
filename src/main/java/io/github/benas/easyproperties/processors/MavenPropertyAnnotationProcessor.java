@@ -79,7 +79,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
             }
         }
 
-        processAnnotation(object, field, key, mavenMap.get(property));
+        processAnnotation(object, field, mavenMap.get(property));
 
     }
 

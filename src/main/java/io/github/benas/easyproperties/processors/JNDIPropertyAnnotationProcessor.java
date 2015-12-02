@@ -81,7 +81,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         }
 
         //inject object in annotated field
-        processAnnotation(object, field, name, value);
+        processAnnotation(object, field, value);
 
     }
 

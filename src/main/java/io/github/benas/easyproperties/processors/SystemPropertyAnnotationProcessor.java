@@ -64,6 +64,6 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
             }
         }
 
-        processAnnotation(object, field, key, value);
+        processAnnotation(object, field, value);
     }
 }

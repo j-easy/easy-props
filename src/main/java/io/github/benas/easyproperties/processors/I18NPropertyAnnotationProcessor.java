@@ -81,7 +81,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
             return;
         }
 
-        processAnnotation(object, field, key, value);
+        processAnnotation(object, field, value);
     }
 
     private Locale getLocale(String language, String country, String variant) {

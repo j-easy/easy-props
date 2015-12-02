@@ -60,7 +60,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
             loadProperties(source);
         }
 
-        processAnnotation(object, field, source, propertiesMap.get(source));
+        processAnnotation(object, field, propertiesMap.get(source));
 
     }
 

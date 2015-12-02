@@ -88,7 +88,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         }
 
         //inject object in annotated field
-        processAnnotation(object, field, key, value);
+        processAnnotation(object, field, value);
 
     }
 

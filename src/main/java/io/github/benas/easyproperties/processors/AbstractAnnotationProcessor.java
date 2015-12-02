@@ -48,18 +48,17 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
      *
      * @param target the target object
      * @param field  the annotated field
-     * @param key    the annotation property attribute
      * @param value  the value to inject
      * @throws AnnotationProcessingException thrown if an exception occurs when trying to set the field value
      */
-    protected void processAnnotation(final Object target, final Field field, final String key, final Object value) throws AnnotationProcessingException {
+    protected void processAnnotation(final Object target, final Field field, final Object value) throws AnnotationProcessingException {
 
         Object typedValue = ConvertUtils.convert(value, field.getType());
         try {
             PropertyUtils.setProperty(target, field.getName(), typedValue);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new AnnotationProcessingException(format("Unable to set property '%s' on field '%s' of type '%s'." +
-                    " A setter may be missing for this field.", key, field.getName(), target.getClass()), e);
+            throw new AnnotationProcessingException(format("Unable to set field '%s' in type '%s'." +
+                    " A setter may be missing for this field.", field.getName(), target.getClass()), e);
         }
 
     }
