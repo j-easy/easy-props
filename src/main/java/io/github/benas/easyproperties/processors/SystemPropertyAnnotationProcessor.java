@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  */
 public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor<SystemProperty> {
 
-    private Logger LOGGER = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(SystemPropertyAnnotationProcessor.class.getName());
 
     @Override
     public void processAnnotation(final SystemProperty systemProperty, final Field field, final Object object) throws AnnotationProcessingException {

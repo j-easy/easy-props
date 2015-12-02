@@ -45,7 +45,7 @@ import static java.lang.String.format;
  */
 public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Property> {
 
-    private Logger LOGGER = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(PropertyAnnotationProcessor.class.getName());
 
     /**
      * A map holding source file name and Properties object serving as a cache.
