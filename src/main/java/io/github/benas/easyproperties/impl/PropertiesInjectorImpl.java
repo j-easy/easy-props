@@ -86,7 +86,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
                 try {
                     annotationProcessor.processAnnotation(annotation, field, object);
                 } catch (AnnotationProcessingException e) {
-                    throw new PropertyInjectionException(format("Unable to inject property '%s' in field '%s' of object '%s'",
+                    throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
                             annotation, field.getName(), object), e);
                 }
             }
