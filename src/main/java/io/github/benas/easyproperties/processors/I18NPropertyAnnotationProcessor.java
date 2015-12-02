@@ -73,7 +73,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         try {
             value = resourceBundlesMap.get(bundle).getString(key);
         } catch (MissingResourceException e) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in resource bundle: {1}", new Object[]{key, bundle});
+            LOGGER.log(Level.WARNING, format("Key '%s' not found in resource bundle: %s", key, bundle), e);
             return null;
         }
         if (value.isEmpty()) {
