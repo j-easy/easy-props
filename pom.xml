@@ -9,7 +9,7 @@
 
     <groupId>io.github.benas</groupId>
     <artifactId>easy-properties</artifactId>
-    <version>1.2.O-SNAPSHOT</version>
+    <version>1.2.O</version>
     <packaging>jar</packaging>
 
     <name>easy-properties</name>
@@ -66,7 +66,7 @@
         <url>git@github.com:benas/easy-properties.git</url>
         <connection>scm:git:git@github.com:benas/easy-properties.git</connection>
         <developerConnection>scm:git:git@github.com:benas/easy-properties.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>easy-properties-1.2.O</tag>
     </scm>
 
     <dependencies>
