@@ -1,26 +1,22 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.I18NProperty;
-import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.api.PropertyInjectionException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ResourceBundle;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class I18NPropertyAnnotationProcessorTest {
+public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     private ResourceBundle resourceBundle;
 
-    private PropertiesInjector propertiesInjector;
-
     @Before
     public void setUp() throws Exception {
+        super.setUp();
         resourceBundle = ResourceBundle.getBundle("i18n/messages");
-        propertiesInjector = aNewPropertiesInjector().build();
     }
 
     @Test

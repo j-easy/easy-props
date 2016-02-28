@@ -1,7 +1,6 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.JNDIProperty;
-import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,20 +8,17 @@ import org.junit.Test;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JNDIPropertyAnnotationProcessorTest {
+public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     private Context context;
 
-    private PropertiesInjector propertiesInjector;
-
     @Before
     public void setUp() throws Exception {
+        super.setUp();
         context = new InitialContext();
         context.bind("foo.property", "jndi");
-        propertiesInjector = aNewPropertiesInjector().build();
     }
 
     @Test

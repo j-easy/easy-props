@@ -1,22 +1,12 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.Property;
-import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.api.PropertyInjectionException;
-import org.junit.Before;
 import org.junit.Test;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PropertyAnnotationProcessorTest {
-
-    private PropertiesInjector propertiesInjector;
-
-    @Before
-    public void setUp() throws Exception {
-        propertiesInjector = aNewPropertiesInjector().build();
-    }
+public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     @Test
     public void testPropertyInjection() throws Exception {

@@ -1,7 +1,6 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.DBProperty;
-import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.api.PropertyInjectionException;
 import org.junit.After;
 import org.junit.Before;
@@ -9,19 +8,16 @@ import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DBPropertyAnnotationProcessorTest {
+public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     private EmbeddedDatabase embeddedDatabase;
 
-    private PropertiesInjector propertiesInjector;
-
     @Before
     public void setUp() throws Exception {
+        super.setUp();
         embeddedDatabase = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
-        propertiesInjector = aNewPropertiesInjector().build();
     }
 
     @Test

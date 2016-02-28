@@ -1,23 +1,19 @@
 package io.github.benas.easyproperties.processors;
 
 import io.github.benas.easyproperties.annotations.SystemProperty;
-import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SystemPropertyAnnotationProcessorTest {
+public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     private Bean bean;
-
-    private PropertiesInjector propertiesInjector;
 
     @Before
     public void setUp() throws Exception {
         System.setProperty("threshold", "30");
-        propertiesInjector = aNewPropertiesInjector().build();
+        super.setUp();
     }
 
     @Test
