@@ -22,16 +22,13 @@
  *    THE SOFTWARE.
  */
 
-package io.github.benas.easyproperties.impl;
+package io.github.benas.easyproperties;
 
-import io.github.benas.easyproperties.Bean;
-import io.github.benas.easyproperties.MyCustomAnnotation;
-import io.github.benas.easyproperties.MyCustomAnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.github.benas.easyproperties.impl.PropertiesInjectorBuilder.aNewPropertiesInjector;
+import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {

@@ -26,4 +26,4 @@
 /**
  * This package contains core implementation of properties injection.
  */
-package io.github.benas.easyproperties.impl;
+package io.github.benas.easyproperties;

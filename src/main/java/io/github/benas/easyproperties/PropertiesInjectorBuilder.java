@@ -22,7 +22,7 @@
  *    THE SOFTWARE.
  */
 
-package io.github.benas.easyproperties.impl;
+package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
