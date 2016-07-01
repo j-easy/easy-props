@@ -36,6 +36,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -51,7 +52,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
-    private Map<Object, Runnable> hotReloaders = new HashMap<>();
+    private Map<Object, Runnable> hotReloadingTasks = new HashMap<>();
 
     PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<>();
@@ -79,7 +80,9 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
             processField(field, object);
         }
 
-        registerHotReloaderFor(object);
+        if(shouldBeHotReloaded(object)) {
+            registerPropertiesHotReloadingTaskFor(object);
+        }
     }
 
     private void processField(final Field field, final Object object) throws PropertyInjectionException {
@@ -106,19 +109,18 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         }
     }
 
-    private void registerHotReloaderFor(final Object object) {
-        if (!object.getClass().isAnnotationPresent(HotReload.class)) {
-            return;
-        }
+    public boolean shouldBeHotReloaded(final Object target) {
+        return target.getClass().isAnnotationPresent(HotReload.class) && !hotReloadingTasks.containsKey(target);
+    }
+
+    private void registerPropertiesHotReloadingTaskFor(final Object object) {
         HotReload hotReload = object.getClass().getAnnotation(HotReload.class);
         long period = hotReload.period();
-        if (hotReloaders.containsKey(object)) {
-            return;
-        }
+        TimeUnit unit = hotReload.unit();
         Timer timer = new Timer();
-        PropertiesLoader propertiesLoader = new PropertiesLoader(this, object);
-        timer.schedule(propertiesLoader, new Date(), period);
-        hotReloaders.put(object, propertiesLoader);
+        PropertiesInjectionTask propertiesInjectionTask = new PropertiesInjectionTask(this, object);
+        timer.schedule(propertiesInjectionTask, new Date(), unit.toMillis(period));
+        hotReloadingTasks.put(object, propertiesInjectionTask);
     }
 
     /**

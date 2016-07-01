@@ -7,15 +7,15 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PropertiesLoader extends TimerTask {
+class PropertiesInjectionTask extends TimerTask {
 
-    private static Logger LOGGER = Logger.getLogger(PropertiesLoader.class.getName());
+    private static Logger LOGGER = Logger.getLogger(PropertiesInjectionTask.class.getName());
 
     private PropertiesInjector injector;
 
     private Object target;
 
-    public PropertiesLoader(PropertiesInjector injector, Object target) {
+    public PropertiesInjectionTask(PropertiesInjector injector, Object target) {
         this.injector = injector;
         this.target = target;
     }

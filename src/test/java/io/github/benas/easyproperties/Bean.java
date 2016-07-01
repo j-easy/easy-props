@@ -24,10 +24,13 @@
 
 package io.github.benas.easyproperties;
 
+import io.github.benas.easyproperties.annotations.DBProperty;
 import io.github.benas.easyproperties.annotations.HotReload;
 import io.github.benas.easyproperties.annotations.SystemProperty;
 
-@HotReload
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+@HotReload(period = 1, unit = SECONDS)
 public class Bean {
 
     @MyCustomAnnotation(value = "foo")
@@ -35,6 +38,12 @@ public class Bean {
 
     @SystemProperty("sp")
     private String systemProperty;
+
+    @DBProperty(configuration = "database.properties", key = "name")
+    private String name;
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getCustom() {
         return custom;
