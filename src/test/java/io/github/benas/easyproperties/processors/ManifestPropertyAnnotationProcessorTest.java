@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     @Test
-    public void testManifestPropertyInjection() throws Exception {
+    public void testManifestPropertyInjection() {
         //given
         Bean bean = new Bean();
 
@@ -32,7 +32,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     }
 
     @Test
-    public void whenHeaderIsMissing_thenShouldSilentlyIgnoreTheField() throws Exception {
+    public void whenHeaderIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         BeanWithInvalidHeader bean = new BeanWithInvalidHeader();
 

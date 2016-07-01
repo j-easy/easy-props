@@ -36,14 +36,14 @@ public class PropertiesInjectorImplTest {
     PropertiesInjector propertiesInjector;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         propertiesInjector = aNewPropertiesInjectorBuilder()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
     }
 
     @Test
-    public void testCustomAnnotationProcessor() throws Exception {
+    public void testCustomAnnotationProcessor() {
         //given
         Bean bean = new Bean();
 

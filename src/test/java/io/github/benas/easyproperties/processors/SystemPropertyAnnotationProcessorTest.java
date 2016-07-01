@@ -17,7 +17,7 @@ public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationPro
     }
 
     @Test
-    public void testSystemPropertyInjection() throws Exception {
+    public void testSystemPropertyInjection() {
         //given
         bean = new Bean();
 
@@ -29,7 +29,7 @@ public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationPro
     }
 
     @Test
-    public void testSystemPropertyDefaultValueInjection() throws Exception {
+    public void testSystemPropertyDefaultValueInjection() {
         //given
         bean = new Bean();
 
@@ -41,7 +41,7 @@ public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationPro
     }
 
     @Test
-    public void testSystemPropertyInjectionWithTypeConversion() throws Exception {
+    public void testSystemPropertyInjectionWithTypeConversion() {
         //given
         bean = new Bean();
 

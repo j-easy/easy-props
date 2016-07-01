@@ -21,7 +21,7 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @Test
-    public void testPropertiesInjection() throws Exception {
+    public void testPropertiesInjection() {
         //given
         Bean bean = new Bean();
 

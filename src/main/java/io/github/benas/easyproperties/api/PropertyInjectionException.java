@@ -29,7 +29,7 @@ package io.github.benas.easyproperties.api;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
-public class PropertyInjectionException extends Exception {
+public class PropertyInjectionException extends RuntimeException {
 
     public PropertyInjectionException(final String message, final Throwable cause) {
         super(message, cause);

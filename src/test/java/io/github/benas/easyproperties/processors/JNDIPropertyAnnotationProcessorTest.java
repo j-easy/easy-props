@@ -22,7 +22,7 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     }
 
     @Test
-    public void testJNDIPropertyInjection() throws Exception {
+    public void testJNDIPropertyInjection() {
         //given
         Bean bean = new Bean();
 
@@ -34,7 +34,7 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     }
 
     @Test
-    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() throws Exception {
+    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 

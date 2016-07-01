@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ResourceBundle;
 
+import static java.util.ResourceBundle.getBundle;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
@@ -16,11 +17,11 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        resourceBundle = ResourceBundle.getBundle("i18n/messages");
+        resourceBundle = getBundle("i18n/messages");
     }
 
     @Test
-    public void testI18NPropertyInjection() throws Exception {
+    public void testI18NPropertyInjection() {
         //given
         Bean bean = new Bean();
 
@@ -43,7 +44,7 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     }
 
     @Test
-    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() throws Exception {
+    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 

@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     @Test
-    public void testMavenPropertyInjection() throws Exception {
+    public void testMavenPropertyInjection() {
         //given
         Bean bean = new Bean();
 
@@ -32,7 +32,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     }
 
     @Test
-    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() throws Exception {
+    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 

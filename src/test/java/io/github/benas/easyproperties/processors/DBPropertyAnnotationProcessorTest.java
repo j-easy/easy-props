@@ -17,11 +17,14 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        embeddedDatabase = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
+        embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setName("test")
+                .addScript("database.sql")
+                .build();
     }
 
     @Test
-    public void testPropertyInjectionFromDatabase() throws Exception {
+    public void testPropertyInjectionFromDatabase() {
         //given
         Bean bean = new Bean();
 
@@ -44,7 +47,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @Test
-    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() throws Exception {
+    public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 
