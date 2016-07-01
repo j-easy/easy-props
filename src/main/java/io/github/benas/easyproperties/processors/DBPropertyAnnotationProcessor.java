@@ -103,7 +103,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             Properties dbProperties = extractProperties(resultSet, dbConfigurationProperties);
             dbPropertiesMap.put(configuration, dbProperties);
         } catch (Exception e) {
-            throw new AnnotationProcessingException("Unable to get database properties", e);
+            throw new AnnotationProcessingException("Unable to get database properties from: " + configuration, e);
         } finally {
             try {
                 closeResources(connection, statement, resultSet);
