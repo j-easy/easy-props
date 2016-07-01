@@ -11,7 +11,7 @@ public abstract class AbstractAnnotationProcessorTest {
 
     @Before
     public void setUp() throws Exception {
-        propertiesInjector = aNewPropertiesInjector().build();
+        propertiesInjector = aNewPropertiesInjector();
     }
 
 }

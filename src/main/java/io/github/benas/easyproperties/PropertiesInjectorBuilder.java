@@ -53,8 +53,17 @@ public class PropertiesInjectorBuilder {
      *
      * @return a new {@link PropertiesInjectorBuilder}
      */
-    public static PropertiesInjectorBuilder aNewPropertiesInjector() {
+    public static PropertiesInjectorBuilder aNewPropertiesInjectorBuilder() {
         return new PropertiesInjectorBuilder();
+    }
+
+    /**
+     * Create a new {@link PropertiesInjector} with default parameters.
+     *
+     * @return a new {@link PropertiesInjector}
+     */
+    public static PropertiesInjector aNewPropertiesInjector() {
+        return new PropertiesInjectorBuilder().build();
     }
 
     /**

@@ -28,7 +28,7 @@ import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
+import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjectorBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
@@ -37,7 +37,7 @@ public class PropertiesInjectorImplTest {
 
     @Before
     public void setUp() throws Exception {
-        propertiesInjector = aNewPropertiesInjector()
+        propertiesInjector = aNewPropertiesInjectorBuilder()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
     }
