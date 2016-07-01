@@ -25,7 +25,6 @@
 package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,14 +39,11 @@ public class PropertiesInjectorImplTest {
 
     private PropertiesInjector propertiesInjector;
 
-    private EmbeddedDatabase embeddedDatabase;
-
     @Before
     public void setUp() throws Exception {
         propertiesInjector = aNewPropertiesInjector()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
                 .build();
-        embeddedDatabase = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
     }
 
     @Test
@@ -65,8 +61,9 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testConfigurationHotReloading() throws Exception {
         //given
+        EmbeddedDatabase database = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
         System.setProperty("sp", "foo");
-        Bean bean = new Bean();
+        HotReloadableBean bean = new HotReloadableBean();
 
         //when
         propertiesInjector.injectProperties(bean);
@@ -76,25 +73,12 @@ public class PropertiesInjectorImplTest {
         assertThat(bean.getName()).isEqualTo("Foo");
 
         // Properties changes should be reloaded
-        changeSystemPropertyTo("bar");
-        changeDatabasePropertyTo("Bar");
+        System.setProperty("sp","bar");
+        new JdbcTemplate(database).update("update ApplicationProperties set value = ? where key = ?", "Bar", "name");
         sleep(2 * 1000);
         assertThat(bean.getSystemProperty()).isEqualTo("bar");
         assertThat(bean.getName()).isEqualTo("Bar");
-    }
-
-    private void changeSystemPropertyTo(String newName) {
-        System.setProperty("sp", newName);
-    }
-
-    private void changeDatabasePropertyTo(String newName) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(embeddedDatabase);
-        jdbcTemplate.update("update ApplicationProperties set value = ? where key = ?", newName, "name");
-    }
-
-    @After
-    public void shutdownEmbeddedDatabase() throws Exception {
-        embeddedDatabase.shutdown();
+        database.shutdown();
     }
 
 }
