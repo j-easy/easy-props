@@ -51,6 +51,8 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
+    private Map<Object, Runnable> hotReloaders = new HashMap<>();
+
     PropertiesInjectorImpl() {
         annotationProcessors = new HashMap<>();
         //register built-in annotation processors
@@ -76,6 +78,8 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         for (Field field : fields) {
             processField(field, object);
         }
+
+        registerHotReloaderFor(object);
     }
 
     private void processField(final Field field, final Object object) throws PropertyInjectionException {
@@ -100,6 +104,21 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
             throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
                     annotation, field.getName(), object), e);
         }
+    }
+
+    private void registerHotReloaderFor(final Object object) {
+        if (!object.getClass().isAnnotationPresent(HotReload.class)) {
+            return;
+        }
+        HotReload hotReload = object.getClass().getAnnotation(HotReload.class);
+        long period = hotReload.period();
+        if (hotReloaders.containsKey(object)) {
+            return;
+        }
+        Timer timer = new Timer();
+        PropertiesLoader propertiesLoader = new PropertiesLoader(this, object);
+        timer.schedule(propertiesLoader, new Date(), period);
+        hotReloaders.put(object, propertiesLoader);
     }
 
     /**

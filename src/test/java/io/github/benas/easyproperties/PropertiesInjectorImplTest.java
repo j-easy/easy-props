@@ -26,6 +26,7 @@ package io.github.benas.easyproperties;
 
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
@@ -53,4 +54,24 @@ public class PropertiesInjectorImplTest {
         //then
         assertThat(bean.getCustom()).isEqualTo("foo");
     }
+
+    @Ignore("Background thread timer never stops ..")
+    @Test
+    public void testConfigurationHotReloading() throws Exception {
+        //given
+        System.setProperty("sp", "foo");
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.getSystemProperty()).isEqualTo("foo");
+
+        System.setProperty("sp", "bar");
+        Thread.sleep(60 * 2 * 1000);
+        assertThat(bean.getSystemProperty()).isEqualTo("bar");
+
+    }
+
 }

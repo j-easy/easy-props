@@ -24,10 +24,17 @@
 
 package io.github.benas.easyproperties;
 
+import io.github.benas.easyproperties.annotations.HotReload;
+import io.github.benas.easyproperties.annotations.SystemProperty;
+
+@HotReload
 public class Bean {
 
     @MyCustomAnnotation(value = "foo")
     private String custom;
+
+    @SystemProperty("sp")
+    private String systemProperty;
 
     public String getCustom() {
         return custom;
@@ -35,5 +42,13 @@ public class Bean {
 
     public void setCustom(String custom) {
         this.custom = custom;
+    }
+
+    public String getSystemProperty() {
+        return systemProperty;
+    }
+
+    public void setSystemProperty(String systemProperty) {
+        this.systemProperty = systemProperty;
     }
 }
