@@ -123,7 +123,7 @@ What if your code does **not** run inside a DI container? This is where Easy Pro
 ## Current version
 
 * The current stable version is `1.2.0` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/easy-properties/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|io.github.benas|easy-properties|1.2.0|) 
-* The current development version is `1.2.1-SNAPSHOT` : [![Build Status](https://travis-ci.org/benas/easy-properties.svg?branch=master)](https://travis-ci.org/benas/easy-properties)
+* The current development version is `1.3.0-SNAPSHOT` : [![Build Status](https://travis-ci.org/benas/easy-properties.svg?branch=master)](https://travis-ci.org/benas/easy-properties)
 
 In order to use snapshot versions, you need to add the following maven repository in your `pom.xml`:
 
