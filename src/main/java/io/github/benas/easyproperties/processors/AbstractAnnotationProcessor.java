@@ -32,7 +32,6 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import static io.github.benas.easyproperties.Utils.extractPath;
 import static java.lang.String.format;
 
 /**
@@ -88,6 +87,10 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
             resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(resource);
         }
         return resourceAsStream;
+    }
+
+    private String extractPath(String resource) {
+        return resource.substring(resource.lastIndexOf(':') + 1);
     }
 
 }
