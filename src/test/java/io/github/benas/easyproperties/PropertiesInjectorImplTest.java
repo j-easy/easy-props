@@ -31,7 +31,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static java.lang.Thread.sleep;
 import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjectorBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
