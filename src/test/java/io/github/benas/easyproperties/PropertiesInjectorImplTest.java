@@ -49,13 +49,13 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testCustomAnnotationProcessor() throws Exception {
         //given
-        Bean bean = new Bean();
+        Config config = new Config();
 
         //when
-        propertiesInjector.injectProperties(bean);
+        propertiesInjector.injectProperties(config);
 
         //then
-        assertThat(bean.getCustom()).isEqualTo("foo");
+        assertThat(config.getCustom()).isEqualTo("foo");
     }
 
     @Test
@@ -63,21 +63,21 @@ public class PropertiesInjectorImplTest {
         //given
         EmbeddedDatabase database = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
         System.setProperty("sp", "foo");
-        HotReloadableBean bean = new HotReloadableBean();
+        HotReloadableConfig config = new HotReloadableConfig();
 
         //when
-        propertiesInjector.injectProperties(bean);
+        propertiesInjector.injectProperties(config);
 
         //then
-        assertThat(bean.getSystemProperty()).isEqualTo("foo");
-        assertThat(bean.getName()).isEqualTo("Foo");
+        assertThat(config.getSystemProperty()).isEqualTo("foo");
+        assertThat(config.getName()).isEqualTo("Foo");
 
         // Properties changes should be reloaded
         System.setProperty("sp","bar");
         new JdbcTemplate(database).update("update ApplicationProperties set value = ? where key = ?", "Bar", "name");
         sleep(2 * 1000);
-        assertThat(bean.getSystemProperty()).isEqualTo("bar");
-        assertThat(bean.getName()).isEqualTo("Bar");
+        assertThat(config.getSystemProperty()).isEqualTo("bar");
+        assertThat(config.getName()).isEqualTo("Bar");
         database.shutdown();
     }
 

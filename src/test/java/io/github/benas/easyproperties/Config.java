@@ -24,29 +24,16 @@
 
 package io.github.benas.easyproperties;
 
-import io.github.benas.easyproperties.annotations.DBProperty;
-import io.github.benas.easyproperties.annotations.HotReload;
-import io.github.benas.easyproperties.annotations.SystemProperty;
+public class Config {
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+    @MyCustomAnnotation(value = "foo")
+    private String custom;
 
-@HotReload(period = 1, unit = SECONDS)
-public class HotReloadableBean {
-
-    @SystemProperty("sp")
-    private String systemProperty;
-
-    @DBProperty(configuration = "database.properties", key = "name")
-    private String name;
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getSystemProperty() {
-        return systemProperty;
+    public String getCustom() {
+        return custom;
     }
 
-    public void setSystemProperty(String systemProperty) {
-        this.systemProperty = systemProperty;
+    public void setCustom(String custom) {
+        this.custom = custom;
     }
 }
