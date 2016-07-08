@@ -36,9 +36,12 @@ import org.apache.commons.beanutils.PropertyUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static io.github.benas.easyproperties.DaemonThreadFactory.newDaemonThreadFactory;
 import static java.lang.String.format;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
  * The core implementation of the {@link io.github.benas.easyproperties.api.PropertiesInjector} interface.
@@ -47,15 +50,15 @@ import static java.lang.String.format;
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
-    /**
-     * A map holding registered annotations with their processors.
-     */
+    private Map<Object, Runnable> hotReloadingTasks;
+    private ScheduledExecutorService scheduledExecutorService;
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
-    private Map<Object, Runnable> hotReloadingTasks = new HashMap<>();
-
     PropertiesInjectorImpl() {
+        hotReloadingTasks = new HashMap<>();
         annotationProcessors = new HashMap<>();
+        scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
+
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
@@ -117,9 +120,8 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         HotReload hotReload = object.getClass().getAnnotation(HotReload.class);
         long period = hotReload.period();
         TimeUnit unit = hotReload.unit();
-        Timer timer = new Timer();
         PropertiesInjectionTask propertiesInjectionTask = new PropertiesInjectionTask(this, object);
-        timer.schedule(propertiesInjectionTask, new Date(), unit.toMillis(period));
+        scheduledExecutorService.scheduleAtFixedRate(propertiesInjectionTask, 0, period, unit);
         hotReloadingTasks.put(object, propertiesInjectionTask);
     }
 
