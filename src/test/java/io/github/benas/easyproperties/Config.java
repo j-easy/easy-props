@@ -24,7 +24,7 @@
 
 package io.github.benas.easyproperties;
 
-public class Bean {
+public class Config {
 
     @MyCustomAnnotation(value = "foo")
     private String custom;

@@ -27,13 +27,18 @@ package io.github.benas.easyproperties;
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
+import static java.lang.Thread.sleep;
 import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjectorBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
 
-    PropertiesInjector propertiesInjector;
+    private PropertiesInjector propertiesInjector;
 
     @Before
     public void setUp() {
@@ -45,12 +50,36 @@ public class PropertiesInjectorImplTest {
     @Test
     public void testCustomAnnotationProcessor() {
         //given
-        Bean bean = new Bean();
+        Config config = new Config();
 
         //when
-        propertiesInjector.injectProperties(bean);
+        propertiesInjector.injectProperties(config);
 
         //then
-        assertThat(bean.getCustom()).isEqualTo("foo");
+        assertThat(config.getCustom()).isEqualTo("foo");
     }
+
+    @Test
+    public void testConfigurationHotReloading() throws Exception {
+        //given
+        EmbeddedDatabase database = new EmbeddedDatabaseBuilder().setName("test").addScript("database.sql").build();
+        System.setProperty("sp", "foo");
+        HotReloadableConfig config = new HotReloadableConfig();
+
+        //when
+        propertiesInjector.injectProperties(config);
+
+        //then
+        assertThat(config.getSystemProperty()).isEqualTo("foo");
+        assertThat(config.getName()).isEqualTo("Foo");
+
+        // Properties changes should be reloaded
+        System.setProperty("sp","bar");
+        new JdbcTemplate(database).update("update ApplicationProperties set value = ? where key = ?", "Bar", "name");
+        sleep(2 * 1000);
+        assertThat(config.getSystemProperty()).isEqualTo("bar");
+        assertThat(config.getName()).isEqualTo("Bar");
+        database.shutdown();
+    }
+
 }

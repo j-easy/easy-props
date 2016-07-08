@@ -65,7 +65,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
 
     public class Bean {
 
-        @DBProperty(configuration = "database.properties", key = "bean.name")
+        @DBProperty(configuration = "database.properties", key = "name")
         private String name;
 
         public String getName() { return name; }
@@ -74,7 +74,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
 
     public class BeanWithInvalidConfiguration {
 
-        @DBProperty(configuration = "blah.properties", key = "bean.name")
+        @DBProperty(configuration = "blah.properties", key = "name")
         private String name;
 
         public String getName() { return name; }

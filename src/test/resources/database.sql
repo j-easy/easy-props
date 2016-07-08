@@ -4,4 +4,4 @@ create table ApplicationProperties (
     value varchar(64)
 );
 
-insert into ApplicationProperties values (1, 'bean.name', 'Foo');
+insert into ApplicationProperties values (1, 'name', 'Foo');

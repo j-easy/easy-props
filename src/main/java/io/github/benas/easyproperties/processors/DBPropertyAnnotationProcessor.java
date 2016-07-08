@@ -53,11 +53,6 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
      */
     private Map<String, Properties> dbConfigurationMap = new HashMap<>();
 
-    /**
-     * A map holding database properties file name and resource properties object serving as a cache.
-     */
-    private Map<String, Properties> dbPropertiesMap = new HashMap<>();
-
     @Override
     public Object processAnnotation(final DBProperty dbPropertyAnnotation, final Field field) throws AnnotationProcessingException {
 
@@ -74,23 +69,19 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             loadDatabaseConfigurationProperties(configuration);
         }
 
-        //check if database connection properties are not already loaded
-        if (!dbPropertiesMap.containsKey(configuration)) {
-            loadDatabaseProperties(configuration);
-        }
+        Properties dbProperties = loadDatabaseProperties(configuration);
 
         //check object obtained from database
-        String value = dbPropertiesMap.get(configuration).getProperty(key);
+        String value = dbProperties.getProperty(key);
         if (value == null) {
             LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties: {1}",
                     new Object[]{key, dbConfigurationMap.get(configuration)});
         }
 
         return value;
-
     }
 
-    private void loadDatabaseProperties(final String configuration) throws AnnotationProcessingException {
+    private Properties loadDatabaseProperties(final String configuration) throws AnnotationProcessingException {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -100,10 +91,9 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             connection = getConnection(dbConfigurationProperties);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(getSqlQuery(dbConfigurationProperties));
-            Properties dbProperties = extractProperties(resultSet, dbConfigurationProperties);
-            dbPropertiesMap.put(configuration, dbProperties);
+            return extractProperties(resultSet, dbConfigurationProperties);
         } catch (Exception e) {
-            throw new AnnotationProcessingException("Unable to get database properties", e);
+            throw new AnnotationProcessingException("Unable to get database properties from: " + configuration, e);
         } finally {
             try {
                 closeResources(connection, statement, resultSet);

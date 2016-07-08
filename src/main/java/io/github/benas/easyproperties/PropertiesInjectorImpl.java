@@ -36,8 +36,12 @@ import org.apache.commons.beanutils.PropertyUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import static io.github.benas.easyproperties.DaemonThreadFactory.newDaemonThreadFactory;
 import static java.lang.String.format;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
  * The core implementation of the {@link io.github.benas.easyproperties.api.PropertiesInjector} interface.
@@ -46,13 +50,15 @@ import static java.lang.String.format;
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
-    /**
-     * A map holding registered annotations with their processors.
-     */
+    private Map<Object, Runnable> hotReloadingTasks;
+    private ScheduledExecutorService scheduledExecutorService;
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
     PropertiesInjectorImpl() {
+        hotReloadingTasks = new HashMap<>();
         annotationProcessors = new HashMap<>();
+        scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
+
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
         annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
@@ -75,6 +81,10 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         //Inject properties in each field
         for (Field field : fields) {
             processField(field, object);
+        }
+
+        if(shouldBeHotReloaded(object)) {
+            registerPropertiesHotReloadingTaskFor(object);
         }
     }
 
@@ -100,6 +110,19 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
             throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
                     annotation, field.getName(), object), e);
         }
+    }
+
+    public boolean shouldBeHotReloaded(final Object target) {
+        return target.getClass().isAnnotationPresent(HotReload.class) && !hotReloadingTasks.containsKey(target);
+    }
+
+    private void registerPropertiesHotReloadingTaskFor(final Object object) {
+        HotReload hotReload = object.getClass().getAnnotation(HotReload.class);
+        long period = hotReload.period();
+        TimeUnit unit = hotReload.unit();
+        PropertiesInjectionTask propertiesInjectionTask = new PropertiesInjectionTask(this, object);
+        scheduledExecutorService.scheduleAtFixedRate(propertiesInjectionTask, 0, period, unit);
+        hotReloadingTasks.put(object, propertiesInjectionTask);
     }
 
     /**
