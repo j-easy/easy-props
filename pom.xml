@@ -14,7 +14,7 @@
 
     <name>easy-properties</name>
     <description>
-        Easy Properties is a library to inject properties in Java objects in a declarative way using annotations
+        Easy Properties is a library to inject configuration properties in Java objects declaratively using annotations
     </description>
     <url>https://github.com/benas/easy-properties</url>
 
