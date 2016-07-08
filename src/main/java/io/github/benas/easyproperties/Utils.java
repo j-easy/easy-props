@@ -8,7 +8,7 @@ package io.github.benas.easyproperties;
 public class Utils {
 
     /**
-     * Extract the path of a file from resource of type file:/path/to/file
+     * Extract the path of a file from resources of type file:path/to/file or classpath:path/to/file
      * @param resource the resource path
      * @return the file path
      */
@@ -17,6 +17,6 @@ public class Utils {
     }
 
     private Utils() {
-
+        // no op
     }
 }

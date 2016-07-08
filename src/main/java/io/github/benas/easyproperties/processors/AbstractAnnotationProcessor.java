@@ -27,10 +27,13 @@ package io.github.benas.easyproperties.processors;
 import io.github.benas.easyproperties.api.AnnotationProcessingException;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import static io.github.benas.easyproperties.Utils.extractPath;
 import static java.lang.String.format;
 
 /**
@@ -39,6 +42,9 @@ import static java.lang.String.format;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public abstract class AbstractAnnotationProcessor<A extends Annotation> implements AnnotationProcessor<A> {
+
+    public static final String FILE_RESOURCE_PREFIX = "file:";
+    public static final String CLASSPATH_RESOURCE_PREFIX = "classpath:";
 
     /**
      * Constructs an error message to signal missing annotation attribute value.
@@ -72,8 +78,16 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
      * @param resource the resource to look for.
      * @return the resource as {@link InputStream}
      */
-    protected InputStream getResourceAsStream(final String resource) {
-        return this.getClass().getClassLoader().getResourceAsStream(resource);
+    protected InputStream getResourceAsStream(final String resource) throws IOException {
+        InputStream resourceAsStream;
+        if (resource.startsWith(FILE_RESOURCE_PREFIX)) {
+            resourceAsStream = new FileInputStream(extractPath(resource));
+        } else if (resource.startsWith(CLASSPATH_RESOURCE_PREFIX)) {
+            resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(extractPath(resource));
+        } else { // by default, it is a classpath resource
+            resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(resource);
+        }
+        return resourceAsStream;
     }
 
 }

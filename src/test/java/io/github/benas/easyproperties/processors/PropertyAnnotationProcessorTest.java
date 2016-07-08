@@ -18,6 +18,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
 
         //then
         assertThat(bean.getBeanName()).isEqualTo("Foo");
+        assertThat(bean.getBeanAge()).isEqualTo(30);
     }
 
     @Test(expected = PropertyInjectionException.class)
@@ -57,11 +58,22 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
 
     public class Bean {
 
-        @Property(source = "myProperties.properties", key = "bean.name")
+        @Property(source = "classpath:myProperties.properties", key = "bean.name")
         private String beanName;
+
+        @Property(source = "file:src/test/resources/fileSystemProperties.properties", key = "bean.age")
+        private int beanAge;
 
         public String getBeanName() { return beanName; }
         public void setBeanName(String beanName) { this.beanName = beanName; }
+
+        public int getBeanAge() {
+            return beanAge;
+        }
+
+        public void setBeanAge(int beanAge) {
+            this.beanAge = beanAge;
+        }
     }
 
     public class BeanWithInvalidPropertiesFile {

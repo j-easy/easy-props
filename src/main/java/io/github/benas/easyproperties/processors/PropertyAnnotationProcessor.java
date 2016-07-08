@@ -86,8 +86,9 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
 
     private void loadProperties(final String source) throws AnnotationProcessingException {
         Properties properties = new Properties();
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = getResourceAsStream(source);
+            inputStream = getResourceAsStream(source);
             if (inputStream != null) {
                 properties.load(inputStream);
                 propertiesMap.put(source, properties);
@@ -96,6 +97,18 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
             }
         } catch (IOException e) {
             throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);
+        } finally {
+            closeInputStream(inputStream);
+        }
+    }
+
+    private void closeInputStream(InputStream inputStream) {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "Unable to close input stream", e);
+            }
         }
     }
 
