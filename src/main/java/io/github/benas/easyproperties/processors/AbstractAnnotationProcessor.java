@@ -76,6 +76,7 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
      *
      * @param resource the resource to look for.
      * @return the resource as {@link InputStream}
+     * @throws IOException when an error occurs during resource loading
      */
     protected InputStream getResourceAsStream(final String resource) throws IOException {
         InputStream resourceAsStream;
