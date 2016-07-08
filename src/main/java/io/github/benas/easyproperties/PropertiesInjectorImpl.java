@@ -89,7 +89,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         }
     }
 
-    private void injectProperty(Field field, Object object, Annotation annotation, AnnotationProcessor annotationProcessor) throws PropertyInjectionException {
+    private <A extends Annotation> void injectProperty(Field field, Object object, A annotation, AnnotationProcessor<A> annotationProcessor) throws PropertyInjectionException {
         try {
             Object value = annotationProcessor.processAnnotation(annotation, field);
             if (value != null) {
