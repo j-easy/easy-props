@@ -120,6 +120,15 @@ But in order to benefit from this feature, your code should run inside a DI cont
 
 What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from dependency injection **without** requiring your code to run inside a DI container.
 
+## Quick links
+
+|Item                  |Link                                                                                      |
+|:---------------------|:-----------------------------------------------------------------------------------------|
+|Documentation         | [https://github.com/benas/easy-properties/wiki](https://github.com/benas/easy-properties/wiki) |
+|Continuous integration| [Build job @ Travis CI](https://travis-ci.org/benas/easy-properties)                        |
+|Agile Board           | [Backlog items @ waffle.io](https://waffle.io/benas/easy-properties)                        |
+|Code coverage         | [![Coverage Status](https://coveralls.io/repos/benas/easy-properties/badge.svg?branch=master&service=github)](https://coveralls.io/github/benas/easy-properties?branch=master) |
+
 ## Current version
 
 * The current stable version is `1.2.0` : [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/easy-properties/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|io.github.benas|easy-properties|1.2.0|) 
@@ -141,10 +150,6 @@ You are welcome to contribute to the project with pull requests on GitHub.
 If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/benas/easy-properties/issues).
 
 For any further question, you can use the Gitter channel of the project: [![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/benas/easy-properties)
-
-## Documentation
-
-Easy Properties documentation can be found here : [https://github.com/benas/easy-properties/wiki](https://github.com/benas/easy-properties/wiki)
 
 ## Awesome contributors
 
