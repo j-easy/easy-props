@@ -67,11 +67,8 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
 
     @Override
     public void injectProperties(final Object object) throws PropertyInjectionException {
-        //Retrieve declared fields
-        List<Field> fields = getDeclaredFields(object);
-
-        //Retrieve inherited fields for all type hierarchy
-        fields.addAll(getInheritedFields(object));
+        //Retrieve all (declared + inherited) fields
+        List<Field> fields = ReflectionUtils.getAllFields(object);
 
         //Inject properties in each field
         for (Field field : fields) {
@@ -79,7 +76,6 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         }
 
         hotReloadingRegistrar.registerHotReloadingTask(this, object);
-
         mBeanRegistrar.registerMBeanFor(object);
     }
 
@@ -116,21 +112,6 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
      */
     public void registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         annotationProcessors.put(annotation, annotationProcessor);
-    }
-
-    private List<Field> getDeclaredFields(final Object object) {
-        return new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
-    }
-
-    private List<Field> getInheritedFields(final Object object) {
-        List<Field> inheritedFields = new ArrayList<>();
-        Class clazz = object.getClass();
-        while (clazz.getSuperclass() != null) {
-            Class superclass = clazz.getSuperclass();
-            inheritedFields.addAll(Arrays.asList(superclass.getDeclaredFields()));
-            clazz = superclass;
-        }
-        return inheritedFields;
     }
 
 }
