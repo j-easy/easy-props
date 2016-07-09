@@ -30,8 +30,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
-import static java.lang.Thread.sleep;
+import javax.management.ObjectName;
+
+import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjector;
 import static io.github.benas.easyproperties.PropertiesInjectorBuilder.aNewPropertiesInjectorBuilder;
+import static java.lang.Thread.sleep;
+import static java.lang.management.ManagementFactory.getPlatformMBeanServer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesInjectorImplTest {
@@ -80,4 +84,13 @@ public class PropertiesInjectorImplTest {
         database.shutdown();
     }
 
+    @Test
+    public void testManageableConfiguration() throws Exception {
+        System.setProperty("sp", "foo");
+        ManageableConfig config = new ManageableConfig();
+        aNewPropertiesInjector().injectProperties(config);
+
+        ObjectName objectName = new ObjectName("io.github.benas.easyproperties:name=myConfig");
+        assertThat(getPlatformMBeanServer().isRegistered(objectName)).isTrue();
+    }
 }

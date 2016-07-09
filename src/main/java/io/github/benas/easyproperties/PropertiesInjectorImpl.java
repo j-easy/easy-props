@@ -32,11 +32,15 @@ import io.github.benas.easyproperties.processors.*;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import javax.management.*;
 import java.lang.annotation.Annotation;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static io.github.benas.easyproperties.DaemonThreadFactory.newDaemonThreadFactory;
 import static java.lang.String.format;
@@ -49,6 +53,10 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
+    private static final String JMX_OBJECT_NAME_PREFIX = "io.github.benas.easyproperties:";
+    private static final Logger LOGGER = Logger.getLogger(PropertiesInjectorImpl.class.getName());
+
+    private MBeanServer mBeanServer;
     private Map<Object, Runnable> hotReloadingTasks;
     private ScheduledExecutorService scheduledExecutorService;
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
@@ -57,6 +65,7 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         hotReloadingTasks = new HashMap<>();
         annotationProcessors = new HashMap<>();
         scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
+        mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
@@ -85,6 +94,28 @@ final class PropertiesInjectorImpl implements PropertiesInjector {
         if(shouldBeHotReloaded(object)) {
             registerPropertiesHotReloadingTaskFor(object);
         }
+
+        if(shouldBeManaged(object)) {
+            registerMBeanFor(object);
+        }
+    }
+
+    private void registerMBeanFor(Object object) {
+        Manageable manageable = object.getClass().getAnnotation(Manageable.class);
+        String name = manageable.name().trim().isEmpty() ? object.getClass().getName() : manageable.name();
+        ObjectName objectName;
+        try {
+            objectName = new ObjectName(JMX_OBJECT_NAME_PREFIX + "name=" + name);
+            if (!mBeanServer.isRegistered(objectName)) {
+                mBeanServer.registerMBean(object, objectName);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to register an MBean for object: " + object, e);
+        }
+    }
+
+    private boolean shouldBeManaged(Object object) {
+        return object.getClass().isAnnotationPresent(Manageable.class);
     }
 
     private void processField(final Field field, final Object object) throws PropertyInjectionException {
