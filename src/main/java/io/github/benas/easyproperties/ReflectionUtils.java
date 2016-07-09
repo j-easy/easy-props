@@ -28,6 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Reflection utilities.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 class ReflectionUtils {
 
     public static List<Field> getAllFields(final Object object) {
@@ -35,6 +40,10 @@ class ReflectionUtils {
         allFields.addAll(getDeclaredFields(object));
         allFields.addAll(getInheritedFields(object));
         return allFields;
+    }
+
+    private ReflectionUtils() {
+
     }
 
     private static List<Field> getDeclaredFields(final Object object) {

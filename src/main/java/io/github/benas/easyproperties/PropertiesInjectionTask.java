@@ -29,6 +29,11 @@ import io.github.benas.easyproperties.api.PropertyInjectionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Background task for configuration hot reloading.
+ *
+ * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ */
 class PropertiesInjectionTask implements Runnable {
 
     private static Logger LOGGER = Logger.getLogger(PropertiesInjectionTask.class.getName());
