@@ -23,20 +23,13 @@
  */
 package io.github.benas.easyproperties;
 
-import io.github.benas.easyproperties.annotations.*;
-import io.github.benas.easyproperties.annotations.Properties;
 import io.github.benas.easyproperties.api.AnnotationProcessor;
 import io.github.benas.easyproperties.api.PropertiesInjector;
 import io.github.benas.easyproperties.api.PropertyInjectionException;
-import io.github.benas.easyproperties.processors.*;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
-
-import static java.lang.String.format;
+import java.util.List;
 
 /**
  * The core implementation of the {@link io.github.benas.easyproperties.api.PropertiesInjector} interface.
@@ -45,73 +38,33 @@ import static java.lang.String.format;
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
+    private PropertyInjector propertyInjector;
     private MBeanRegistrar mBeanRegistrar;
     private HotReloadingRegistrar hotReloadingRegistrar;
-    private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
     PropertiesInjectorImpl() {
+        propertyInjector = new PropertyInjector();
         mBeanRegistrar = new MBeanRegistrar();
         hotReloadingRegistrar = new HotReloadingRegistrar();
-        annotationProcessors = new HashMap<>();
-
-        //register built-in annotation processors
-        annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
-        annotationProcessors.put(Property.class, new PropertyAnnotationProcessor());
-        annotationProcessors.put(I18NProperty.class, new I18NPropertyAnnotationProcessor());
-        annotationProcessors.put(Properties.class, new PropertiesAnnotationProcessor());
-        annotationProcessors.put(DBProperty.class, new DBPropertyAnnotationProcessor());
-        annotationProcessors.put(JNDIProperty.class, new JNDIPropertyAnnotationProcessor());
-        annotationProcessors.put(MavenProperty.class, new MavenPropertyAnnotationProcessor());
-        annotationProcessors.put(ManifestProperty.class, new ManifestPropertyAnnotationProcessor());
     }
 
     @Override
     public void injectProperties(final Object object) throws PropertyInjectionException {
-        //Retrieve all (declared + inherited) fields
+        // Retrieve declared and inherited fields
         List<Field> fields = ReflectionUtils.getAllFields(object);
 
-        //Inject properties in each field
+        // Inject properties in each field
         for (Field field : fields) {
-            processField(field, object);
+            propertyInjector.injectProperty(field, object);
         }
 
+        // Register a hot reloading background task and a JMX MBean if needed
         hotReloadingRegistrar.registerHotReloadingTask(this, object);
         mBeanRegistrar.registerMBeanFor(object);
     }
 
-    private void processField(final Field field, final Object object) throws PropertyInjectionException {
-        //Introspect the field for each registered annotation, and delegate its processing to the corresponding annotation processor
-        for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {
-            AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
-            if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
-                Annotation annotation = field.getAnnotation(annotationType);
-                injectProperty(field, object, annotation, annotationProcessor);
-            }
-        }
-    }
-
-    private <A extends Annotation> void injectProperty(Field field, Object object, A annotation, AnnotationProcessor<A> annotationProcessor) throws PropertyInjectionException {
-        try {
-            Object value = annotationProcessor.processAnnotation(annotation, field);
-            if (value != null) {
-                Object typedValue = ConvertUtils.convert(value, field.getType());
-                PropertyUtils.setProperty(object, field.getName(), typedValue);
-            }
-        } catch (Exception e) {
-            throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
-                    annotation, field.getName(), object), e);
-        }
-    }
-
-
-    /**
-     * Register a custom annotation processor for a given annotation.
-     *
-     * @param annotation          the annotation type to be processed
-     * @param annotationProcessor the annotation processor to register
-     */
-    public void registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
-        annotationProcessors.put(annotation, annotationProcessor);
+    void registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
+        propertyInjector.addAnnotationProcessor(annotation, annotationProcessor);
     }
 
 }
