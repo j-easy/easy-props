@@ -35,15 +35,21 @@ import java.util.List;
  */
 class ReflectionUtils {
 
+    private ReflectionUtils() {
+
+    }
+
+    /**
+     * Get declared and inherited fields of a given object.
+     *
+     * @param object to introspect
+     * @return declared and inherited fields
+     */
     public static List<Field> getAllFields(final Object object) {
         List<Field> allFields = new ArrayList<>();
         allFields.addAll(getDeclaredFields(object));
         allFields.addAll(getInheritedFields(object));
         return allFields;
-    }
-
-    private ReflectionUtils() {
-
     }
 
     private static List<Field> getDeclaredFields(final Object object) {

@@ -32,14 +32,19 @@ import java.util.concurrent.ThreadFactory;
  */
 class DaemonThreadFactory implements ThreadFactory {
 
+    /**
+     * Create a new {@link DaemonThreadFactory}.
+     *
+     * @return a new {@link DaemonThreadFactory}
+     */
+    public static DaemonThreadFactory newDaemonThreadFactory() {
+        return new DaemonThreadFactory();
+    }
+
     @Override
     public Thread newThread(Runnable runnable) {
         Thread thread = new Thread(runnable);
         thread.setDaemon(true);
         return thread;
-    }
-
-    public static DaemonThreadFactory newDaemonThreadFactory() {
-        return new DaemonThreadFactory();
     }
 }
