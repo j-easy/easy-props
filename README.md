@@ -118,7 +118,7 @@ Dependency injection frameworks allow you to inject properties in Java objects a
 
 But in order to benefit from this feature, your code should run inside a DI container, or at least, the object in which you are trying to inject properties must be managed by a DI container.
 
-What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from dependency injection **without** requiring your code to run inside a DI container.
+What if your code does **not** run inside a DI container? This is where Easy Properties comes to play, to allow you to benefit from properties injection **without** requiring your code to run inside a DI container.
 
 ## Quick links
 
