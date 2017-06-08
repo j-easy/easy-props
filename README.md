@@ -160,7 +160,7 @@ For any further question, you can use the [Gitter channel](https://gitter.im/j-e
 
 ## License
 
-Easy Props is released under the MIT license:
+Easy Props is released under the terms of the MIT license:
 
 ```
 The MIT License (MIT)
