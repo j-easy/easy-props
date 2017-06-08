@@ -44,7 +44,7 @@ class HotReloadingRegistrar {
     private Map<Object, Runnable> hotReloadingTasks = new HashMap<>();
     private ScheduledExecutorService scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
 
-    public void registerHotReloadingTask(final PropertiesInjector propertiesInjector, final Object target) {
+    void registerHotReloadingTask(final PropertiesInjector propertiesInjector, final Object target) {
         if (shouldBeHotReloaded(target)) {
             HotReload hotReload = target.getClass().getAnnotation(HotReload.class);
             long period = hotReload.period();

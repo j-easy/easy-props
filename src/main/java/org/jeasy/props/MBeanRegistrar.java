@@ -43,7 +43,7 @@ class MBeanRegistrar {
 
     private MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-    public void registerMBeanFor(final Object object) {
+    void registerMBeanFor(final Object object) {
         if (shouldBeManaged(object)) {
             Manageable manageable = object.getClass().getAnnotation(Manageable.class);
             String name = manageable.name().trim().isEmpty() ? object.getClass().getName() : manageable.name();

@@ -37,7 +37,7 @@ class DaemonThreadFactory implements ThreadFactory {
      *
      * @return a new {@link DaemonThreadFactory}
      */
-    public static DaemonThreadFactory newDaemonThreadFactory() {
+    static DaemonThreadFactory newDaemonThreadFactory() {
         return new DaemonThreadFactory();
     }
 

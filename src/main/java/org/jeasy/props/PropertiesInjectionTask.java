@@ -42,7 +42,7 @@ class PropertiesInjectionTask implements Runnable {
 
     private Object target;
 
-    public PropertiesInjectionTask(PropertiesInjector injector, Object target) {
+    PropertiesInjectionTask(PropertiesInjector injector, Object target) {
         this.injector = injector;
         this.target = target;
     }

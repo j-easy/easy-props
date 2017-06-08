@@ -46,7 +46,7 @@ class PropertyInjector {
 
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
 
-    public PropertyInjector() {
+    PropertyInjector() {
         annotationProcessors = new HashMap<>();
 
         //register built-in annotation processors
