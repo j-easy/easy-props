@@ -20,6 +20,7 @@
 
 ## Latest news
 
+* 03/07/2017: Version 2.0.1 is out with a small fix of the JMX MBean name. See all details in the [change log](https://github.com/j-easy/easy-props/releases).
 * 08/06/2017: Version 2.0.0 is out! See what's new [here](https://github.com/j-easy/easy-props/releases).
 * 17/07/2016: Version 1.3.0 is out with new features and bug fixes. See all details in the [change log](https://github.com/j-easy/easy-props/releases).
 
@@ -157,6 +158,7 @@ For any further question, you can use the [Gitter channel](https://gitter.im/j-e
 ## Awesome contributors
 
 * [natlantisprog](https://github.com/natlantisprog)
+* [pblanche](https://github.com/pblanche)
 
 ## License
 
