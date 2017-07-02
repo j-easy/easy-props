@@ -90,7 +90,7 @@ public class PropertiesInjectorImplTest {
         ManageableConfig config = new ManageableConfig();
         aNewPropertiesInjector().injectProperties(config);
 
-        ObjectName objectName = new ObjectName("io.github.benas.easyproperties:name=myConfig");
+        ObjectName objectName = new ObjectName("org.jeasy.props:name=myConfig");
         assertThat(getPlatformMBeanServer().isRegistered(objectName)).isTrue();
     }
 }
