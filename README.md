@@ -157,6 +157,7 @@ For any further question, you can use the [Gitter channel](https://gitter.im/j-e
 
 ## Awesome contributors
 
+* [gscho](https://github.com/gscho)
 * [natlantisprog](https://github.com/natlantisprog)
 * [pblanche](https://github.com/pblanche)
 
