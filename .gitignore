@@ -1,3 +1,13 @@
+# Idea
 *.iml
 .idea/
 **/target/*
+/target/
+
+# Eclipse
+.settings
+.project
+.classpath
+
+# MacOS
+.DS_Store

@@ -58,6 +58,7 @@ class PropertyInjector {
         annotationProcessors.put(JNDIProperty.class, new JNDIPropertyAnnotationProcessor());
         annotationProcessors.put(MavenProperty.class, new MavenPropertyAnnotationProcessor());
         annotationProcessors.put(ManifestProperty.class, new ManifestPropertyAnnotationProcessor());
+        annotationProcessors.put(EnvironmentVariable.class, new EnvironmentVariableAnnotationProcessor());
     }
 
     void injectProperty(final Field field, final Object object) throws PropertyInjectionException {
