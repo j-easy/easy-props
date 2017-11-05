@@ -11,7 +11,7 @@
 [![Coverage](https://coveralls.io/repos/j-easy/easy-props/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-props?branch=master)
 [![Build Status](https://travis-ci.org/j-easy/easy-props.svg?branch=master)](https://travis-ci.org/j-easy/easy-props)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|2.0.0|)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.jeasy/easy-props/badge.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
+[![Javadocs](http://www.javadoc.io/badge/org.jeasy/easy-props.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-props)
 
 </div>
