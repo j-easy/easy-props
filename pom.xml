@@ -8,7 +8,7 @@
     </parent>
 
     <groupId>org.jeasy</groupId>
-    <artifactId>easy-props</artifactId>
+    <artifactId>easy-props-ext</artifactId>
     <version>2.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
