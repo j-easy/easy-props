@@ -9,7 +9,7 @@
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage](https://coveralls.io/repos/j-easy/easy-props/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-props?branch=master)
-[![Build Status](https://travis-ci.org/j-easy/easy-props.svg?branch=master)](https://travis-ci.org/j-easy/easy-props)
+[![Build Status](https://github.com/j-easy/easy-props/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-props/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|2.0.0|)
 [![Javadocs](http://www.javadoc.io/badge/org.jeasy/easy-props.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-props)

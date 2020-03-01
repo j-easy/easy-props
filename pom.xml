@@ -69,6 +69,11 @@
         <tag>HEAD</tag>
     </scm>
 
+    <ciManagement>
+        <system>Github Actions</system>
+        <url>https://github.com/j-easy/easy-props/actions</url>
+    </ciManagement>
+
     <dependencies>
 
         <dependency>
