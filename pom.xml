@@ -13,9 +13,7 @@
     <packaging>jar</packaging>
 
     <name>easy-props</name>
-    <description>
-        Easy Props is a library to inject configuration properties in Java objects declaratively using annotations
-    </description>
+    <description>Easy Props is a library to inject configuration properties in Java objects declaratively using annotations</description>
     <url>https://github.com/j-easy/easy-props</url>
 
     <properties>
@@ -47,13 +45,6 @@
             <email>mahmoud.benhassine@icloud.com</email>
         </developer>
     </developers>
-
-    <contributors>
-        <contributor>
-            <name>natlantisprog</name>
-            <url>https://github.com/natlantisprog</url>
-        </contributor>
-    </contributors>
 
     <licenses>
         <license>
@@ -127,6 +118,11 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
@@ -174,11 +170,6 @@
                         <phase>install</phase>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
