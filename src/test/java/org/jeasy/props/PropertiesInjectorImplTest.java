@@ -23,7 +23,11 @@
  */
 package org.jeasy.props;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.jeasy.props.api.PropertiesInjector;
+import org.jeasy.props.converters.TypeConverter;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,8 +48,10 @@ public class PropertiesInjectorImplTest {
 
     @Before
     public void setUp() {
+        System.setProperty("date", "01/03/2020");
         propertiesInjector = aNewPropertiesInjectorBuilder()
                 .registerAnnotationProcessor(MyCustomAnnotation.class, new MyCustomAnnotationProcessor())
+                .registerTypeConverter(LocalDate.class, (TypeConverter<String, LocalDate>) source -> LocalDate.parse(source, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .build();
     }
 
@@ -59,6 +65,18 @@ public class PropertiesInjectorImplTest {
 
         //then
         assertThat(config.getCustom()).isEqualTo("foo");
+    }
+
+    @Test
+    public void testCustomTypeConverter() {
+        //given
+        Config config = new Config();
+
+        //when
+        propertiesInjector.injectProperties(config);
+
+        //then
+        assertThat(config.getDate()).isEqualTo(LocalDate.of(2020, 3, 1));
     }
 
     @Test

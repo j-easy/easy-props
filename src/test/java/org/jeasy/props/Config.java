@@ -23,10 +23,17 @@
  */
 package org.jeasy.props;
 
+import java.time.LocalDate;
+
+import org.jeasy.props.annotations.SystemProperty;
+
 public class Config {
 
     @MyCustomAnnotation(value = "foo")
     private String custom;
+
+    @SystemProperty("date")
+    private LocalDate date;
 
     public String getCustom() {
         return custom;
@@ -34,5 +41,13 @@ public class Config {
 
     public void setCustom(String custom) {
         this.custom = custom;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

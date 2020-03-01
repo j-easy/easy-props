@@ -25,6 +25,7 @@ package org.jeasy.props;
 
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertiesInjector;
+import org.jeasy.props.converters.TypeConverter;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -91,6 +92,18 @@ public class PropertiesInjectorBuilder {
      */
     public PropertiesInjectorBuilder registerAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         propertiesInjector.registerAnnotationProcessor(annotation, annotationProcessor);
+        return this;
+    }
+
+    /**
+     * Register a custom type converter.
+     * 
+     * @param targetType the target field type
+     * @param converter to use
+     * @return this instance of @{link PropertiesInjectorBuilder}
+     */
+    public PropertiesInjectorBuilder registerTypeConverter(Class<?> targetType, TypeConverter converter) {
+        propertiesInjector.registerTypeConverter(targetType, converter);
         return this;
     }
 

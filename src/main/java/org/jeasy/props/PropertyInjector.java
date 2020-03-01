@@ -26,6 +26,7 @@ package org.jeasy.props;
 import org.jeasy.props.annotations.*;
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertyInjectionException;
+import org.jeasy.props.converters.TypeConverter;
 import org.jeasy.props.processors.*;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -45,9 +46,12 @@ import static java.lang.String.format;
 class PropertyInjector {
 
     private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
+    private Map<Class<?>, TypeConverter<?, ?>> typeConverters;
 
     PropertyInjector() {
         annotationProcessors = new HashMap<>();
+        typeConverters = new HashMap<>();
+        // TODO the day we decide to remove the dependency to apache commons-beanutils, register built-in converters here
 
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
@@ -86,6 +90,10 @@ class PropertyInjector {
     }
 
     private Object convert(Object value, Class<?> type) {
+        TypeConverter converter = typeConverters.get(type);
+        if (converter != null) {
+            return converter.convert(value);
+        }
         return ConvertUtils.convert(value, type);
     }
 
@@ -95,6 +103,10 @@ class PropertyInjector {
 
     void addAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
         annotationProcessors.put(annotation, annotationProcessor);
+    }
+
+    void addTypeConverter(final Class<?> type, final TypeConverter typeConverter) {
+        typeConverters.put(type, typeConverter);
     }
 
 }
