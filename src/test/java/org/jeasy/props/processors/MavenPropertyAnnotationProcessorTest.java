@@ -40,7 +40,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getPomVersion()).isEqualTo("1.9.2");
+        assertThat(bean.getPomVersion()).isEqualTo("1.9.4");
     }
 
     @Test(expected = PropertyInjectionException.class)

@@ -40,7 +40,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.0.4");
+        assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.1.1");
     }
 
     @Test(expected = PropertyInjectionException.class)
@@ -68,7 +68,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
 
     public class Bean {
 
-        @ManifestProperty(jar = "junit-4.12.jar", header = "Created-By")
+        @ManifestProperty(jar = "junit-4.13.jar", header = "Created-By")
         private String createdBy;
 
         public String getCreatedBy() { return createdBy; }
@@ -90,7 +90,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
 
     public class BeanWithInvalidHeader {
 
-        @ManifestProperty(jar = "junit-4.12.jar", header = "blah")
+        @ManifestProperty(jar = "junit-4.13.jar", header = "blah")
         private String createdBy;
 
         public String getCreatedBy() {
