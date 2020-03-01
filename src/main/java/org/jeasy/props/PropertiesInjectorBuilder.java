@@ -26,7 +26,11 @@ package org.jeasy.props;
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertiesInjector;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * A builder to create {@link PropertiesInjector} instances.
@@ -34,6 +38,19 @@ import java.lang.annotation.Annotation;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class PropertiesInjectorBuilder {
+
+    private static final Logger LOGGER = Logger.getLogger(PropertiesInjectorBuilder.class.getName());
+
+    static {
+        try {
+            if (System.getProperty("java.util.logging.config.file") == null &&
+                    System.getProperty("java.util.logging.config.class") == null) {
+                LogManager.getLogManager().readConfiguration(PropertiesInjectorBuilder.class.getResourceAsStream("/logging.properties"));
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to load log configuration file", e);
+        }
+    }
 
     /**
      * The properties injector to build.
