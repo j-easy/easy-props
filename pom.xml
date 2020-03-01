@@ -69,6 +69,11 @@
         <tag>HEAD</tag>
     </scm>
 
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/j-easy/easy-props/issues</url>
+    </issueManagement>
+
     <ciManagement>
         <system>Github Actions</system>
         <url>https://github.com/j-easy/easy-props/actions</url>
