@@ -76,13 +76,21 @@ class PropertyInjector {
         try {
             Object value = annotationProcessor.processAnnotation(annotation, field);
             if (value != null) {
-                Object typedValue = ConvertUtils.convert(value, field.getType());
-                PropertyUtils.setProperty(object, field.getName(), typedValue);
+                Object typedValue = convert(value, field.getType());
+                setProperty(typedValue, field.getName(), object);
             }
         } catch (Exception e) {
             throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
                     annotation, field.getName(), object), e);
         }
+    }
+
+    private Object convert(Object value, Class<?> type) {
+        return ConvertUtils.convert(value, type);
+    }
+
+    private void setProperty(Object value, String name, Object targetObject) throws Exception {
+        PropertyUtils.setProperty(targetObject, name, value);
     }
 
     void addAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
