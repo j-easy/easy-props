@@ -29,7 +29,6 @@ import org.jeasy.props.api.PropertyInjectionException;
 import org.jeasy.props.converters.TypeConverter;
 import org.jeasy.props.processors.*;
 import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -81,7 +80,7 @@ class PropertyInjector {
             Object value = annotationProcessor.processAnnotation(annotation, field);
             if (value != null) {
                 Object typedValue = convert(value, field.getType());
-                setProperty(typedValue, field.getName(), object);
+                setProperty(typedValue, field, object);
             }
         } catch (Exception e) {
             throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
@@ -97,8 +96,11 @@ class PropertyInjector {
         return ConvertUtils.convert(value, type);
     }
 
-    private void setProperty(Object value, String name, Object targetObject) throws Exception {
-        PropertyUtils.setProperty(targetObject, name, value);
+    private void setProperty(Object value, Field field, Object targetObject) throws Exception {
+        boolean access = field.isAccessible();
+        field.setAccessible(true);
+        field.set(targetObject, value);
+        field.setAccessible(access);
     }
 
     void addAnnotationProcessor(final Class<? extends Annotation> annotation, final AnnotationProcessor annotationProcessor) {
