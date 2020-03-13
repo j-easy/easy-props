@@ -99,7 +99,7 @@ public class PropertiesInjectorBuilder {
      * Register a custom type converter.
      * 
      * @param targetType the target field type
-     * @param converter to use
+     * @param converter  to use
      * @return this instance of @{link PropertiesInjectorBuilder}
      */
     public PropertiesInjectorBuilder registerTypeConverter(Class<?> targetType, TypeConverter converter) {

@@ -30,6 +30,11 @@ import java.util.logging.Logger;
 import org.jeasy.props.annotations.EnvironmentVariable;
 import org.jeasy.props.api.AnnotationProcessingException;
 
+/**
+ * An annotation processor that loads properties from environment variables.
+ * 
+ * @author Greg Schofield (gregs@indellient.com)
+ */
 public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationProcessor<EnvironmentVariable> {
 
     private static final Logger LOGGER = Logger.getLogger(EnvironmentVariableAnnotationProcessor.class.getName());

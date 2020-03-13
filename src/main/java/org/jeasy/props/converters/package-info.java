@@ -22,6 +22,7 @@
  *   THE SOFTWARE.
  */
 /**
- * This package contains the core implementation of properties injection.
+ * This package contains built-in type converters. As of v3.0.0, type conversion
+ * is based on Apache commons-beanutils.
  */
-package org.jeasy.props;
+package org.jeasy.props.converters;

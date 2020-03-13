@@ -39,16 +39,14 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 
 /**
- * An annotation processor that loads a header value from META-INF/MANIFEST.MF file.
+ * An annotation processor that loads a header value from {@code META-INF/MANIFEST.MF} file.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProcessor<ManifestProperty> {
 
     private static final Logger LOGGER = Logger.getLogger(ManifestPropertyAnnotationProcessor.class.getName());
-
     private static final String CLASSPATH = System.getProperty("java.class.path");
-
     private static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
     /**

@@ -29,8 +29,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation can be declared on a field of type {@link java.util.Properties} in which all properties of a given
- * properties file should be injected.
+ * This annotation can be declared on a field of type {@link java.util.Properties}
+ * in which all properties from a given properties file should be injected.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
