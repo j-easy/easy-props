@@ -131,7 +131,7 @@ As you can see, a lot of boilerplate code is written to load just two properties
 Easy Props takes care of all this boilerplate with a couple of intuitive annotations, which makes your code cleaner, more readable and maintainable.
 
 In this quick example, you have seen two types of properties sources (system and resource bundle).
-Easy Props can inject properties from many other sources like databases, JNDI contexts, Environement variables and more!
+Easy Props can inject properties from many other sources like databases, JNDI contexts, environment variables and more!
 
 Even better, Easy Props allows you write your own annotations and inject properties from custom configuration sources.
 Checkout the complete reference in the project's [wiki](https://github.com/j-easy/easy-props/wiki).
@@ -142,7 +142,7 @@ Dependency injection frameworks allow you to inject properties in Java objects a
 But in order to benefit from this feature, your code should run inside a DI container, or at least, the object in which you are trying to inject properties must be managed by a DI container.
 What if your code does **not** run inside a DI container? This is where Easy Props comes to play, to allow you to benefit from properties injection **without** requiring your code to run inside a DI container.
 
-## Core feature
+## Core features
 
 * Lightweight library with no dependencies
 * Type safe access to configuration properties
