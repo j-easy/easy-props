@@ -97,8 +97,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
     private void loadManifestFromJar(final String jar) throws AnnotationProcessingException {
         JarInputStream jarStream = null;
         try {
-            final String classPath = CLASSPATH;
-            final String[] classPathElements = classPath.split(PATH_SEPARATOR);
+            final String[] classPathElements = CLASSPATH.split(PATH_SEPARATOR);
             for (final String element : classPathElements) {
                 if (element.endsWith(jar)) {
                     jarStream = new JarInputStream(new FileInputStream(element));
