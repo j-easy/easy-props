@@ -39,9 +39,9 @@ import java.util.List;
  */
 final class PropertiesInjectorImpl implements PropertiesInjector {
 
-    private PropertyInjector propertyInjector;
-    private MBeanRegistrar mBeanRegistrar;
-    private HotReloadingRegistrar hotReloadingRegistrar;
+    private final PropertyInjector propertyInjector;
+    private final MBeanRegistrar mBeanRegistrar;
+    private final HotReloadingRegistrar hotReloadingRegistrar;
 
     PropertiesInjectorImpl() {
         propertyInjector = new PropertyInjector();

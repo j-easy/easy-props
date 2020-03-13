@@ -45,7 +45,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() throws Exception {
+    public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() {
         //given
         BeanWithInvalidPropertiesFile bean = new BeanWithInvalidPropertiesFile();
 
@@ -79,7 +79,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         assertThat(bean.getEmptyField()).isNull();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @Property(source = "classpath:myProperties.properties", key = "bean.name")
         private String beanName;
@@ -99,7 +99,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         }
     }
 
-    public class BeanWithInvalidPropertiesFile {
+    public static class BeanWithInvalidPropertiesFile {
 
         @Property(source = "blah.properties", key = "bean.name")
         private String beanName;
@@ -108,7 +108,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         public void setBeanName(String beanName) { this.beanName = beanName; }
     }
 
-    public class BeanWithMissingKey {
+    public static class BeanWithMissingKey {
 
         @Property(source = "myProperties.properties", key = "unknown.key")
         private String unknownField;
@@ -121,7 +121,7 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         }
     }
 
-    public class BeanWithEmptyKey {
+    public static class BeanWithEmptyKey {
 
         @Property(source = "myProperties.properties", key = "empty.key")
         private String emptyField;

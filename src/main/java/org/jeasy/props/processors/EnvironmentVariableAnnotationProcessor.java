@@ -42,7 +42,7 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
         //check attribute
         rejectIfEmpty(key, missingAttributeValue("value", EnvironmentVariable.class.getName(), field));
 
-        //check environemnt variable
+        //check environment variable
         String value = System.getenv(key);
         if (value == null) {
             LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' not found in environment variables: {3}",

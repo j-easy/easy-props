@@ -59,7 +59,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenConfigurationIsMissing_thenShouldThrowAnException() throws Exception {
+    public void whenConfigurationIsMissing_thenShouldThrowAnException() {
         //given
         BeanWithInvalidConfiguration bean = new BeanWithInvalidConfiguration();
 
@@ -82,11 +82,11 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @After
-    public void shutdownEmbeddedDatabase() throws Exception {
+    public void shutdownEmbeddedDatabase() {
         embeddedDatabase.shutdown();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @DBProperty(configuration = "database.properties", key = "name")
         private String name;
@@ -95,7 +95,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
         public void setName(String name) { this.name = name; }
     }
 
-    public class BeanWithInvalidConfiguration {
+    public static class BeanWithInvalidConfiguration {
 
         @DBProperty(configuration = "blah.properties", key = "name")
         private String name;
@@ -104,7 +104,7 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
         public void setName(String name) { this.name = name; }
     }
 
-    public class BeanWithInvalidKey {
+    public static class BeanWithInvalidKey {
 
         @DBProperty(configuration = "database.properties", key = "blah")
         private String name;

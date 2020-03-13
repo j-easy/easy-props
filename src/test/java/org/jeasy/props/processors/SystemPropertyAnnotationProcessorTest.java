@@ -75,7 +75,7 @@ public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationPro
         assertThat(bean.getThreshold()).isEqualTo(30);
     }
 
-    public class Bean {
+    public static class Bean {
 
         @SystemProperty("user.home")
         private String userHome;

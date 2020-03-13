@@ -41,7 +41,7 @@ class MBeanRegistrar {
     private static final String JMX_OBJECT_NAME_PREFIX = "org.jeasy.props:";
     private static final Logger LOGGER = Logger.getLogger(MBeanRegistrar.class.getName());
 
-    private MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+    private final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
     void registerMBeanFor(final Object object) {
         if (shouldBeManaged(object)) {

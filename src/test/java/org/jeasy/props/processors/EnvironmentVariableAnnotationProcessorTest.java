@@ -26,17 +26,11 @@ package org.jeasy.props.processors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.jeasy.props.annotations.EnvironmentVariable;
-import org.junit.Before;
 import org.junit.Test;
 
 public class EnvironmentVariableAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
     private Bean bean;
-    
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void testEnvironmentVariableInjection() {
@@ -62,7 +56,7 @@ public class EnvironmentVariableAnnotationProcessorTest extends AbstractAnnotati
         assertThat(bean.getValue()).isEqualTo("default");
     }
 
-    public class Bean {
+    public static class Bean {
 
         @EnvironmentVariable("JAVA_HOME")
         private String javaHome;

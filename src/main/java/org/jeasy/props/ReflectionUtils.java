@@ -58,9 +58,9 @@ class ReflectionUtils {
 
     private static List<Field> getInheritedFields(final Object object) {
         List<Field> inheritedFields = new ArrayList<>();
-        Class clazz = object.getClass();
+        Class<?> clazz = object.getClass();
         while (clazz.getSuperclass() != null) {
-            Class superclass = clazz.getSuperclass();
+            Class<?> superclass = clazz.getSuperclass();
             inheritedFields.addAll(Arrays.asList(superclass.getDeclaredFields()));
             clazz = superclass;
         }

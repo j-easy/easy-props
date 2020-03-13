@@ -45,7 +45,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
     /**
      * A map holding bundle file name and resource bundle object serving as a cache.
      */
-    private Map<String, ResourceBundle> resourceBundlesMap = new HashMap<>();
+    private final Map<String, ResourceBundle> resourceBundlesMap = new HashMap<>();
 
     @Override
     public Object processAnnotation(final I18NProperty property, final Field field) throws AnnotationProcessingException {

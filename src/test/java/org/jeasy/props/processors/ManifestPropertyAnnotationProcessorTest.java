@@ -44,7 +44,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenJarIsMissing_thenShouldThrowAnException() throws Exception {
+    public void whenJarIsMissing_thenShouldThrowAnException() {
         //given
         BeanWithInvalidJar bean = new BeanWithInvalidJar();
 
@@ -66,7 +66,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         assertThat(bean.getCreatedBy()).isNull();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @ManifestProperty(jar = "junit-4.13.jar", header = "Created-By")
         private String createdBy;
@@ -75,7 +75,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
     }
 
-    public class BeanWithInvalidJar {
+    public static class BeanWithInvalidJar {
 
         @ManifestProperty(jar = "blah.jar", header = "Created-By")
         private String createdBy;
@@ -88,7 +88,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         }
     }
 
-    public class BeanWithInvalidHeader {
+    public static class BeanWithInvalidHeader {
 
         @ManifestProperty(jar = "junit-4.13.jar", header = "blah")
         private String createdBy;

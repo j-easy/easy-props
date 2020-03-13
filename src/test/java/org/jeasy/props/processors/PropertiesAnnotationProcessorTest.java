@@ -59,7 +59,7 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() throws Exception {
+    public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() {
         //given
         BeanWithInvalidProperties bean = new BeanWithInvalidProperties();
 
@@ -69,7 +69,7 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
         //then should throw an exception
     }
 
-    public class Bean {
+    public static class Bean {
 
         @Properties("myProperties.properties")
         private java.util.Properties myProperties;
@@ -78,7 +78,7 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
         public void setMyProperties(java.util.Properties myProperties) { this.myProperties = myProperties; }
     }
 
-    public class BeanWithInvalidProperties {
+    public static class BeanWithInvalidProperties {
 
         @Properties("blah.properties")
         private java.util.Properties myProperties;

@@ -36,11 +36,11 @@ import java.util.logging.Logger;
  */
 class PropertiesInjectionTask implements Runnable {
 
-    private static Logger LOGGER = Logger.getLogger(PropertiesInjectionTask.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PropertiesInjectionTask.class.getName());
 
-    private PropertiesInjector injector;
+    private final PropertiesInjector injector;
 
-    private Object target;
+    private final Object target;
 
     PropertiesInjectionTask(PropertiesInjector injector, Object target) {
         this.injector = injector;

@@ -41,8 +41,8 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 class HotReloadingRegistrar {
 
-    private Map<Object, Runnable> hotReloadingTasks = new HashMap<>();
-    private ScheduledExecutorService scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
+    private final Map<Object, Runnable> hotReloadingTasks = new HashMap<>();
+    private final ScheduledExecutorService scheduledExecutorService = newSingleThreadScheduledExecutor(newDaemonThreadFactory());
 
     void registerHotReloadingTask(final PropertiesInjector propertiesInjector, final Object target) {
         if (shouldBeHotReloaded(target)) {

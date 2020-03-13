@@ -45,7 +45,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
     /**
      * A map holding pom.properties file with corresponding Properties object serving as a cache.
      */
-    private Map<String, Properties> mavenMap = new HashMap<>();
+    private final Map<String, Properties> mavenMap = new HashMap<>();
 
     @Override
     public Object processAnnotation(final MavenProperty mavenAnnotation, final Field field) throws AnnotationProcessingException {

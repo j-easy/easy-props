@@ -44,7 +44,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenSourceIsInvalid_thenShouldThrowAnException() throws Exception {
+    public void whenSourceIsInvalid_thenShouldThrowAnException() {
         //given
         BeanWithInvalidSource bean = new BeanWithInvalidSource();
 
@@ -67,7 +67,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenGroupIdIsMissing_thenShouldThrowAnException() throws Exception {
+    public void whenGroupIdIsMissing_thenShouldThrowAnException() {
         //given
         BeanWithInvalidGroupId bean = new BeanWithInvalidGroupId();
 
@@ -79,7 +79,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenArtifactIdIsMissing_thenShouldThrowAnException() throws Exception {
+    public void whenArtifactIdIsMissing_thenShouldThrowAnException() {
         //given
         BeanWithInvalidArtifactId bean = new BeanWithInvalidArtifactId();
 
@@ -90,7 +90,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         assertThat(bean.getPomVersion()).isNull();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
         private String pomVersion;
@@ -99,7 +99,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         public void setPomVersion(String pomVersion) { this.pomVersion = pomVersion; }
     }
 
-    public class BeanWithInvalidSource {
+    public static class BeanWithInvalidSource {
 
         @MavenProperty(source = "blah.properties", key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
         private String pomVersion;
@@ -108,7 +108,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         public void setPomVersion(String pomVersion) { this.pomVersion = pomVersion; }
     }
 
-    public class BeanWithInvalidKey {
+    public static class BeanWithInvalidKey {
 
         @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils")
         private String pomVersion;
@@ -117,7 +117,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         public void setPomVersion(String pomVersion) { this.pomVersion = pomVersion; }
     }
 
-    public class BeanWithInvalidGroupId {
+    public static class BeanWithInvalidGroupId {
 
         @MavenProperty(key = "version", groupId = "blah", artifactId = "commons-beanutils")
         private String pomVersion;
@@ -126,7 +126,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         public void setPomVersion(String pomVersion) { this.pomVersion = pomVersion; }
     }
 
-    public class BeanWithInvalidArtifactId {
+    public static class BeanWithInvalidArtifactId {
 
         @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "blah")
         private String pomVersion;

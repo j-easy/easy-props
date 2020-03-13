@@ -44,7 +44,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
     /**
      * A map holding source file name and Properties object serving as a cache.
      */
-    private Map<String, java.util.Properties> propertiesMap = new HashMap<>();
+    private final Map<String, java.util.Properties> propertiesMap = new HashMap<>();
 
     @Override
     public Object processAnnotation(final Properties propertiesAnnotation, final Field field) throws AnnotationProcessingException {
@@ -78,7 +78,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
         }
     }
 
-    private void rejectIfFieldIsNotOfType(final Field field, final Class type) throws AnnotationProcessingException {
+    private void rejectIfFieldIsNotOfType(final Field field, final Class<?> type) throws AnnotationProcessingException {
         if (!field.getType().equals(type)) {
             throw new AnnotationProcessingException(format("Annotation %s declared on field '%s' of type '%s' is incompatible with type '%s'",
                     Properties.class.getName(), field.getName(), field.getDeclaringClass().getName(), field.getType()));

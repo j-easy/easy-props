@@ -44,8 +44,8 @@ import static java.lang.String.format;
  */
 class PropertyInjector {
 
-    private Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
-    private Map<Class<?>, TypeConverter<?, ?>> typeConverters;
+    private final Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
+    private final Map<Class<?>, TypeConverter<?, ?>> typeConverters;
 
     PropertyInjector() {
         annotationProcessors = new HashMap<>();

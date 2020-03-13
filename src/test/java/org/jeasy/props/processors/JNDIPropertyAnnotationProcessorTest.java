@@ -73,7 +73,7 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         context.close();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @JNDIProperty("foo.property")
         private String jndiProperty;
@@ -82,7 +82,7 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         public void setJndiProperty(String jndiProperty) { this.jndiProperty = jndiProperty; }
     }
 
-    public class BeanWithInvalidKey {
+    public static class BeanWithInvalidKey {
 
         @JNDIProperty("blah")
         private String jndiProperty;

@@ -56,7 +56,7 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     }
 
     @Test(expected = PropertyInjectionException.class)
-    public void whenBundleIsMissing_thenShouldThrowAnException() throws Exception {
+    public void whenBundleIsMissing_thenShouldThrowAnException() {
         //given
         BeanWithInvalidBundle bean = new BeanWithInvalidBundle();
 
@@ -78,7 +78,7 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         assertThat(bean.getMessage()).isNull();
     }
 
-    public class Bean {
+    public static class Bean {
 
         @I18NProperty(bundle = "i18n/messages", key = "my.message")
         private String message;
@@ -87,7 +87,7 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         public void setMessage(String message) { this.message = message; }
     }
 
-    public class BeanWithInvalidBundle {
+    public static class BeanWithInvalidBundle {
 
         @I18NProperty(bundle = "blah", key = "my.message")
         private String message;
@@ -96,7 +96,7 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         public void setMessage(String message) { this.message = message; }
     }
 
-    public class BeanWithInvalidKey {
+    public static class BeanWithInvalidKey {
 
         @I18NProperty(bundle = "i18n/messages", key = "blah")
         private String message;
