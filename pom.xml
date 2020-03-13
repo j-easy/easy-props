@@ -9,7 +9,7 @@
 
     <groupId>org.jeasy</groupId>
     <artifactId>easy-props</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>easy-props</name>
@@ -57,7 +57,7 @@
         <url>git@github.com:j-easy/easy-props.git</url>
         <connection>scm:git:git@github.com:j-easy/easy-props.git</connection>
         <developerConnection>scm:git:git@github.com:j-easy/easy-props.git</developerConnection>
-        <tag>easy-props-3.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
