@@ -42,6 +42,7 @@ import static java.lang.String.format;
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
+@SuppressWarnings("unchecked,rawtypes")
 class PropertyInjector {
 
     private final Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
