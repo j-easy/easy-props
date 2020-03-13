@@ -160,6 +160,7 @@ For any further question, you can use the [Gitter channel](https://gitter.im/j-e
 * [gscho](https://github.com/gscho)
 * [natlantisprog](https://github.com/natlantisprog)
 * [pblanche](https://github.com/pblanche)
+* [michaelcouck](https://github.com/michaelcouck)
 
 ## License
 
