@@ -10,7 +10,7 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage](https://coveralls.io/repos/j-easy/easy-props/badge.svg?style=flat&branch=master&service=github)](https://coveralls.io/github/j-easy/easy-props?branch=master)
 [![Build Status](https://github.com/j-easy/easy-props/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-props/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|2.0.0|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|3.0.0|)
 [![Javadocs](http://www.javadoc.io/badge/org.jeasy/easy-props.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-props)
 
@@ -20,9 +20,7 @@
 
 ## Latest news
 
-* 03/07/2017: Version 2.0.1 is out with a small fix of the JMX MBean name. See all details in the [change log](https://github.com/j-easy/easy-props/releases).
-* 08/06/2017: Version 2.0.0 is out! See what's new [here](https://github.com/j-easy/easy-props/releases).
-* 17/07/2016: Version 1.3.0 is out with new features and bug fixes. See all details in the [change log](https://github.com/j-easy/easy-props/releases).
+* 14/03/2020: Version 3.0.0 is finally out! This version is based on Java 8 and comes with a new annotation to inject properties from environment variables. You can find more details about the new features and enhancements in the [change log](https://github.com/j-easy/easy-props/releases).
 
 ## What is Easy Props?
 
@@ -133,25 +131,31 @@ As you can see, a lot of boilerplate code is written to load just two properties
 Easy Props takes care of all this boilerplate with a couple of intuitive annotations, which makes your code cleaner, more readable and maintainable.
 
 In this quick example, you have seen two types of properties sources (system and resource bundle).
-Easy Props can inject properties from many other sources like databases, JNDI contexts, and more.
+Easy Props can inject properties from many other sources like databases, JNDI contexts, Environement variables and more!
 
-Even better, Easy Props allows you write your own annotations and inject properties from a custom configuration source.
-
+Even better, Easy Props allows you write your own annotations and inject properties from custom configuration sources.
 Checkout the complete reference in the project's [wiki](https://github.com/j-easy/easy-props/wiki).
 
 ## Why Easy Props?
 
 Dependency injection frameworks allow you to inject properties in Java objects and they do it well.
-
 But in order to benefit from this feature, your code should run inside a DI container, or at least, the object in which you are trying to inject properties must be managed by a DI container.
-
 What if your code does **not** run inside a DI container? This is where Easy Props comes to play, to allow you to benefit from properties injection **without** requiring your code to run inside a DI container.
+
+## Core feature
+
+* Lightweight library with no dependencies
+* Type safe access to configuration properties
+* Declarative configuration with intuitive annotations
+* Ability to inject properties from custom configuration sources
+* Ability to hot reload configuration automatically at runtime
+* Ability to manage configuration at runtime via JMX
 
 ## Contribution
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-props/issues).
+If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-props/issues).
 
 For any further question, you can use the [Gitter channel](https://gitter.im/j-easy/easy-props) of the project.
 
@@ -161,6 +165,8 @@ For any further question, you can use the [Gitter channel](https://gitter.im/j-e
 * [natlantisprog](https://github.com/natlantisprog)
 * [pblanche](https://github.com/pblanche)
 * [michaelcouck](https://github.com/michaelcouck)
+
+Thank you all for your contributions!
 
 ## License
 
