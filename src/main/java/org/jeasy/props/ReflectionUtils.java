@@ -53,7 +53,7 @@ class ReflectionUtils {
     }
 
     private static List<Field> getDeclaredFields(final Object object) {
-        return new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
+        return Arrays.asList(object.getClass().getDeclaredFields());
     }
 
     private static List<Field> getInheritedFields(final Object object) {
