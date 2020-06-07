@@ -73,8 +73,8 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         //check object obtained from database
         String value = dbProperties.getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties: {1}",
-                    new Object[]{key, dbConfigurationMap.get(configuration)});
+            LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties from file ''{1}''",
+                    new Object[]{key, configuration});
         }
 
         return value;
