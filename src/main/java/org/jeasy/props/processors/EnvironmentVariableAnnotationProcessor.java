@@ -34,6 +34,7 @@ import org.jeasy.props.api.AnnotationProcessingException;
  * An annotation processor that loads properties from environment variables.
  * 
  * @author Greg Schofield (gregs@indellient.com)
+ * @author Mahmoud Ben Hassine
  */
 public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationProcessor<EnvironmentVariable> {
 
@@ -50,8 +51,8 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
         //check environment variable
         String value = System.getenv(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' not found in environment variables: {3}",
-                    new Object[]{key, field.getName(), field.getDeclaringClass().getName(), System.getenv()});
+            LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' not found in environment variables.",
+                    new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
 
             //Use default value if specified
             String defaultValue = environmentVariable.defaultValue();
