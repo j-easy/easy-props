@@ -53,8 +53,8 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
      * @return the formatted error message
      */
     protected String missingAttributeValue(final String attribute, final String annotation, final Field field) {
-        return format("No value specified for attribute '%s' of annotation '%s' on field '%s' of type '%s'",
-                attribute, annotation, field.getName(), field.getDeclaringClass().getName());
+        return format("No value specified for attribute '%s' of annotation '%s' on field '%s' of type '%s' in class '%s'",
+                attribute, annotation, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
     }
 
     /**

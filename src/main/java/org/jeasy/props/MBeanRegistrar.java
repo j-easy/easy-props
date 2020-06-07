@@ -54,7 +54,7 @@ class MBeanRegistrar {
                     mBeanServer.registerMBean(object, objectName);
                 }
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Unable to register a JMX MBean for object: " + object, e);
+                LOGGER.log(Level.SEVERE, "Unable to register a JMX MBean for object '" + object + "'", e);
             }
         }
     }

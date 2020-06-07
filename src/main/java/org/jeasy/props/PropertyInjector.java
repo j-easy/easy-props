@@ -84,8 +84,8 @@ class PropertyInjector {
                 setProperty(typedValue, field, object);
             }
         } catch (Exception e) {
-            throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of object '%s'",
-                    annotation, field.getName(), object), e);
+            throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of type '%s' in class '%s'",
+                    annotation, field.getName(), field.getType().getName(), object.getClass().getName()), e);
         }
     }
 

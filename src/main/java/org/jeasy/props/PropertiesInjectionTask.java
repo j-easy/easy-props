@@ -52,7 +52,7 @@ class PropertiesInjectionTask implements Runnable {
         try {
             injector.injectProperties(target);
         } catch (PropertyInjectionException e) {
-            LOGGER.log(Level.SEVERE, "Unable to inject properties in object: " + target, e);
+            LOGGER.log(Level.SEVERE, "Unable to inject properties in object '" + target + "'", e);
         }
     }
 }

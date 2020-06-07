@@ -51,16 +51,16 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
         //check environment variable
         String value = System.getenv(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' not found in environment variables.",
-                    new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
+            LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in environment variables",
+                    new Object[]{key, field.getName(), field.getType().getName(),  field.getDeclaringClass().getName()});
 
             //Use default value if specified
             String defaultValue = environmentVariable.defaultValue();
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                LOGGER.log(Level.WARNING, "Default value of environment variable ''{0}'' on field ''{1}'' of type ''{2}'' is empty",
-                        new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
+                LOGGER.log(Level.WARNING, "Default value of environment variable ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",
+                        new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
                 return null;
             }
         }

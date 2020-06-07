@@ -88,7 +88,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
 
     private void rejectIfNotFound(String jar) throws AnnotationProcessingException {
         if (manifestEntries.get(jar) == null) {
-            throw new AnnotationProcessingException(format("Unable to find jar '%s' in classpath: %s", jar, CLASSPATH));
+            throw new AnnotationProcessingException(format("Unable to find jar '%s' in classpath '%s'", jar, CLASSPATH));
         }
     }
 
@@ -104,7 +104,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
                 }
             }
         } catch (IOException e) {
-            throw new AnnotationProcessingException(format("Unable to load manifest file from jar: %s", jar), e);
+            throw new AnnotationProcessingException(format("Unable to load manifest file from jar '%s'", jar), e);
         } finally {
             closeJarStream(jarStream);
         }

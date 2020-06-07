@@ -79,10 +79,10 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
                 properties.load(inputStream);
                 mavenMap.put(pomFile, properties);
             } else {
-                throw new AnnotationProcessingException(format("Unable to load pom file from %s", pomFile));
+                throw new AnnotationProcessingException(format("Unable to load pom file from '%s'", pomFile));
             }
         } catch (IOException e) {
-            throw new AnnotationProcessingException(format("Unable to load pom file from %s", pomFile), e);
+            throw new AnnotationProcessingException(format("Unable to load pom file from '%s'", pomFile), e);
         }
     }
 

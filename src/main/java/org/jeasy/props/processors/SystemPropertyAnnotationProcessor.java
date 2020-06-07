@@ -50,16 +50,16 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' not found in system properties.",
-                    new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
+            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in system properties",
+                    new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
 
             //Use default value if specified
             String defaultValue = systemProperty.defaultValue();
             if (defaultValue != null && !defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                LOGGER.log(Level.WARNING, "Default value of system property ''{0}'' on field ''{1}'' of type ''{2}'' is empty",
-                        new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
+                LOGGER.log(Level.WARNING, "Default value of system property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",
+                        new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
                 return null;
             }
         }

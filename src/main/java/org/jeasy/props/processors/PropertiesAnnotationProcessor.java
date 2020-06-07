@@ -71,17 +71,17 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
                 properties.load(inputStream);
                 propertiesMap.put(source, properties);
             } else {
-                throw new AnnotationProcessingException(format("Unable to load properties from source %s", source));
+                throw new AnnotationProcessingException(format("Unable to load properties from source '%s'", source));
             }
         } catch (IOException e) {
-            throw new AnnotationProcessingException(format("Unable to load properties from source %s", source), e);
+            throw new AnnotationProcessingException(format("Unable to load properties from source '%s'", source), e);
         }
     }
 
     private void rejectIfFieldIsNotOfType(final Field field, final Class<?> type) throws AnnotationProcessingException {
         if (!field.getType().equals(type)) {
-            throw new AnnotationProcessingException(format("Annotation %s declared on field '%s' of type '%s' is incompatible with type '%s'",
-                    Properties.class.getName(), field.getName(), field.getDeclaringClass().getName(), field.getType()));
+            throw new AnnotationProcessingException(format("Annotation '%s' should be declared on fields of type '%s'",
+                    Properties.class.getName(), field.getType()));
         }
     }
 

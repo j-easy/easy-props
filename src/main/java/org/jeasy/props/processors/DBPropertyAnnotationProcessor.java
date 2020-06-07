@@ -92,7 +92,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             resultSet = statement.executeQuery(getSqlQuery(dbConfigurationProperties));
             return extractProperties(resultSet, dbConfigurationProperties);
         } catch (Exception e) {
-            throw new AnnotationProcessingException("Unable to get database properties from: " + configuration, e);
+            throw new AnnotationProcessingException("Unable to get database properties from '" + configuration + "'", e);
         } finally {
             try {
                 closeResources(connection, statement, resultSet);
@@ -150,7 +150,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
                 dbConfigurationMap.put(configuration, dbConfigurationProperties);
             }
         } catch (IOException e) {
-            throw new AnnotationProcessingException(format("Unable to get properties from %s", configuration), e);
+            throw new AnnotationProcessingException(format("Unable to get properties from '%s'", configuration), e);
         }
     }
 
