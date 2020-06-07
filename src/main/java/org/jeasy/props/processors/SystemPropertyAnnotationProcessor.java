@@ -50,8 +50,8 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' not found in system properties: {3}",
-                    new Object[]{key, field.getName(), field.getDeclaringClass().getName(), System.getProperties()});
+            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' not found in system properties.",
+                    new Object[]{key, field.getName(), field.getDeclaringClass().getName()});
 
             //Use default value if specified
             String defaultValue = systemProperty.defaultValue();
