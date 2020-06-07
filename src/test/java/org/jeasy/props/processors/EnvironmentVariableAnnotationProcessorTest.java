@@ -30,57 +30,36 @@ import org.junit.Test;
 
 public class EnvironmentVariableAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
 
-    private Bean bean;
-
     @Test
     public void testEnvironmentVariableInjection() {
         //given
-        bean = new Bean();
+        class Bean {
+            @EnvironmentVariable("JAVA_HOME")
+            private String javaHome;
+        }
+        Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getJavaHome()).isNotEmpty();
+        assertThat(bean.javaHome).isNotEmpty();
     }
 
     @Test
     public void testEnvironmentVariableDefaultValueInjection() {
         //given
-        bean = new Bean();
+        class Bean {
+            @EnvironmentVariable(value = "blah", defaultValue = "default")
+            private String value;
+        }
+        Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
         
         //then
-        assertThat(bean.getValue()).isEqualTo("default");
-    }
-
-    public static class Bean {
-
-        @EnvironmentVariable("JAVA_HOME")
-        private String javaHome;
-
-        @EnvironmentVariable(value = "blah", defaultValue = "default")
-        private String value;
-
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public String getJavaHome() {
-            return javaHome;
-        }
-
-        public void setJavaHome(String javaHome) {
-            this.javaHome = javaHome;
-        }
-
+        assertThat(bean.value).isEqualTo("default");
     }
 
 }

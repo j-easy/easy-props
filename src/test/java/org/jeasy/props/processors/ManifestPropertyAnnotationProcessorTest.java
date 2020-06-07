@@ -34,18 +34,26 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     @Test
     public void testManifestPropertyInjection() {
         //given
+        class Bean {
+            @ManifestProperty(jar = "junit-4.13.jar", header = "Created-By")
+            private String createdBy;
+        }
         Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getCreatedBy()).isEqualTo("Apache Maven 3.1.1");
+        assertThat(bean.createdBy).isEqualTo("Apache Maven 3.1.1");
     }
 
     @Test(expected = PropertyInjectionException.class)
     public void whenJarIsMissing_thenShouldThrowAnException() {
         //given
+        class BeanWithInvalidJar {
+            @ManifestProperty(jar = "blah.jar", header = "Created-By")
+            private String createdBy;
+        }
         BeanWithInvalidJar bean = new BeanWithInvalidJar();
 
         //when
@@ -57,47 +65,17 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     @Test
     public void whenHeaderIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
+        class BeanWithInvalidHeader {
+            @ManifestProperty(jar = "junit-4.13.jar", header = "blah")
+            private String createdBy;
+        }
         BeanWithInvalidHeader bean = new BeanWithInvalidHeader();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getCreatedBy()).isNull();
+        assertThat(bean.createdBy).isNull();
     }
 
-    public static class Bean {
-
-        @ManifestProperty(jar = "junit-4.13.jar", header = "Created-By")
-        private String createdBy;
-
-        public String getCreatedBy() { return createdBy; }
-        public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-    }
-
-    public static class BeanWithInvalidJar {
-
-        @ManifestProperty(jar = "blah.jar", header = "Created-By")
-        private String createdBy;
-
-        public String getCreatedBy() {
-            return createdBy;
-        }
-        public void setCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-        }
-    }
-
-    public static class BeanWithInvalidHeader {
-
-        @ManifestProperty(jar = "junit-4.13.jar", header = "blah")
-        private String createdBy;
-
-        public String getCreatedBy() {
-            return createdBy;
-        }
-        public void setCreatedBy(String createdBy) {
-            this.createdBy = createdBy;
-        }
-    }
 }

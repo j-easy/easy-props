@@ -46,18 +46,26 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     @Test
     public void testI18NPropertyInjection() {
         //given
+        class Bean {
+            @I18NProperty(bundle = "i18n/messages", key = "my.message")
+            private String message;
+        }
         Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getMessage()).isEqualTo(resourceBundle.getString("my.message"));
+        assertThat(bean.message).isEqualTo(resourceBundle.getString("my.message"));
     }
 
     @Test(expected = PropertyInjectionException.class)
     public void whenBundleIsMissing_thenShouldThrowAnException() {
         //given
+        class BeanWithInvalidBundle {
+            @I18NProperty(bundle = "blah", key = "my.message")
+            private String message;
+        }
         BeanWithInvalidBundle bean = new BeanWithInvalidBundle();
 
         //when
@@ -69,39 +77,16 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     @Test
     public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
+        class BeanWithInvalidKey {
+            @I18NProperty(bundle = "i18n/messages", key = "blah")
+            private String message;
+        }
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getMessage()).isNull();
-    }
-
-    public static class Bean {
-
-        @I18NProperty(bundle = "i18n/messages", key = "my.message")
-        private String message;
-
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
-    }
-
-    public static class BeanWithInvalidBundle {
-
-        @I18NProperty(bundle = "blah", key = "my.message")
-        private String message;
-
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
-    }
-
-    public static class BeanWithInvalidKey {
-
-        @I18NProperty(bundle = "i18n/messages", key = "blah")
-        private String message;
-
-        public String getMessage() { return message; }
-        public void setMessage(String message) { this.message = message; }
+        assertThat(bean.message).isNull();
     }
 }

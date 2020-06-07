@@ -49,18 +49,26 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     @Test
     public void testPropertyInjectionFromDatabase() {
         //given
+        class Bean {
+            @DBProperty(configuration = "database.properties", key = "name")
+            private String name;
+        }
         Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getName()).isEqualTo("Foo");
+        assertThat(bean.name).isEqualTo("Foo");
     }
 
     @Test(expected = PropertyInjectionException.class)
     public void whenConfigurationIsMissing_thenShouldThrowAnException() {
         //given
+        class BeanWithInvalidConfiguration {
+            @DBProperty(configuration = "blah.properties", key = "name")
+            private String name;
+        }
         BeanWithInvalidConfiguration bean = new BeanWithInvalidConfiguration();
 
         //when
@@ -72,45 +80,22 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
     @Test
     public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
+        class BeanWithInvalidKey {
+            @DBProperty(configuration = "database.properties", key = "blah")
+            private String name;
+        }
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getName()).isNull();
+        assertThat(bean.name).isNull();
     }
 
     @After
     public void shutdownEmbeddedDatabase() {
         embeddedDatabase.shutdown();
-    }
-
-    public static class Bean {
-
-        @DBProperty(configuration = "database.properties", key = "name")
-        private String name;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-    }
-
-    public static class BeanWithInvalidConfiguration {
-
-        @DBProperty(configuration = "blah.properties", key = "name")
-        private String name;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-    }
-
-    public static class BeanWithInvalidKey {
-
-        @DBProperty(configuration = "database.properties", key = "blah")
-        private String name;
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
     }
 
 }

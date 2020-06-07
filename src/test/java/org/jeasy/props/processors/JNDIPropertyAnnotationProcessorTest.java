@@ -47,25 +47,34 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
     @Test
     public void testJNDIPropertyInjection() {
         //given
+        class Bean {
+            @JNDIProperty("foo.property")
+            private String jndiProperty;
+        }
+
         Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getJndiProperty()).isEqualTo("jndi");
+        assertThat(bean.jndiProperty).isEqualTo("jndi");
     }
 
     @Test
     public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
+        class BeanWithInvalidKey {
+            @JNDIProperty("blah")
+            private String jndiProperty;
+        }
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getJndiProperty()).isNull();
+        assertThat(bean.jndiProperty).isNull();
     }
 
     @After
@@ -73,21 +82,4 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         context.close();
     }
 
-    public static class Bean {
-
-        @JNDIProperty("foo.property")
-        private String jndiProperty;
-
-        public String getJndiProperty() { return jndiProperty; }
-        public void setJndiProperty(String jndiProperty) { this.jndiProperty = jndiProperty; }
-    }
-
-    public static class BeanWithInvalidKey {
-
-        @JNDIProperty("blah")
-        private String jndiProperty;
-
-        public String getJndiProperty() { return jndiProperty; }
-        public void setJndiProperty(String jndiProperty) { this.jndiProperty = jndiProperty; }
-    }
 }

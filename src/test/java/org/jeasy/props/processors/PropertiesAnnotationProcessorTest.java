@@ -46,45 +46,35 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
     @Test
     public void testPropertiesInjection() {
         //given
+        class Bean {
+            @Properties("myProperties.properties")
+            private java.util.Properties myProperties;
+        }
         Bean bean = new Bean();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.getMyProperties()).containsKey("bean.name");
-        assertThat(bean.getMyProperties().getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
-        assertThat(bean.getMyProperties()).containsKey("empty.key");
-        assertThat(bean.getMyProperties().getProperty("empty.key")).isEqualTo(properties.getProperty("empty.key"));
+        assertThat(bean.myProperties).containsKey("bean.name");
+        assertThat(bean.myProperties.getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
+        assertThat(bean.myProperties).containsKey("empty.key");
+        assertThat(bean.myProperties.getProperty("empty.key")).isEqualTo(properties.getProperty("empty.key"));
     }
 
     @Test(expected = PropertyInjectionException.class)
     public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() {
         //given
+        class BeanWithInvalidProperties {
+            @Properties("blah.properties")
+            private java.util.Properties myProperties;
+        }
         BeanWithInvalidProperties bean = new BeanWithInvalidProperties();
 
         //when
         propertiesInjector.injectProperties(bean);
 
         //then should throw an exception
-    }
-
-    public static class Bean {
-
-        @Properties("myProperties.properties")
-        private java.util.Properties myProperties;
-
-        public java.util.Properties getMyProperties() { return myProperties; }
-        public void setMyProperties(java.util.Properties myProperties) { this.myProperties = myProperties; }
-    }
-
-    public static class BeanWithInvalidProperties {
-
-        @Properties("blah.properties")
-        private java.util.Properties myProperties;
-
-        public java.util.Properties getMyProperties() { return myProperties; }
-        public void setMyProperties(java.util.Properties myProperties) { this.myProperties = myProperties; }
     }
 
     private InputStream getResourceAsStream(final String resource) {
