@@ -82,9 +82,9 @@ public abstract class AbstractAnnotationProcessor<A extends Annotation> implemen
         if (resource.startsWith(FILE_RESOURCE_PREFIX)) {
             resourceAsStream = new FileInputStream(extractPath(resource));
         } else if (resource.startsWith(CLASSPATH_RESOURCE_PREFIX)) {
-            resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(extractPath(resource));
+            resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(extractPath(resource));
         } else { // by default, it is a classpath resource
-            resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(resource);
+            resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
         }
         return resourceAsStream;
     }
