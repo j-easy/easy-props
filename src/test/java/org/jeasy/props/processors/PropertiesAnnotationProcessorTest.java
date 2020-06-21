@@ -25,23 +25,11 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.Properties;
 import org.jeasy.props.api.PropertyInjectionException;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
-
-    private java.util.Properties properties;
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        properties = new java.util.Properties();
-        properties.load(getResourceAsStream("myProperties.properties"));
-    }
 
     @Test
     public void testPropertiesInjection() {
@@ -57,9 +45,28 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
 
         //then
         assertThat(bean.myProperties).containsKey("bean.name");
-        assertThat(bean.myProperties.getProperty("bean.name")).isEqualTo(properties.getProperty("bean.name"));
+        assertThat(bean.myProperties.getProperty("bean.name")).isEqualTo("Foo");
         assertThat(bean.myProperties).containsKey("empty.key");
-        assertThat(bean.myProperties.getProperty("empty.key")).isEqualTo(properties.getProperty("empty.key"));
+        assertThat(bean.myProperties.getProperty("empty.key")).isEmpty();
+    }
+
+    @Test
+    public void testPropertiesInjectionWithDefaultValue() {
+        //given
+        class Bean {
+            @Properties(value = "missingProperties.properties", defaultValue = "myDefaultProperties.properties")
+            private java.util.Properties myProperties;
+        }
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.myProperties).containsKey("bean.name");
+        assertThat(bean.myProperties.getProperty("bean.name")).isEqualTo("Foo");
+        assertThat(bean.myProperties).containsKey("empty.key");
+        assertThat(bean.myProperties.getProperty("empty.key")).isEmpty();
     }
 
     @Test(expected = PropertyInjectionException.class)
@@ -75,10 +82,6 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
         propertiesInjector.injectProperties(bean);
 
         //then should throw an exception
-    }
-
-    private InputStream getResourceAsStream(final String resource) {
-        return this.getClass().getClassLoader().getResourceAsStream(resource);
     }
 
 }

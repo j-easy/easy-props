@@ -78,4 +78,20 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         assertThat(bean.createdBy).isNull();
     }
 
+    @Test
+    public void whenHeaderIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
+        //given
+        class BeanWithInvalidHeader {
+            @ManifestProperty(jar = "junit-4.13.jar", header = "blah", defaultValue = "default")
+            private String createdBy;
+        }
+        BeanWithInvalidHeader bean = new BeanWithInvalidHeader();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.createdBy).isEqualTo("default");
+    }
+
 }

@@ -52,24 +52,35 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
         rejectIfFieldIsNotOfType(field, java.util.Properties.class);
 
         String source = propertiesAnnotation.value().trim();
+        String defaultSource = propertiesAnnotation.defaultValue().trim();
         rejectIfEmpty(source, missingAttributeValue("source", Properties.class.getName(), field));
 
-        //check if the source file is not already loaded
-        if (!propertiesMap.containsKey(source)) {
-            loadProperties(source);
+        if (propertiesMap.containsKey(source)) {
+            return propertiesMap.get(source);
         }
-
-        return propertiesMap.get(source);
-
+        
+        try {
+            java.util.Properties properties = loadPropertiesFrom(source);
+            propertiesMap.put(source, properties);
+            return propertiesMap.get(source);
+        } catch (Exception e) {
+            if (!defaultSource.isEmpty()) {
+                java.util.Properties properties = loadPropertiesFrom(defaultSource);
+                propertiesMap.put(defaultSource, properties);
+                return propertiesMap.get(defaultSource);
+            } else {
+                throw e;
+            }
+        }
     }
 
-    private void loadProperties(final String source) throws AnnotationProcessingException {
+    private java.util.Properties loadPropertiesFrom(final String source) throws AnnotationProcessingException {
         java.util.Properties properties = new java.util.Properties();
         try {
             InputStream inputStream = getResourceAsStream(source);
             if (inputStream != null) {
                 properties.load(inputStream);
-                propertiesMap.put(source, properties);
+                return properties;
             } else {
                 throw new AnnotationProcessingException(format("Unable to load properties from source '%s'", source));
             }

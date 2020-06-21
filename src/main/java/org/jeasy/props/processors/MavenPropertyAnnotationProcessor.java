@@ -32,6 +32,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -41,6 +43,8 @@ import static java.lang.String.format;
  * @author lhottois (natlantisprog@gmail.com)
  */
 public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor<MavenProperty> {
+
+    private static final Logger LOGGER = Logger.getLogger(MavenPropertyAnnotationProcessor.class.getName());
 
     /**
      * A map holding pom.properties file with corresponding Properties object serving as a cache.
@@ -54,6 +58,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
         String source = mavenAnnotation.source().trim();
         String groupId = mavenAnnotation.groupId().trim();
         String artifactId = mavenAnnotation.artifactId().trim();
+        String defaultValue = mavenAnnotation.defaultValue().trim();
 
         //check attributes
         String annotationName = MavenProperty.class.getName();
@@ -67,7 +72,21 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
             loadMavenProperties(pomFile);
         }
 
-        return mavenMap.get(pomFile).getProperty(key);
+        String value = mavenMap.get(pomFile).getProperty(key);
+        if (value == null) {
+            LOGGER.log(Level.WARNING, "Maven property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in pom file ''{4}''",
+                    new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), pomFile});
+            if (!defaultValue.isEmpty()) {
+                value = defaultValue;
+            } else {
+                return null;
+            }
+        }
+        if (value.isEmpty()) {
+            LOGGER.log(Level.WARNING, "Maven property ''{0}'' is empty in pom file ''{1}''", new Object[]{key, pomFile});
+            return null;
+        }
+        return value;
 
     }
 

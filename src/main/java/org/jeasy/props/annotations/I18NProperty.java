@@ -52,6 +52,13 @@ public @interface I18NProperty {
     String key();
 
     /**
+     * The default value to set in case the key does not exist or cannot be loaded.
+     *
+     * @return the default value to set
+     */
+    String defaultValue() default "";
+
+    /**
      * The locale language to use.
      *
      * @return The locale language to use

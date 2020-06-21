@@ -57,6 +57,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
 
         String configuration = dbPropertyAnnotation.configuration().trim();
         String key = dbPropertyAnnotation.key().trim();
+        String defaultValue = dbPropertyAnnotation.defaultValue().trim();
 
         //check attributes
         String annotationName = DBProperty.class.getName();
@@ -75,6 +76,9 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         if (value == null) {
             LOGGER.log(Level.WARNING, "Key ''{0}'' not found in database configured with properties from file ''{1}''",
                     new Object[]{key, configuration});
+            if (!defaultValue.isEmpty()) {
+                value = defaultValue;
+            }
         }
 
         return value;

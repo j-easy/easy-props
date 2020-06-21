@@ -50,6 +50,44 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         assertThat(bean.beanAge).isEqualTo(30);
     }
 
+    @Test
+    public void testPropertyInjectionOfMissingKeyWithDefaultValue() {
+        //given
+        class Bean {
+            @Property(source = "classpath:myProperties.properties", key = "missing.key", defaultValue = "default")
+            private String beanName;
+            @Property(source = "file:src/test/resources/fileSystemProperties.properties", key = "missing.key", defaultValue = "10")
+            private int beanAge;
+        }
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.beanName).isEqualTo("default");
+        assertThat(bean.beanAge).isEqualTo(10);
+    }
+
+    @Test
+    public void testPropertyInjectionOfMissingKeyWithoutDefaultValue() {
+        //given
+        class Bean {
+            @Property(source = "classpath:myProperties.properties", key = "missing.key")
+            private String beanName;
+            @Property(source = "file:src/test/resources/fileSystemProperties.properties", key = "missing.key")
+            private int beanAge;
+        }
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.beanName).isNull();
+        assertThat(bean.beanAge).isEqualTo(0);
+    }
+
     @Test(expected = PropertyInjectionException.class)
     public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() {
         //given

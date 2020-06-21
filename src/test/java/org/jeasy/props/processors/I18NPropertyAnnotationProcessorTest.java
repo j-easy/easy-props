@@ -89,4 +89,20 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         //then
         assertThat(bean.message).isNull();
     }
+
+    @Test
+    public void whenKeyIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
+        //given
+        class BeanWithInvalidKey {
+            @I18NProperty(bundle = "i18n/messages", key = "blah", defaultValue = "default")
+            private String message;
+        }
+        BeanWithInvalidKey bean = new BeanWithInvalidKey();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.message).isEqualTo("default");
+    }
 }

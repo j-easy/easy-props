@@ -77,6 +77,22 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         assertThat(bean.jndiProperty).isNull();
     }
 
+    @Test
+    public void whenKeyIsMissingWithDefault_thenShouldInjectDefaultValue() {
+        //given
+        class BeanWithInvalidKey {
+            @JNDIProperty(value = "blah", defaultValue = "default")
+            private String jndiProperty;
+        }
+        BeanWithInvalidKey bean = new BeanWithInvalidKey();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.jndiProperty).isEqualTo("default");
+    }
+
     @After
     public void tearDown() throws Exception {
         context.close();

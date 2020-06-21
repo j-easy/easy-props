@@ -61,6 +61,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         }
 
         String name = jndiPropertyAnnotation.value().trim();
+        String defaultValue = jndiPropertyAnnotation.defaultValue().trim();
 
         //check attributes
         rejectIfEmpty(name, missingAttributeValue("name", JNDIProperty.class.getName(), field));
@@ -71,6 +72,9 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         //check object obtained from JNDI context
         if (value == null) {
             LOGGER.log(Level.WARNING, "Object ''{0}'' not found in JNDI context", name);
+            if (!defaultValue.isEmpty()) {
+                value = defaultValue;
+            }
         }
 
         return value;

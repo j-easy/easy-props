@@ -45,4 +45,11 @@ public @interface Properties {
      */
     String value();
 
+    /**
+     * The default properties file to load in case the specified properties file does not exist or cannot be loaded.
+     *
+     * @return the default properties file to load
+     */
+    String defaultValue() default "";
+
 }

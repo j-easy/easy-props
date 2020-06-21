@@ -44,4 +44,11 @@ public @interface JNDIProperty {
      */
     String value();
 
+    /**
+     * The default value to set in case the key does not exist or cannot be loaded.
+     *
+     * @return the default value to set
+     */
+    String defaultValue() default "";
+
 }

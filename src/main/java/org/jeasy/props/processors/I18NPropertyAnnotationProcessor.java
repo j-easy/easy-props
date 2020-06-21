@@ -55,6 +55,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String language = property.language().trim();
         String country = property.country().trim();
         String variant = property.variant().trim();
+        String defaultValue = property.defaultValue().trim();
 
         //check attributes
         String annotationName = I18NProperty.class.getName();
@@ -68,16 +69,18 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
             loadResourceBundle(bundle, locale);
         }
 
-        String value;
+        String value = null;
         try {
             value = resourceBundlesMap.get(bundle).getString(key);
+            if (value.isEmpty()) {
+                LOGGER.log(Level.WARNING, "Key ''{0}'' is empty in resource bundle ''{1}''", new Object[]{key, bundle});
+                return null;
+            }
         } catch (MissingResourceException e) {
             LOGGER.log(Level.WARNING, format("Key '%s' not found in resource bundle '%s'", key, bundle), e);
-            return null;
-        }
-        if (value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Key ''{0}'' is empty in resource bundle ''{1}''", new Object[]{key, bundle});
-            return null;
+            if (!defaultValue.isEmpty()) {
+                value = defaultValue;
+            }
         }
 
         return value;

@@ -93,6 +93,22 @@ public class DBPropertyAnnotationProcessorTest extends AbstractAnnotationProcess
         assertThat(bean.name).isNull();
     }
 
+    @Test
+    public void whenKeyIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
+        //given
+        class BeanWithInvalidKey {
+            @DBProperty(configuration = "database.properties", key = "blah", defaultValue = "default")
+            private String name;
+        }
+        BeanWithInvalidKey bean = new BeanWithInvalidKey();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.name).isEqualTo("default");
+    }
+
     @After
     public void shutdownEmbeddedDatabase() {
         embeddedDatabase.shutdown();

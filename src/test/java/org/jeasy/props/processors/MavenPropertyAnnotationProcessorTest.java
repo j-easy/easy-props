@@ -78,6 +78,22 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         assertThat(bean.pomVersion).isNull();
     }
 
+    @Test
+    public void whenKeyIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
+        //given
+        class BeanWithInvalidKey {
+            @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils", defaultValue = "default")
+            private String pomVersion;
+        }
+        BeanWithInvalidKey bean = new BeanWithInvalidKey();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.pomVersion).isEqualTo("default");
+    }
+
     @Test(expected = PropertyInjectionException.class)
     public void whenGroupIdIsMissing_thenShouldThrowAnException() {
         //given

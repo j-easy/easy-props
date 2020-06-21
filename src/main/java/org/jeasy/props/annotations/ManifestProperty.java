@@ -51,4 +51,11 @@ public @interface ManifestProperty {
      */
     String header();
 
+    /**
+     * The default value to set in case the header does not exist or cannot be loaded.
+     *
+     * @return the default value to set
+     */
+    String defaultValue() default "";
+
 }
