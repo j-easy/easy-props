@@ -27,7 +27,11 @@ import org.jeasy.props.annotations.I18NProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

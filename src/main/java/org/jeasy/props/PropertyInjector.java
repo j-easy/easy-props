@@ -23,12 +23,28 @@
  */
 package org.jeasy.props;
 
-import org.jeasy.props.annotations.*;
+import org.jeasy.props.annotations.DBProperty;
+import org.jeasy.props.annotations.EnvironmentVariable;
+import org.jeasy.props.annotations.I18NProperty;
+import org.jeasy.props.annotations.JNDIProperty;
+import org.jeasy.props.annotations.ManifestProperty;
+import org.jeasy.props.annotations.MavenProperty;
+import org.jeasy.props.annotations.Properties;
+import org.jeasy.props.annotations.Property;
+import org.jeasy.props.annotations.SystemProperty;
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertyInjectionException;
 import org.jeasy.props.converters.TypeConverter;
-import org.jeasy.props.processors.*;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.jeasy.props.processors.DBPropertyAnnotationProcessor;
+import org.jeasy.props.processors.EnvironmentVariableAnnotationProcessor;
+import org.jeasy.props.processors.I18NPropertyAnnotationProcessor;
+import org.jeasy.props.processors.JNDIPropertyAnnotationProcessor;
+import org.jeasy.props.processors.ManifestPropertyAnnotationProcessor;
+import org.jeasy.props.processors.MavenPropertyAnnotationProcessor;
+import org.jeasy.props.processors.PropertiesAnnotationProcessor;
+import org.jeasy.props.processors.PropertyAnnotationProcessor;
+import org.jeasy.props.processors.SystemPropertyAnnotationProcessor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
