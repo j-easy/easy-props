@@ -56,6 +56,7 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         String country = property.country().trim();
         String variant = property.variant().trim();
         String defaultValue = property.defaultValue().trim();
+        boolean failFast = property.failFast();
 
         //check attributes
         String annotationName = I18NProperty.class.getName();
@@ -77,7 +78,11 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
                 return null;
             }
         } catch (MissingResourceException e) {
-            LOGGER.log(Level.WARNING, format("Key '%s' not found in resource bundle '%s'", key, bundle), e);
+            String message = format("Key '%s' not found in resource bundle '%s'", key, bundle);
+            LOGGER.log(Level.WARNING, message, e);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue;
             }

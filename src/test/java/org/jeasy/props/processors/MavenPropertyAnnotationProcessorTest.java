@@ -95,6 +95,20 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     }
 
     @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils", failFast = true)
+            private String absentValue;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+    }
+
+    @Test(expected = PropertyInjectionException.class)
     public void whenGroupIdIsMissing_thenShouldThrowAnException() {
         //given
         class BeanWithInvalidGroupId {

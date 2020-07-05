@@ -43,6 +43,8 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
     public Object processAnnotation(final SystemProperty systemProperty, final Field field) throws AnnotationProcessingException {
 
         String key = systemProperty.value().trim();
+        String defaultValue = systemProperty.defaultValue();
+        boolean failFast = systemProperty.failFast();
 
         //check attribute
         rejectIfEmpty(key, missingAttributeValue("value", SystemProperty.class.getName(), field));
@@ -50,12 +52,13 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         //check system property
         String value = System.getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "System property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in system properties",
-                    new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
-
-            //Use default value if specified
-            String defaultValue = systemProperty.defaultValue();
-            if (defaultValue != null && !defaultValue.isEmpty()) {
+            String message = String.format("System property '%s' on field '%s' of type '%s' in class '%s' not found in system properties",
+                    key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
+            LOGGER.log(Level.WARNING, message);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
+            if (!defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
                 LOGGER.log(Level.WARNING, "Default value of system property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",

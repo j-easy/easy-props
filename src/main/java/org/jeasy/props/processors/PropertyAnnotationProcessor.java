@@ -57,6 +57,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
         String source = property.source().trim();
         String key = property.key().trim();
         String defaultValue = property.defaultValue().trim();
+        boolean failFast = property.failFast();
 
         //check attributes
         String annotationName = Property.class.getName();
@@ -71,8 +72,12 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
         //convert key value to the right type and set it to the field
         String value = propertiesMap.get(source).getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in properties file ''{4}''",
-                    new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), source});
+            String message = String.format("Property '%s' on field '%s' of type '%s' in class '%s' not found in properties file '%s'",
+                    key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), source);
+            LOGGER.log(Level.WARNING, message);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue;
             } else {

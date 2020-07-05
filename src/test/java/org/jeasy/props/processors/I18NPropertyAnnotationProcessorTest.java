@@ -105,4 +105,19 @@ public class I18NPropertyAnnotationProcessorTest extends AbstractAnnotationProce
         //then
         assertThat(bean.message).isEqualTo("default");
     }
+
+    @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @I18NProperty(bundle = "i18n/messages", key = "blah", failFast = true)
+            private String absentValue;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+    }
+
 }

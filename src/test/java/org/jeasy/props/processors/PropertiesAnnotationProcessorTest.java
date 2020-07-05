@@ -70,6 +70,20 @@ public class PropertiesAnnotationProcessorTest extends AbstractAnnotationProcess
     }
 
     @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @Properties(value = "missingProperties.properties", failFast = true)
+            private java.util.Properties myProperties;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+    }
+
+    @Test(expected = PropertyInjectionException.class)
     public void whenPropertiesFileIsInvalid_thenShouldThrowAnException() {
         //given
         class BeanWithInvalidProperties {

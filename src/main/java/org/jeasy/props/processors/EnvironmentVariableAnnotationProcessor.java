@@ -44,6 +44,8 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
     public Object processAnnotation(final EnvironmentVariable environmentVariable, final Field field) throws AnnotationProcessingException {
 
         String key = environmentVariable.value().trim();
+        String defaultValue = environmentVariable.defaultValue();
+        boolean failFast = environmentVariable.failFast();
 
         //check attribute
         rejectIfEmpty(key, missingAttributeValue("value", EnvironmentVariable.class.getName(), field));
@@ -51,12 +53,13 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
         //check environment variable
         String value = System.getenv(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Environment variable ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in environment variables",
-                    new Object[]{key, field.getName(), field.getType().getName(),  field.getDeclaringClass().getName()});
-
-            //Use default value if specified
-            String defaultValue = environmentVariable.defaultValue();
-            if (defaultValue != null && !defaultValue.isEmpty()) {
+            String message = String.format("Environment variable '%s' on field '%s' of type '%s' in class '%s' not found in environment variables",
+                    key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
+            LOGGER.log(Level.WARNING, message);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
+            if (!defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
                 LOGGER.log(Level.WARNING, "Default value of environment variable ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",

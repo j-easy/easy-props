@@ -69,6 +69,20 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         assertThat(bean.beanAge).isEqualTo(10);
     }
 
+    @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @Property(source = "classpath:myProperties.properties", key = "missing.key", failFast = true)
+            private String beanName;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+    }
+
     @Test
     public void testPropertyInjectionOfMissingKeyWithoutDefaultValue() {
         //given

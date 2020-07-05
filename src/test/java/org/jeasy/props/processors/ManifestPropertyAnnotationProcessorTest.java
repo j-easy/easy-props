@@ -94,4 +94,18 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
         assertThat(bean.createdBy).isEqualTo("default");
     }
 
+    @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @ManifestProperty(jar = "junit-4.13.jar", header = "blah", failFast = true)
+            private String absentValue;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+    }
+
 }

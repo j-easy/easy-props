@@ -51,4 +51,11 @@ public @interface SystemProperty {
      */
     String defaultValue() default "";
 
+    /**
+     * Flag to fail the configuration process if the system property is absent
+     *
+     * @return true if the configuration process should fail fast if the system property is absent
+     */
+    boolean failFast() default false;
+
 }

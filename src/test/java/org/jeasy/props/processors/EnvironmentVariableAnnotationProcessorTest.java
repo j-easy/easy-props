@@ -26,6 +26,7 @@ package org.jeasy.props.processors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.jeasy.props.annotations.EnvironmentVariable;
+import org.jeasy.props.api.PropertyInjectionException;
 import org.junit.Test;
 
 public class EnvironmentVariableAnnotationProcessorTest extends AbstractAnnotationProcessorTest {
@@ -60,6 +61,20 @@ public class EnvironmentVariableAnnotationProcessorTest extends AbstractAnnotati
         
         //then
         assertThat(bean.value).isEqualTo("default");
+    }
+
+    @Test(expected = PropertyInjectionException.class)
+    public void testAbsentEnvironmentVariableInjection() {
+        class Bean {
+            @EnvironmentVariable(value = "absent", failFast = true)
+            private String absentValue;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
     }
 
 }

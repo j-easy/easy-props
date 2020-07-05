@@ -58,4 +58,11 @@ public @interface ManifestProperty {
      */
     String defaultValue() default "";
 
+    /**
+     * Flag to fail the configuration process if the header is absent
+     *
+     * @return true if the configuration process should fail fast if the header is absent
+     */
+    boolean failFast() default false;
+
 }

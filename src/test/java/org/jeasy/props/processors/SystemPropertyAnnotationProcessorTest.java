@@ -24,6 +24,7 @@
 package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.SystemProperty;
+import org.jeasy.props.api.PropertyInjectionException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,6 +67,19 @@ public class SystemPropertyAnnotationProcessorTest extends AbstractAnnotationPro
 
         //then
         assertThat(bean.value).isEqualTo("default");
+    }
+
+    @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @SystemProperty(value = "blah", failFast = true)
+            private String value;
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
     }
 
     @Test

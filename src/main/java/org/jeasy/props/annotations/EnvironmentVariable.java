@@ -51,4 +51,11 @@ public @interface EnvironmentVariable {
      */
     String defaultValue() default "";
 
+    /**
+     * Flag to fail the configuration process if the environment variable is absent
+     * 
+     * @return true if the configuration process should fail fast if the environment variable is absent
+     */
+    boolean failFast() default false;
+
 }

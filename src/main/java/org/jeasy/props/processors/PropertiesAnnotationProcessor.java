@@ -53,6 +53,7 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
 
         String source = propertiesAnnotation.value().trim();
         String defaultSource = propertiesAnnotation.defaultValue().trim();
+        boolean failFast = propertiesAnnotation.failFast();
         rejectIfEmpty(source, missingAttributeValue("source", Properties.class.getName(), field));
 
         if (propertiesMap.containsKey(source)) {
@@ -64,6 +65,9 @@ public class PropertiesAnnotationProcessor extends AbstractAnnotationProcessor<P
             propertiesMap.put(source, properties);
             return propertiesMap.get(source);
         } catch (Exception e) {
+            if (failFast) {
+                throw e;
+            }
             if (!defaultSource.isEmpty()) {
                 java.util.Properties properties = loadPropertiesFrom(defaultSource);
                 propertiesMap.put(defaultSource, properties);

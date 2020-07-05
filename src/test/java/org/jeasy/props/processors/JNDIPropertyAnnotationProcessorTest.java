@@ -24,6 +24,7 @@
 package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.JNDIProperty;
+import org.jeasy.props.api.PropertyInjectionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,6 +92,20 @@ public class JNDIPropertyAnnotationProcessorTest extends AbstractAnnotationProce
 
         //then
         assertThat(bean.jndiProperty).isEqualTo("default");
+    }
+
+    @Test(expected = PropertyInjectionException.class)
+    public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
+        class Bean {
+            @JNDIProperty(value = "blah", failFast = true)
+            private String absentValue;
+
+        }
+        //given
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
     }
 
     @After

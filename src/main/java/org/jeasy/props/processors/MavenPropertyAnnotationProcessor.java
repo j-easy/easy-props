@@ -59,6 +59,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
         String groupId = mavenAnnotation.groupId().trim();
         String artifactId = mavenAnnotation.artifactId().trim();
         String defaultValue = mavenAnnotation.defaultValue().trim();
+        boolean failFast = mavenAnnotation.failFast();
 
         //check attributes
         String annotationName = MavenProperty.class.getName();
@@ -74,8 +75,12 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
 
         String value = mavenMap.get(pomFile).getProperty(key);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Maven property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' not found in pom file ''{4}''",
-                    new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), pomFile});
+            String message = String.format("Maven property '%s' on field '%s' of type '%s' in class '%s' not found in pom file '%s'",
+                    key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), pomFile);
+            LOGGER.log(Level.WARNING, message);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue;
             } else {

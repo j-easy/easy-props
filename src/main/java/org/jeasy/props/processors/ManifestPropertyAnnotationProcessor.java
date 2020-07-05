@@ -60,6 +60,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
         String jar = manifestPropertyAnnotation.jar().trim();
         String header = manifestPropertyAnnotation.header().trim();
         String defaultValue = manifestPropertyAnnotation.defaultValue().trim();
+        boolean failFast = manifestPropertyAnnotation.failFast();
 
         //check attributes
         String annotationName = ManifestProperty.class.getName();
@@ -75,7 +76,11 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
 
         String value = manifestEntries.get(jar).getMainAttributes().getValue(header);
         if (value == null) {
-            LOGGER.log(Level.WARNING, "Header ''{0}'' not found in manifest of jar ''{1}''", new Object[]{header, jar});
+            String message = String.format("Header '%s' not found in manifest of jar '%s'", header, jar);
+            LOGGER.log(Level.WARNING, message);
+            if (failFast) {
+                throw new AnnotationProcessingException(message);
+            }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue;
             } else {

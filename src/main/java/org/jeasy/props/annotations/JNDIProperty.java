@@ -51,4 +51,11 @@ public @interface JNDIProperty {
      */
     String defaultValue() default "";
 
+    /**
+     * Flag to fail the configuration process if the key is absent
+     *
+     * @return true if the configuration process should fail fast if the key is absent
+     */
+    boolean failFast() default false;
+
 }

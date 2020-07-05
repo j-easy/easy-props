@@ -52,4 +52,11 @@ public @interface Properties {
      */
     String defaultValue() default "";
 
+    /**
+     * Flag to fail the configuration process if the properties file is absent or cannot be loaded.
+     *
+     * @return true if the configuration process should fail fast if the properties file is absent or cannot be loaded
+     */
+    boolean failFast() default false;
+
 }
