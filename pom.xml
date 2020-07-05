@@ -20,13 +20,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <junit.version>4.13</junit.version>
-        <assertj.version>3.15.0</assertj.version>
+        <assertj.version>3.16.1</assertj.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <spring-jdbc.version>5.2.4.RELEASE</spring-jdbc.version>
-        <hsqldb.version>2.5.0</hsqldb.version>
+        <spring-jdbc.version>5.2.7.RELEASE</spring-jdbc.version>
+        <hsqldb.version>2.5.1</hsqldb.version>
         <simple-jndi.version>0.11.4.1</simple-jndi.version>
 
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-cobertura-plugin.version>2.7</maven-cobertura-plugin.version>
