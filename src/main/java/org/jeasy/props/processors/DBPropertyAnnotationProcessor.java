@@ -49,6 +49,15 @@ import static java.lang.String.format;
  */
 public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<DBProperty> {
 
+    public static final String DB_DRIVER = "db.driver";
+    public static final String DB_URL = "db.url";
+    public static final String DB_USER = "db.user";
+    public static final String DB_PASSWORD = "db.password";
+    public static final String DB_SCHEMA = "db.schema";
+    public static final String DB_TABLE = "db.table";
+    public static final String DB_TABLE_KEY_COLUMN = "db.table.keyColumn";
+    public static final String DB_TABLE_VALUE_COLUMN = "db.table.valueColumn";
+
     private static final Logger LOGGER = Logger.getLogger(DBPropertyAnnotationProcessor.class.getName());
 
     /**
@@ -99,7 +108,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         ResultSet resultSet = null;
         try {
             Properties dbConfigurationProperties = dbConfigurationMap.get(configuration);
-            Class.forName(dbConfigurationProperties.getProperty("db.driver"));
+            Class.forName(dbConfigurationProperties.getProperty(DB_DRIVER));
             connection = getConnection(dbConfigurationProperties);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(getSqlQuery(dbConfigurationProperties));
@@ -117,8 +126,8 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
 
     private Properties extractProperties(final ResultSet resultSet, final Properties dbConfigurationProperties) throws SQLException {
         Properties dbProperties = new Properties();
-        String keyColumn = dbConfigurationProperties.getProperty("db.table.keyColumn");
-        String valueColumn = dbConfigurationProperties.getProperty("db.table.valueColumn");
+        String keyColumn = dbConfigurationProperties.getProperty(DB_TABLE_KEY_COLUMN);
+        String valueColumn = dbConfigurationProperties.getProperty(DB_TABLE_VALUE_COLUMN);
         while (resultSet.next()) {
             String dbKey = resultSet.getString(keyColumn);
             String dbValue = resultSet.getString(valueColumn);
@@ -128,17 +137,17 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
     }
 
     private Connection getConnection(final Properties dbConfigurationProperties) throws SQLException {
-        String url = dbConfigurationProperties.getProperty("db.url");
-        String user = dbConfigurationProperties.getProperty("db.user");
-        String password = dbConfigurationProperties.getProperty("db.password");
+        String url = dbConfigurationProperties.getProperty(DB_URL);
+        String user = dbConfigurationProperties.getProperty(DB_USER);
+        String password = dbConfigurationProperties.getProperty(DB_PASSWORD);
         return DriverManager.getConnection(url, user, password);
     }
 
     private String getSqlQuery(final Properties dbConfigurationProperties) {
-        String schema = dbConfigurationProperties.getProperty("db.schema");
-        String table = dbConfigurationProperties.getProperty("db.table");
-        String keyColumn = dbConfigurationProperties.getProperty("db.table.keyColumn");
-        String valueColumn = dbConfigurationProperties.getProperty("db.table.valueColumn");
+        String schema = dbConfigurationProperties.getProperty(DB_SCHEMA);
+        String table = dbConfigurationProperties.getProperty(DB_TABLE);
+        String keyColumn = dbConfigurationProperties.getProperty(DB_TABLE_KEY_COLUMN);
+        String valueColumn = dbConfigurationProperties.getProperty(DB_TABLE_VALUE_COLUMN);
         return format("SELECT %s, %s FROM %s.%s", keyColumn, valueColumn, schema, table);
     }
 
