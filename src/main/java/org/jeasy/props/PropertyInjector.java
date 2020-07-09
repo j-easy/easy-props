@@ -48,8 +48,13 @@ import org.jeasy.props.processors.SystemPropertyAnnotationProcessor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -61,6 +66,11 @@ import static java.lang.String.format;
 @SuppressWarnings("unchecked,rawtypes")
 class PropertyInjector {
 
+    private static final Logger LOGGER = Logger.getLogger(PropertyInjector.class.getName());
+    private static final String WARNING = "Unable to inject value from annotation '%s' on field '%s' of type '%s' in class '%s'";
+    private static final List<Class<? extends Annotation>> builtinAnnotations = Arrays.asList(
+            SystemProperty.class, Property.class, I18NProperty.class, Properties.class, DBProperty.class,
+            JNDIProperty.class, MavenProperty.class, ManifestProperty.class, EnvironmentVariable.class);
     private final Map<Class<? extends Annotation>, AnnotationProcessor> annotationProcessors;
     private final Map<Class<?>, TypeConverter<?, ?>> typeConverters;
 
@@ -82,26 +92,70 @@ class PropertyInjector {
     }
 
     void injectProperty(final Field field, final Object object) throws PropertyInjectionException {
-        //Introspect the field for each registered annotation, and delegate its processing to the corresponding annotation processor
-        for (Class<? extends Annotation> annotationType : annotationProcessors.keySet()) {
-            AnnotationProcessor annotationProcessor = annotationProcessors.get(annotationType);
-            if (field.isAnnotationPresent(annotationType) && annotationProcessor != null) {
-                Annotation annotation = field.getAnnotation(annotationType);
-                doInjectProperty(field, object, annotation, annotationProcessor);
+        List<? extends Annotation> sortedAnnotations = sortAnnotationsByOrder(field);
+        for (Annotation annotation : sortedAnnotations) {
+            AnnotationProcessor annotationProcessor = annotationProcessors.get(annotation.annotationType());
+            Object value = getValue(field, object, annotation, annotationProcessor);
+            if (value != null) {
+                doInjectProperty(value, field, object);
+                break;
+            } else {
+                LOGGER.log(Level.FINE, String.format(WARNING, annotation, field.getName(), field.getType().getName(), object.getClass().getName()));
             }
         }
     }
 
-    private <A extends Annotation> void doInjectProperty(Field field, Object object, A annotation, AnnotationProcessor<A> annotationProcessor) throws PropertyInjectionException {
-        try {
-            Object value = annotationProcessor.processAnnotation(annotation, field);
-            if (value != null) {
-                Object typedValue = convert(value, field.getType());
-                setProperty(typedValue, field, object);
+    private List<? extends Annotation> sortAnnotationsByOrder(Field field) {
+        class AnnotationWithOrder implements Comparable<AnnotationWithOrder> {
+            final Annotation annotation;
+            final int order;
+
+            AnnotationWithOrder(Annotation annotation, int order) {
+                this.annotation = annotation;
+                this.order = order;
             }
+
+            @Override
+            public int compareTo(AnnotationWithOrder o) {
+                return Integer.compare(this.order, o.order);
+            }
+        }
+        return Arrays.stream(field.getDeclaredAnnotations())
+                .filter(annotation -> !builtinAnnotations.contains(annotation.getClass()))
+                .map(annotation -> new AnnotationWithOrder(annotation, getOrder(annotation)))
+                .sorted()
+                .map(annotationWithOrder -> annotationWithOrder.annotation)
+                .collect(Collectors.toList());
+    }
+
+    private int getOrder(Annotation annotation) {
+        // FIXME No inheritance in Java annotations.. is there a better way to do that?
+        if (annotation instanceof Property) return ((Property) annotation).order();
+        if (annotation instanceof Properties) return ((Properties) annotation).order();
+        if (annotation instanceof SystemProperty) return ((SystemProperty) annotation).order();
+        if (annotation instanceof EnvironmentVariable) return ((EnvironmentVariable) annotation).order();
+        if (annotation instanceof MavenProperty) return ((MavenProperty) annotation).order();
+        if (annotation instanceof I18NProperty) return ((I18NProperty) annotation).order();
+        if (annotation instanceof ManifestProperty) return ((ManifestProperty) annotation).order();
+        if (annotation instanceof DBProperty) return ((DBProperty) annotation).order();
+        if (annotation instanceof JNDIProperty) return ((JNDIProperty) annotation).order();
+        return 0;
+    }
+
+    private <A extends Annotation> Object getValue(Field field, Object object, A annotation, AnnotationProcessor<A> annotationProcessor) throws PropertyInjectionException {
+        try {
+            return annotationProcessor.processAnnotation(annotation, field);
         } catch (Exception e) {
-            throw new PropertyInjectionException(format("Unable to inject value from annotation '%s' in field '%s' of type '%s' in class '%s'",
-                    annotation, field.getName(), field.getType().getName(), object.getClass().getName()), e);
+            throw new PropertyInjectionException(format(WARNING, annotation, field.getName(), field.getType().getName(), object.getClass().getName()), e);
+        }
+    }
+    
+    private void doInjectProperty(Object value, Field field, Object object) throws PropertyInjectionException {
+        try {
+        Object typedValue = convert(value, field.getType());
+        setProperty(typedValue, field, object);
+        } catch (Exception e) {
+            throw new PropertyInjectionException(format(WARNING, value, field.getName(), field.getType().getName(), object.getClass().getName()), e);
         }
     }
 

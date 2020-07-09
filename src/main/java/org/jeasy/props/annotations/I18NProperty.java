@@ -86,4 +86,11 @@ public @interface I18NProperty {
      */
     String variant() default "";
 
+    /**
+     * Injection order regarding other annotations.
+     *
+     * @return injection order regarding other annotations
+     */
+    int order() default 0;
+
 }

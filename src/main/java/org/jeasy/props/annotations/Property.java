@@ -65,4 +65,11 @@ public @interface Property {
      */
     boolean failFast() default false;
 
+    /**
+     * Injection order regarding other annotations.
+     *
+     * @return injection order regarding other annotations
+     */
+    int order() default 0;
+
 }

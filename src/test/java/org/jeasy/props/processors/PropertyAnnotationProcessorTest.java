@@ -24,6 +24,7 @@
 package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.Property;
+import org.jeasy.props.annotations.SystemProperty;
 import org.jeasy.props.api.PropertyInjectionException;
 import org.junit.Test;
 
@@ -148,6 +149,73 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
 
         //then
         assertThat(bean.emptyField).isNull();
+    }
+
+    @Test
+    public void testPropertyInjectionOrder() {
+        //given
+        class Bean {
+            @Property(source = "myProperties.properties", key = "bean.name", order = 1) // key is present, should inject value from here
+            @SystemProperty(value = "bean.name", order = 2)
+            private String property1;
+
+            @Property(source = "myProperties.properties", key = "beaan.namee", order = 1) // missing key => should fallback to system property
+            @SystemProperty(value = "bean.name", order = 2)
+            private String property2;
+
+            @Property(source = "myProperties.properties", key = "bean.name", order = 2)
+            @SystemProperty(value = "bean.name", order = 1) // should inject value from system property in priority
+            private String property3;
+        }
+
+        System.setProperty("bean.name", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.property1).isEqualTo("Foo");
+        assertThat(bean.property2).isEqualTo("Bar");
+        assertThat(bean.property3).isEqualTo("Bar");
+    }
+
+    @Test(expected = PropertyInjectionException.class)
+    public void testPropertyInjectionOrderWithFailFast() {
+        //given
+        class Bean {
+            @Property(source = "myProperties.properties", key = "bean.named", order = 1, failFast = true)
+            @SystemProperty(value = "bean.name", order = 2)
+            private String property;
+        }
+
+        System.setProperty("bean.name", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        // expected exception
+    }
+
+    @Test
+    public void testPropertyInjectionOrderWithDefaultValue() {
+        //given
+        class Bean {
+            @Property(source = "myProperties.properties", key = "bean.named", order = 1, defaultValue = "Default")
+            @SystemProperty(value = "bean.name", order = 2)
+            private String property;
+        }
+
+        System.setProperty("bean.name", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.property).isEqualTo("Default");
     }
 
 }
