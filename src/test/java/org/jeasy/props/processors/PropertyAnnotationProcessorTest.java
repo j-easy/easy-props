@@ -23,7 +23,12 @@
  */
 package org.jeasy.props.processors;
 
+import org.jeasy.props.MyCompositeAnnotation;
+import org.jeasy.props.MyCompositeAnnotationProcessor;
+import org.jeasy.props.PropertiesInjectorBuilder;
 import org.jeasy.props.annotations.Property;
+import org.jeasy.props.annotations.SystemProperty;
+import org.jeasy.props.api.PropertiesInjector;
 import org.jeasy.props.api.PropertyInjectionException;
 import org.junit.Test;
 
@@ -150,4 +155,64 @@ public class PropertyAnnotationProcessorTest extends AbstractAnnotationProcessor
         assertThat(bean.emptyField).isNull();
     }
 
+    @Test
+    public void name() {
+        //given
+        class Bean {
+            @Property(source = "myProperties.properties", key = "bean.name")
+            @SystemProperty("bean.name")
+            private String property;
+        }
+
+        System.setProperty("bean.name", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.property).isEqualTo("Bar");
+    }
+
+    @Test
+    public void testCompositeAnnotation() {
+        //given
+        class Bean {
+            @MyCompositeAnnotation(source = "myProperties.properties", key = "bean.name") // key is present, should be set from properties file
+            private String property;
+        }
+
+        System.setProperty("bean.name", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder()
+                .registerAnnotationProcessor(MyCompositeAnnotation.class, new MyCompositeAnnotationProcessor())
+                .build();
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.property).isEqualTo("Foo");
+    }
+
+    @Test
+    public void testCompositeAnnotationFallback() {
+        //given
+        class Bean {
+            @MyCompositeAnnotation(source = "myProperties.properties", key = "another.property") // key is absent, should fallback to system property
+            private String property;
+        }
+
+        System.setProperty("another.property", "Bar");
+        Bean bean = new Bean();
+
+        //when
+        PropertiesInjector propertiesInjector = new PropertiesInjectorBuilder()
+                .registerAnnotationProcessor(MyCompositeAnnotation.class, new MyCompositeAnnotationProcessor())
+                .build();
+        propertiesInjector.injectProperties(bean);
+
+        //then
+        assertThat(bean.property).isEqualTo("Bar");
+    }
 }
