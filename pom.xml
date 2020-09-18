@@ -20,9 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <junit.version>4.13</junit.version>
-        <assertj.version>3.16.1</assertj.version>
+        <assertj.version>3.17.2</assertj.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <spring-jdbc.version>5.2.7.RELEASE</spring-jdbc.version>
+        <spring-jdbc.version>5.2.9.RELEASE</spring-jdbc.version>
         <hsqldb.version>2.5.1</hsqldb.version>
         <simple-jndi.version>0.11.4.1</simple-jndi.version>
 
