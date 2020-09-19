@@ -15,7 +15,8 @@ public interface TypeConverter<S, T> {
 	 *
 	 * @param source the input value to convert
 	 * @return The converted value
+	 * @throws TypeConversionException if an error occurs during type conversion
 	 */
-	T convert(S source);
+	T convert(S source) throws TypeConversionException;
 	
 }
