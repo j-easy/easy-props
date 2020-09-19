@@ -18,7 +18,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <junit.version>4.13.1</junit.version>
         <assertj.version>3.17.2</assertj.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -125,8 +125,7 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
