@@ -49,14 +49,14 @@ import static java.lang.String.format;
  */
 public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<DBProperty> {
 
-    public static final String DB_DRIVER = "db.driver";
-    public static final String DB_URL = "db.url";
-    public static final String DB_USER = "db.user";
-    public static final String DB_PASSWORD = "db.password";
-    public static final String DB_SCHEMA = "db.schema";
-    public static final String DB_TABLE = "db.table";
-    public static final String DB_TABLE_KEY_COLUMN = "db.table.keyColumn";
-    public static final String DB_TABLE_VALUE_COLUMN = "db.table.valueColumn";
+    public static final String DB_DRIVER = "org.jeasy.props.db.driver";
+    public static final String DB_URL = "org.jeasy.props.db.url";
+    public static final String DB_USER = "org.jeasy.props.db.user";
+    public static final String DB_PASSWORD = "org.jeasy.props.db.password";
+    public static final String DB_SCHEMA = "org.jeasy.props.db.schema";
+    public static final String DB_TABLE = "org.jeasy.props.db.table";
+    public static final String DB_TABLE_KEY_COLUMN = "org.jeasy.props.db.table.keyColumn";
+    public static final String DB_TABLE_VALUE_COLUMN = "org.jeasy.props.db.table.valueColumn";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBPropertyAnnotationProcessor.class);
 
