@@ -34,7 +34,7 @@ import org.jeasy.props.annotations.Property;
 import org.jeasy.props.annotations.SystemProperty;
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertyInjectionException;
-import org.jeasy.props.converters.TypeConverter;
+import org.jeasy.props.api.TypeConverter;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.jeasy.props.processors.DBPropertyAnnotationProcessor;
 import org.jeasy.props.processors.EnvironmentVariableAnnotationProcessor;

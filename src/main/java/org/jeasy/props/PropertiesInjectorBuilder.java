@@ -25,7 +25,7 @@ package org.jeasy.props;
 
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertiesInjector;
-import org.jeasy.props.converters.TypeConverter;
+import org.jeasy.props.api.TypeConverter;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

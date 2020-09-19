@@ -1,4 +1,4 @@
-package org.jeasy.props.converters;
+package org.jeasy.props.api;
 
 /**
  * Interface for type conversion.

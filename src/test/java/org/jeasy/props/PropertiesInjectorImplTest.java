@@ -27,7 +27,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.jeasy.props.api.PropertiesInjector;
-import org.jeasy.props.converters.TypeConverter;
+import org.jeasy.props.api.TypeConverter;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
