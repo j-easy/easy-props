@@ -21,7 +21,6 @@
         <java.version>11</java.version>
         <junit.version>4.13.1</junit.version>
         <assertj.version>3.18.1</assertj.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <spring-jdbc.version>5.3.1</spring-jdbc.version>
         <hsqldb.version>2.5.1</hsqldb.version>
         <simple-jndi.version>0.11.4.1</simple-jndi.version>
@@ -70,12 +69,6 @@
     </ciManagement>
 
     <dependencies>
-
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${commons-beanutils.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>

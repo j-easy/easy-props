@@ -35,7 +35,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     public void testMavenPropertyInjection() {
         //given
         class Bean {
-            @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
+            @MavenProperty(key = "version", groupId = "org.assertj", artifactId = "assertj-core")
             private String pomVersion;
         }
         Bean bean = new Bean();
@@ -44,14 +44,14 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
         propertiesInjector.injectProperties(bean);
 
         //then
-        assertThat(bean.pomVersion).isEqualTo("1.9.4");
+        assertThat(bean.pomVersion).isEqualTo("3.18.1");
     }
 
     @Test(expected = PropertyInjectionException.class)
     public void whenSourceIsInvalid_thenShouldThrowAnException() {
         //given
         class BeanWithInvalidSource {
-            @MavenProperty(source = "blah.properties", key = "version", groupId = "commons-beanutils", artifactId = "commons-beanutils")
+            @MavenProperty(source = "blah.properties", key = "version", groupId = "org.assertj", artifactId = "assertj-core")
             private String pomVersion;
         }
         BeanWithInvalidSource bean = new BeanWithInvalidSource();
@@ -66,7 +66,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     public void whenKeyIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         class BeanWithInvalidKey {
-            @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils")
+            @MavenProperty(key = "blah", groupId = "org.assertj", artifactId = "assertj-core")
             private String pomVersion;
         }
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
@@ -82,7 +82,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     public void whenKeyIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
         //given
         class BeanWithInvalidKey {
-            @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils", defaultValue = "default")
+            @MavenProperty(key = "blah", groupId = "org.assertj", artifactId = "assertj-core", defaultValue = "default")
             private String pomVersion;
         }
         BeanWithInvalidKey bean = new BeanWithInvalidKey();
@@ -97,7 +97,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     @Test(expected = PropertyInjectionException.class)
     public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
         class Bean {
-            @MavenProperty(key = "blah", groupId = "commons-beanutils", artifactId = "commons-beanutils", failFast = true)
+            @MavenProperty(key = "blah", groupId = "org.assertj", artifactId = "assertj-core", failFast = true)
             private String absentValue;
 
         }
@@ -112,7 +112,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     public void whenGroupIdIsMissing_thenShouldThrowAnException() {
         //given
         class BeanWithInvalidGroupId {
-            @MavenProperty(key = "version", groupId = "blah", artifactId = "commons-beanutils")
+            @MavenProperty(key = "version", groupId = "blah", artifactId = "assertj-core")
             private String pomVersion;
         }
         BeanWithInvalidGroupId bean = new BeanWithInvalidGroupId();
@@ -128,7 +128,7 @@ public class MavenPropertyAnnotationProcessorTest extends AbstractAnnotationProc
     public void whenArtifactIdIsMissing_thenShouldThrowAnException() {
         //given
         class BeanWithInvalidArtifactId {
-            @MavenProperty(key = "version", groupId = "commons-beanutils", artifactId = "blah")
+            @MavenProperty(key = "version", groupId = "org.assertj", artifactId = "blah")
             private String pomVersion;
         }
         BeanWithInvalidArtifactId bean = new BeanWithInvalidArtifactId();

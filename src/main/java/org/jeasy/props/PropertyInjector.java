@@ -35,7 +35,27 @@ import org.jeasy.props.annotations.SystemProperty;
 import org.jeasy.props.api.AnnotationProcessor;
 import org.jeasy.props.api.PropertyInjectionException;
 import org.jeasy.props.api.TypeConverter;
-import org.apache.commons.beanutils.ConvertUtils;
+import org.jeasy.props.converters.AtomicIntegerTypeConverter;
+import org.jeasy.props.converters.AtomicLongTypeConverter;
+import org.jeasy.props.converters.BigDecimalTypeConverter;
+import org.jeasy.props.converters.BigIntegerTypeConverter;
+import org.jeasy.props.converters.BooleanTypeConverter;
+import org.jeasy.props.converters.ByteTypeConverter;
+import org.jeasy.props.converters.CharacterTypeConverter;
+import org.jeasy.props.converters.DateTypeConverter;
+import org.jeasy.props.converters.DoubleTypeConverter;
+import org.jeasy.props.converters.FloatTypeConverter;
+import org.jeasy.props.converters.GregorianCalendarTypeConverter;
+import org.jeasy.props.converters.IntegerTypeConverter;
+import org.jeasy.props.converters.LocalDateConverter;
+import org.jeasy.props.converters.LocalDateTimeConverter;
+import org.jeasy.props.converters.LocalTimeConverter;
+import org.jeasy.props.converters.LongTypeConverter;
+import org.jeasy.props.converters.ShortTypeConverter;
+import org.jeasy.props.converters.SqlDateTypeConverter;
+import org.jeasy.props.converters.SqlTimeTypeConverter;
+import org.jeasy.props.converters.SqlTimestampTypeConverter;
+import org.jeasy.props.converters.StringTypeConverter;
 import org.jeasy.props.processors.DBPropertyAnnotationProcessor;
 import org.jeasy.props.processors.EnvironmentVariableAnnotationProcessor;
 import org.jeasy.props.processors.I18NPropertyAnnotationProcessor;
@@ -50,10 +70,14 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -77,6 +101,38 @@ class PropertyInjector {
     PropertyInjector() {
         annotationProcessors = new HashMap<>();
         typeConverters = new HashMap<>();
+
+        // register built-in type converters
+        typeConverters.put(AtomicInteger.class, new AtomicIntegerTypeConverter());
+        typeConverters.put(AtomicLong.class, new AtomicLongTypeConverter());
+        typeConverters.put(BigDecimal.class, new BigDecimalTypeConverter());
+        typeConverters.put(BigInteger.class, new BigIntegerTypeConverter());
+        typeConverters.put(Boolean.class, new BooleanTypeConverter());
+        typeConverters.put(Boolean.TYPE, new BooleanTypeConverter());
+        typeConverters.put(Byte.class, new ByteTypeConverter());
+        typeConverters.put(Byte.TYPE, new ByteTypeConverter());
+        typeConverters.put(Character.class, new CharacterTypeConverter());
+        typeConverters.put(Character.TYPE, new CharacterTypeConverter());
+        typeConverters.put(Double.class, new DoubleTypeConverter());
+        typeConverters.put(Double.TYPE, new DoubleTypeConverter());
+        typeConverters.put(Float.class, new FloatTypeConverter());
+        typeConverters.put(Float.TYPE, new FloatTypeConverter());
+        typeConverters.put(Integer.class, new IntegerTypeConverter());
+        typeConverters.put(Integer.TYPE, new IntegerTypeConverter());
+        typeConverters.put(Long.class, new LongTypeConverter());
+        typeConverters.put(Long.TYPE, new LongTypeConverter());
+        typeConverters.put(Short.class, new ShortTypeConverter());
+        typeConverters.put(Short.TYPE, new ShortTypeConverter());
+        typeConverters.put(java.util.Date.class, new DateTypeConverter());
+        typeConverters.put(java.util.Calendar.class, new GregorianCalendarTypeConverter());
+        typeConverters.put(java.util.GregorianCalendar.class, new GregorianCalendarTypeConverter());
+        typeConverters.put(java.sql.Date.class, new SqlDateTypeConverter());
+        typeConverters.put(java.sql.Time.class, new SqlTimeTypeConverter());
+        typeConverters.put(java.sql.Timestamp.class, new SqlTimestampTypeConverter());
+        typeConverters.put(java.time.LocalDate.class, new LocalDateConverter());
+        typeConverters.put(java.time.LocalTime.class, new LocalTimeConverter());
+        typeConverters.put(java.time.LocalDateTime.class, new LocalDateTimeConverter());
+        typeConverters.put(String.class, new StringTypeConverter());
 
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
@@ -163,7 +219,7 @@ class PropertyInjector {
         if (converter != null) {
             return converter.convert(value);
         }
-        return ConvertUtils.convert(value, type);
+        return value;
     }
 
     private void setProperty(Object value, Field field, Object targetObject) throws Exception {
