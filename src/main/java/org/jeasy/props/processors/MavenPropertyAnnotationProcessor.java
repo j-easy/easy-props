@@ -25,6 +25,8 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.MavenProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +34,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ import static java.lang.String.format;
  */
 public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcessor<MavenProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(MavenPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(MavenPropertyAnnotationProcessor.class);
 
     /**
      * A map holding pom.properties file with corresponding Properties object serving as a cache.
@@ -77,7 +77,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
         if (value == null) {
             String message = String.format("Maven property '%s' on field '%s' of type '%s' in class '%s' not found in pom file '%s'",
                     key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), pomFile);
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
@@ -88,7 +88,7 @@ public class MavenPropertyAnnotationProcessor extends AbstractAnnotationProcesso
             }
         }
         if (value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Maven property ''{0}'' is empty in pom file ''{1}''", new Object[]{key, pomFile});
+            LOGGER.warn("Maven property '{}' is empty in pom file '{}'", key, pomFile);
             return null;
         }
         return value;

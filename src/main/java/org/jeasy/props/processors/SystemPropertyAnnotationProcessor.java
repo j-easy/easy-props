@@ -25,10 +25,10 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.SystemProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An annotation processor that loads properties from system properties.
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  */
 public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcessor<SystemProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(SystemPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SystemPropertyAnnotationProcessor.class);
 
     @Override
     public Object processAnnotation(final SystemProperty systemProperty, final Field field) throws AnnotationProcessingException {
@@ -54,15 +54,15 @@ public class SystemPropertyAnnotationProcessor extends AbstractAnnotationProcess
         if (value == null) {
             String message = String.format("System property '%s' on field '%s' of type '%s' in class '%s' not found in system properties",
                     key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                LOGGER.log(Level.WARNING, "Default value of system property ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",
-                        new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
+                LOGGER.warn("Default value of system property '{}' on field '{}' of type '{}' in class '{}' is empty",
+                        key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
                 return null;
             }
         }

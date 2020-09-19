@@ -24,12 +24,12 @@
 package org.jeasy.props;
 
 import org.jeasy.props.annotations.Manageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Component responsible for registering a JMX MBean for a given object.
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 class MBeanRegistrar {
 
     private static final String JMX_OBJECT_NAME_PREFIX = "org.jeasy.props:";
-    private static final Logger LOGGER = Logger.getLogger(MBeanRegistrar.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(MBeanRegistrar.class);
 
     private final MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
@@ -54,7 +54,7 @@ class MBeanRegistrar {
                     mBeanServer.registerMBean(object, objectName);
                 }
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Unable to register a JMX MBean for object '" + object + "'", e);
+                LOGGER.error("Unable to register a JMX MBean for object '" + object + "'", e);
             }
         }
     }

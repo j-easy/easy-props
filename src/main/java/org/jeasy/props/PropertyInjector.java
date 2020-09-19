@@ -45,6 +45,8 @@ import org.jeasy.props.processors.MavenPropertyAnnotationProcessor;
 import org.jeasy.props.processors.PropertiesAnnotationProcessor;
 import org.jeasy.props.processors.PropertyAnnotationProcessor;
 import org.jeasy.props.processors.SystemPropertyAnnotationProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -52,8 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -66,7 +66,7 @@ import static java.lang.String.format;
 @SuppressWarnings("unchecked,rawtypes")
 class PropertyInjector {
 
-    private static final Logger LOGGER = Logger.getLogger(PropertyInjector.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyInjector.class);
     private static final String WARNING = "Unable to inject value from annotation '%s' on field '%s' of type '%s' in class '%s'";
     private static final List<Class<? extends Annotation>> builtinAnnotations = Arrays.asList(
             SystemProperty.class, Property.class, I18NProperty.class, Properties.class, DBProperty.class,
@@ -100,7 +100,7 @@ class PropertyInjector {
                 doInjectProperty(value, field, object);
                 break;
             } else {
-                LOGGER.log(Level.FINE, String.format(WARNING, annotation, field.getName(), field.getType().getName(), object.getClass().getName()));
+                LOGGER.warn(String.format(WARNING, annotation, field.getName(), field.getType().getName(), object.getClass().getName()));
             }
         }
     }

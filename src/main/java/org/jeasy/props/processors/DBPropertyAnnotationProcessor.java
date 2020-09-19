@@ -25,6 +25,8 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.DBProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +39,6 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -58,7 +58,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
     public static final String DB_TABLE_KEY_COLUMN = "db.table.keyColumn";
     public static final String DB_TABLE_VALUE_COLUMN = "db.table.valueColumn";
 
-    private static final Logger LOGGER = Logger.getLogger(DBPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBPropertyAnnotationProcessor.class);
 
     /**
      * A map holding database configuration properties file names and properties object serving as a cache.
@@ -90,7 +90,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
         if (value == null) {
             String message = String.format("Key '%s' not found in database configured with properties from file '%s'",
                     key, configuration);
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
@@ -119,7 +119,7 @@ public class DBPropertyAnnotationProcessor extends AbstractAnnotationProcessor<D
             try {
                 closeResources(connection, statement, resultSet);
             } catch (SQLException e) {
-                LOGGER.log(Level.WARNING, "Unable to close database resources", e);
+                LOGGER.warn("Unable to close database resources", e);
             }
         }
     }

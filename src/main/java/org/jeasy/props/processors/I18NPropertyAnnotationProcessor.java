@@ -25,6 +25,8 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.I18NProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -32,8 +34,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ import static java.lang.String.format;
  */
 public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor<I18NProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(I18NPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(I18NPropertyAnnotationProcessor.class);
 
     /**
      * A map holding bundle file name and resource bundle object serving as a cache.
@@ -78,12 +78,12 @@ public class I18NPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         try {
             value = resourceBundlesMap.get(bundle).getString(key);
             if (value.isEmpty()) {
-                LOGGER.log(Level.WARNING, "Key ''{0}'' is empty in resource bundle ''{1}''", new Object[]{key, bundle});
+                LOGGER.warn("Key '{}' is empty in resource bundle '{}'", key, bundle);
                 return null;
             }
         } catch (MissingResourceException e) {
             String message = format("Key '%s' not found in resource bundle '%s'", key, bundle);
-            LOGGER.log(Level.WARNING, message, e);
+            LOGGER.warn(message, e);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }

@@ -25,13 +25,13 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.JNDIProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -42,7 +42,7 @@ import static java.lang.String.format;
  */
 public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor<JNDIProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(JNDIPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JNDIPropertyAnnotationProcessor.class);
 
     /**
      * The JNDI context.
@@ -73,7 +73,7 @@ public class JNDIPropertyAnnotationProcessor extends AbstractAnnotationProcessor
         //check object obtained from JNDI context
         if (value == null) {
             String message = String.format("Object '%s' not found in JNDI context", name);
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }

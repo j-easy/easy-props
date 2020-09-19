@@ -25,6 +25,8 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.ManifestProperty;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,8 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -45,7 +45,7 @@ import static java.lang.String.format;
  */
 public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProcessor<ManifestProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(ManifestPropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManifestPropertyAnnotationProcessor.class);
     private static final String CLASSPATH = System.getProperty("java.class.path");
     private static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
@@ -77,7 +77,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
         String value = manifestEntries.get(jar).getMainAttributes().getValue(header);
         if (value == null) {
             String message = String.format("Header '%s' not found in manifest of jar '%s'", header, jar);
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
@@ -88,7 +88,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
             }
         }
         if (value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Header ''{0}'' in manifest of jar ''{1}'' is empty", new Object[]{header, jar});
+            LOGGER.warn("Header '{}' in manifest of jar '{}' is empty", header, jar);
             return null;
         }
 
@@ -126,7 +126,7 @@ public class ManifestPropertyAnnotationProcessor extends AbstractAnnotationProce
                 jarStream.close();
             }
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Unable to close jar stream", e);
+            LOGGER.warn("Unable to close jar stream", e);
         }
     }
 

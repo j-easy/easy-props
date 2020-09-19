@@ -25,6 +25,7 @@
         <spring-jdbc.version>5.2.9.RELEASE</spring-jdbc.version>
         <hsqldb.version>2.5.1</hsqldb.version>
         <simple-jndi.version>0.11.4.1</simple-jndi.version>
+        <slf4j.version>1.7.30</slf4j.version>
 
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -76,6 +77,12 @@
             <version>${commons-beanutils.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -108,6 +115,13 @@
             <groupId>simple-jndi</groupId>
             <artifactId>simple-jndi</artifactId>
             <version>${simple-jndi.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

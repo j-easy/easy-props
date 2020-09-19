@@ -25,6 +25,8 @@ package org.jeasy.props.processors;
 
 import org.jeasy.props.annotations.Property;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +34,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ import static java.lang.String.format;
  */
 public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Property> {
 
-    private static final Logger LOGGER = Logger.getLogger(PropertyAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyAnnotationProcessor.class);
 
     /**
      * A map holding source file name and Properties object serving as a cache.
@@ -74,7 +74,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
         if (value == null) {
             String message = String.format("Property '%s' on field '%s' of type '%s' in class '%s' not found in properties file '%s'",
                     key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName(), source);
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
@@ -85,7 +85,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
             }
         }
         if (value.isEmpty()) {
-            LOGGER.log(Level.WARNING, "Property ''{0}'' is empty in properties file ''{1}''", new Object[]{key, source});
+            LOGGER.warn("Property '{}' is empty in properties file '{}'", key, source);
             return null;
         }
 
@@ -116,7 +116,7 @@ public class PropertyAnnotationProcessor extends AbstractAnnotationProcessor<Pro
             try {
                 inputStream.close();
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "Unable to close input stream", e);
+                LOGGER.warn("Unable to close input stream", e);
             }
         }
     }

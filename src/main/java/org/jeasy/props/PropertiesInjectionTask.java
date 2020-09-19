@@ -25,9 +25,8 @@ package org.jeasy.props;
 
 import org.jeasy.props.api.PropertiesInjector;
 import org.jeasy.props.api.PropertyInjectionException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Background task for configuration hot reloading.
@@ -36,7 +35,7 @@ import java.util.logging.Logger;
  */
 class PropertiesInjectionTask implements Runnable {
 
-    private static final Logger LOGGER = Logger.getLogger(PropertiesInjectionTask.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesInjectionTask.class);
 
     private final PropertiesInjector injector;
 
@@ -52,7 +51,7 @@ class PropertiesInjectionTask implements Runnable {
         try {
             injector.injectProperties(target);
         } catch (PropertyInjectionException e) {
-            LOGGER.log(Level.SEVERE, "Unable to inject properties in object '" + target + "'", e);
+            LOGGER.error("Unable to inject properties in object '" + target + "'", e);
         }
     }
 }

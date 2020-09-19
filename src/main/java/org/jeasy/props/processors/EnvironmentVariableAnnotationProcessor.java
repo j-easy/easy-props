@@ -24,11 +24,11 @@
 package org.jeasy.props.processors;
 
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.jeasy.props.annotations.EnvironmentVariable;
 import org.jeasy.props.api.AnnotationProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An annotation processor that loads properties from environment variables.
@@ -38,7 +38,7 @@ import org.jeasy.props.api.AnnotationProcessingException;
  */
 public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationProcessor<EnvironmentVariable> {
 
-    private static final Logger LOGGER = Logger.getLogger(EnvironmentVariableAnnotationProcessor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentVariableAnnotationProcessor.class);
 
     @Override
     public Object processAnnotation(final EnvironmentVariable environmentVariable, final Field field) throws AnnotationProcessingException {
@@ -55,15 +55,15 @@ public class EnvironmentVariableAnnotationProcessor extends AbstractAnnotationPr
         if (value == null) {
             String message = String.format("Environment variable '%s' on field '%s' of type '%s' in class '%s' not found in environment variables",
                     key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             if (failFast) {
                 throw new AnnotationProcessingException(message);
             }
             if (!defaultValue.isEmpty()) {
                 value = defaultValue.trim();
             } else {
-                LOGGER.log(Level.WARNING, "Default value of environment variable ''{0}'' on field ''{1}'' of type ''{2}'' in class ''{3}'' is empty",
-                        new Object[]{key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName()});
+                LOGGER.warn("Default value of environment variable '{}' on field '{}' of type '{}' in class '{}' is empty",
+                        key, field.getName(), field.getType().getName(), field.getDeclaringClass().getName());
                 return null;
             }
         }
