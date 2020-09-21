@@ -77,7 +77,6 @@ class PropertyInjector {
     PropertyInjector() {
         annotationProcessors = new HashMap<>();
         typeConverters = new HashMap<>();
-        // TODO the day we decide to remove the dependency to apache commons-beanutils, register built-in converters here
 
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
