@@ -35,7 +35,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     public void testManifestPropertyInjection() {
         //given
         class Bean {
-            @ManifestProperty(jar = "junit-4.13.jar", header = "Created-By")
+            @ManifestProperty(jar = "junit-4.13.1.jar", header = "Created-By")
             private String createdBy;
         }
         Bean bean = new Bean();
@@ -66,7 +66,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     public void whenHeaderIsMissing_thenShouldSilentlyIgnoreTheField() {
         //given
         class BeanWithInvalidHeader {
-            @ManifestProperty(jar = "junit-4.13.jar", header = "blah")
+            @ManifestProperty(jar = "junit-4.13.1.jar", header = "blah")
             private String createdBy;
         }
         BeanWithInvalidHeader bean = new BeanWithInvalidHeader();
@@ -82,7 +82,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     public void whenHeaderIsMissingWithDefaultValue_thenShouldInjectDefaultValue() {
         //given
         class BeanWithInvalidHeader {
-            @ManifestProperty(jar = "junit-4.13.jar", header = "blah", defaultValue = "default")
+            @ManifestProperty(jar = "junit-4.13.1.jar", header = "blah", defaultValue = "default")
             private String createdBy;
         }
         BeanWithInvalidHeader bean = new BeanWithInvalidHeader();
@@ -97,7 +97,7 @@ public class ManifestPropertyAnnotationProcessorTest extends AbstractAnnotationP
     @Test(expected = PropertyInjectionException.class)
     public void whenKeyIsMissingAndFailFast_thenShouldThrowException() {
         class Bean {
-            @ManifestProperty(jar = "junit-4.13.jar", header = "blah", failFast = true)
+            @ManifestProperty(jar = "junit-4.13.1.jar", header = "blah", failFast = true)
             private String absentValue;
 
         }
