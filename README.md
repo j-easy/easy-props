@@ -9,7 +9,7 @@
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/j-easy/easy-props/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-props/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|3.1.0|)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|4.0.0|)
 [![Javadocs](http://www.javadoc.io/badge/org.jeasy/easy-props.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
 
 </div>
@@ -18,7 +18,7 @@
 
 ## Latest news
 
-* 18/09/2020: Version 3.1.0 is now released with a number of new features and enhancements! You can find all details about the changes in the [release notes](https://github.com/j-easy/easy-props/releases).
+* 15/11/2020: Version 4.0.0 is now released! You can find all details about the changes in the [release notes](https://github.com/j-easy/easy-props/releases).
 
 ## What is Easy Props?
 
