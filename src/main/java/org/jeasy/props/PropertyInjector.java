@@ -77,6 +77,8 @@ class PropertyInjector {
     PropertyInjector() {
         annotationProcessors = new HashMap<>();
         typeConverters = new HashMap<>();
+        // TODO the day we decide to remove the dependency to apache commons-beanutils, register built-in converters here
+        // See https://github.com/j-easy/easy-props/commit/1f677c0469813b6f206871bc4a7037ee41f7a975
 
         //register built-in annotation processors
         annotationProcessors.put(SystemProperty.class, new SystemPropertyAnnotationProcessor());
