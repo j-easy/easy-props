@@ -11,7 +11,6 @@
 [![Build Status](https://github.com/j-easy/easy-props/workflows/Java%20CI/badge.svg)](https://github.com/j-easy/easy-props/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jeasy/easy-props/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|org.jeasy|easy-props|3.1.0|)
 [![Javadocs](http://www.javadoc.io/badge/org.jeasy/easy-props.svg)](http://www.javadoc.io/doc/org.jeasy/easy-props)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/j-easy/easy-props)
 
 </div>
 
@@ -154,9 +153,7 @@ What if your code does **not** run inside a DI container? This is where Easy Pro
 
 You are welcome to contribute to the project with pull requests on GitHub.
 
-If you find a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-props/issues).
-
-For any further question, you can use the [Gitter channel](https://gitter.im/j-easy/easy-props) of the project.
+If you found a bug or want to request a feature, please use the [issue tracker](https://github.com/j-easy/easy-props/issues).
 
 ## Awesome contributors
 
